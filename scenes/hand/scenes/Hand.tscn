@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd8uqor5v0lyx"]
+
+[ext_resource type="Script" path="res://scenes/hand/scripts/hand.gd" id="1_cu0la"]
+[ext_resource type="Resource" uid="uid://b54a01j8oy58u" path="res://scenes/hand/resources/hand_data.tres" id="2_oplf1"]
+
+[node name="Hand" type="Node"]
+script = ExtResource("1_cu0la")
+hand_data = ExtResource("2_oplf1")

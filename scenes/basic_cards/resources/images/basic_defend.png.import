@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fufm45sfdlx1"
-path="res://.godot/imported/basic_attack_card.png-6281de4c31d24a698461ef2078bc910d.ctex"
+uid="uid://do6aut5du106"
+path="res://.godot/imported/basic_defend.png-b4874f29cbc994e0dbc7e994059279a0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/basic_attack_card/resources/basic_attack_card.png"
-dest_files=["res://.godot/imported/basic_attack_card.png-6281de4c31d24a698461ef2078bc910d.ctex"]
+source_file="res://scenes/basic_cards/resources/images/basic_defend.png"
+dest_files=["res://.godot/imported/basic_defend.png-b4874f29cbc994e0dbc7e994059279a0.ctex"]
 
 [params]
 

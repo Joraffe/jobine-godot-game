@@ -9,7 +9,7 @@ func _ready():
 
 func show_panel_container():
 	self.visible = true
-	
+
 
 func hide_panel_container():
 	self.visible = false

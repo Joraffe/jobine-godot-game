@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="HandData" load_steps=3 format=3 uid="uid://b54a01j8oy58u"]
+[gd_resource type="Resource" script_class="HandData" load_steps=5 format=3 uid="uid://b54a01j8oy58u"]
 
 [ext_resource type="Script" path="res://scenes/hand/scripts/resources/hand_data.gd" id="1_6je44"]
+[ext_resource type="Resource" uid="uid://dxjnysmliuog1" path="res://scenes/basic_cards/resources/basic_attack_card_data.tres" id="1_punin"]
 [ext_resource type="Resource" uid="uid://phfk35u0mess" path="res://scenes/basic_cards/resources/basic_defend_card_data.tres" id="2_culdm"]
+[ext_resource type="Resource" uid="uid://dtsq30sh865ws" path="res://scenes/basic_cards/resources/basic_redraw_card_data.tres" id="3_uj55q"]
 
 [resource]
 script = ExtResource("1_6je44")
-current_hand = Array[Resource("res://scenes/basic_cards/scripts/resources/card_data.gd")]([ExtResource("2_culdm")])
+current_hand = Array[Resource("res://scenes/basic_cards/scripts/resources/card_data.gd")]([ExtResource("2_culdm"), ExtResource("1_punin"), ExtResource("3_uj55q"), ExtResource("1_punin"), ExtResource("2_culdm")])

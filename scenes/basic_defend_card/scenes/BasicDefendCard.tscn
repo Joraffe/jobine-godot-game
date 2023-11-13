@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://cbcmpa6tc6v0i"]
+
+[ext_resource type="Script" path="res://scenes/basic_defend_card/scripts/area_2d.gd" id="1_7lj43"]
+[ext_resource type="Texture2D" uid="uid://ccn5qt4mh127t" path="res://scenes/basic_defend_card/resources/basic_defend_card.png" id="1_aukjy"]
+[ext_resource type="Script" path="res://scenes/basic_defend_card/scripts/panel_container.gd" id="3_1pc8x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eg7yr"]
+size = Vector2(200.5, 300)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw8pe"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.956863, 0.976471, 0.356863, 1)
+
+[node name="BasicDefendCard" type="Node"]
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("1_7lj43")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+position = Vector2(105, 155)
+texture = ExtResource("1_aukjy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(105, 155)
+shape = SubResource("RectangleShape2D_eg7yr")
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(210, 310)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 116.0
+offset_bottom = 119.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pw8pe")
+script = ExtResource("3_1pc8x")

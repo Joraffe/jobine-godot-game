@@ -1,12 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvoq5vcuf3nfa"]
+[gd_scene load_steps=7 format=3 uid="uid://bvoq5vcuf3nfa"]
 
+[ext_resource type="Script" path="res://scenes/deck/scripts/deck.gd" id="1_8wfmk"]
 [ext_resource type="Texture2D" uid="uid://bg12lwl45pwxl" path="res://scenes/deck/resources/images/pettel_deck.png" id="1_eymon"]
 [ext_resource type="Script" path="res://scenes/deck/scripts/signals/area_2d.gd" id="1_xuddq"]
+[ext_resource type="Resource" uid="uid://6idt4my0gabg" path="res://scenes/deck/resources/deck_data.tres" id="2_ljl5m"]
 [ext_resource type="Script" path="res://scenes/deck/scripts/signals/label.gd" id="3_vhcr3"]
+[ext_resource type="Script" path="res://scenes/deck/scripts/signals/broadcast.gd" id="5_eqkhg"]
 
 [node name="Deck" type="Node"]
+script = ExtResource("1_8wfmk")
+deck_data = ExtResource("2_ljl5m")
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2(2.08165e-12, 300)
 script = ExtResource("1_xuddq")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
@@ -21,8 +27,9 @@ polygon = PackedVector2Array(86, -14.3, 86, -12, 87, 31, 84.4, 31, -28.6, 83, -3
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 295.0
-offset_bottom = 211.0
+offset_top = 300.0
+offset_right = 300.0
+offset_bottom = 500.0
 
 [node name="Label" type="Label" parent="Control"]
 visible = false
@@ -39,3 +46,6 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Draw!"
 script = ExtResource("3_vhcr3")
+
+[node name="Broadcast" type="Node" parent="."]
+script = ExtResource("5_eqkhg")

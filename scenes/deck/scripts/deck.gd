@@ -1,11 +1,12 @@
 extends Node
 
+@export var deck_data : DeckData
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	deck_data.populate_deck([
+		CardData.new("basic_attack"),
+		CardData.new("basic_defend"),
+		CardData.new("basic_redraw")
+	])

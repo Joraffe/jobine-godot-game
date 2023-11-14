@@ -1,8 +1,8 @@
 extends Node
 
-@export var hand_data : HandData
 
+signal add_card_to_hand(card : CardData)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	pass # Replace with function body.

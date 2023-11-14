@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="DeckData" load_steps=2 format=3 uid="uid://6idt4my0gabg"]
+
+[ext_resource type="Script" path="res://scenes/deck/scripts/resources/deck_data.gd" id="1_eeo8f"]
+
+[resource]
+script = ExtResource("1_eeo8f")

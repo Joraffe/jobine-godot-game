@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbf1gmlx3fgyp"]
+
+[ext_resource type="PackedScene" uid="uid://bvoq5vcuf3nfa" path="res://scenes/deck/scenes/Deck.tscn" id="1_pbxea"]
+[ext_resource type="Script" path="res://scenes/field/scripts/field.gd" id="1_v701g"]
+[ext_resource type="PackedScene" uid="uid://bd8uqor5v0lyx" path="res://scenes/hand/scenes/Hand.tscn" id="2_lgftt"]
+[ext_resource type="Script" path="res://scenes/field/scripts/signals/broadcast.gd" id="4_67w7w"]
+[ext_resource type="Script" path="res://scenes/field/scripts/signals/receiver.gd" id="5_pt32k"]
+
+[node name="Field" type="Node"]
+script = ExtResource("1_v701g")
+
+[node name="Deck" parent="." instance=ExtResource("1_pbxea")]
+
+[node name="Hand" parent="." instance=ExtResource("2_lgftt")]
+
+[node name="Broadcast" type="Node" parent="."]
+script = ExtResource("4_67w7w")
+
+[node name="Receiver" type="Node" parent="."]
+script = ExtResource("5_pt32k")

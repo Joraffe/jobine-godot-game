@@ -10,6 +10,6 @@ func _ready():
 
 
 func _on_deck_clicked():
-	print('deck clicked!')
-	var card = $"../".deck_data.draw_card()
-	card_drawn.emit(card)
+	if $"../".deck_data.has_cards():
+		var card = $"../".deck_data.draw_card()
+		card_drawn.emit(card)

@@ -13,3 +13,8 @@ config_version=5
 config/name="Jobine-godot-game"
 run/main_scene="res://scenes/basic_attack_card/scenes/BasicAttackCard.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080

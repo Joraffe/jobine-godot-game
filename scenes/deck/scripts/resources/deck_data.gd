@@ -6,8 +6,11 @@ var deck_cards : Dictionary
 var rng = RandomNumberGenerator.new()
 
 
+func has_cards():
+	return deck_cards.size() != 0
+
+
 func populate_deck(cards : Array[CardData]):
-	print('cards ', cards)
 	var indexes : Dictionary = {}
 	for i in cards.size():
 		indexes[i] = i
@@ -22,10 +25,6 @@ func populate_deck(cards : Array[CardData]):
 
 func draw_card():
 	var keys = deck_cards.keys()
-	
-	if keys.size() == 0:
-		return ""
-
 	var rand_key = keys[rng.randi_range(0, keys.size() - 1)]
 	var card = deck_cards[rand_key]
 	deck_cards.erase(rand_key)

@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1_6je44")
-current_hand = Array[Resource("res://scenes/basic_cards/scripts/resources/card_data.gd")]([])
+current_hand = Array[Resource("res://scenes/card/scripts/resources/card_data.gd")]([])

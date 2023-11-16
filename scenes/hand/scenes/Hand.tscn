@@ -4,8 +4,8 @@
 [ext_resource type="Resource" uid="uid://b54a01j8oy58u" path="res://scenes/hand/resources/hand_data.tres" id="2_oplf1"]
 [ext_resource type="Script" path="res://scenes/hand/scripts/signals/broadcast.gd" id="3_e1ncf"]
 [ext_resource type="Script" path="res://scenes/hand/scripts/signals/area_2d.gd" id="3_nt5u3"]
+[ext_resource type="Texture2D" uid="uid://dkol438q0h006" path="res://scenes/hand/resources/images/empty_hand.png" id="4_edgun"]
 [ext_resource type="Script" path="res://scenes/hand/scripts/signals/receiver.gd" id="4_iloav"]
-[ext_resource type="Texture2D" uid="uid://dkol438q0h006" path="res://scenes/field/resources/images/empty_hand.png" id="4_iy2oo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0w5h"]
 
@@ -20,7 +20,7 @@ script = ExtResource("3_nt5u3")
 shape = SubResource("RectangleShape2D_d0w5h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
-texture = ExtResource("4_iy2oo")
+texture = ExtResource("4_edgun")
 
 [node name="Broadcast" type="Node" parent="."]
 script = ExtResource("3_e1ncf")

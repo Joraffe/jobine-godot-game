@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://do6aut5du106"
-path="res://.godot/imported/basic_defend.png-b4874f29cbc994e0dbc7e994059279a0.ctex"
+uid="uid://dkol438q0h006"
+path="res://.godot/imported/empty_hand.png-93fe29fc5a5f12f3d6efa2a0710cb059.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/basic_cards/resources/images/basic_defend.png"
-dest_files=["res://.godot/imported/basic_defend.png-b4874f29cbc994e0dbc7e994059279a0.ctex"]
+source_file="res://scenes/hand/resources/images/empty_hand.png"
+dest_files=["res://.godot/imported/empty_hand.png-93fe29fc5a5f12f3d6efa2a0710cb059.ctex"]
 
 [params]
 

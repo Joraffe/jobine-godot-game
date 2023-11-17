@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgbh53rvbmsyl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5eb13"]
+
+[node name="PartyInfo" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_5eb13")
+
+[node name="Broadcast" type="Node" parent="."]
+
+[node name="Receiver" type="Node" parent="."]

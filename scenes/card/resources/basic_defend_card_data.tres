@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://cfalgc7ohukjn"]
-
-[ext_resource type="Script" path="res://scenes/card/scripts/resources/card_data.gd" id="1_nqqr1"]
-
-[resource]
-script = ExtResource("1_nqqr1")
-card_name = "basic_defend"

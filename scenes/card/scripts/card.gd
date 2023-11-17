@@ -1,8 +1,8 @@
 extends Node2D
 
-@export var card_image_data : ImageData:
+var card_image_data : ImageData:
 	set = set_card_image_data
-@export var card_data : CardData:
+var card_data : CardData:
 	set = set_card_data
 
 
@@ -12,8 +12,9 @@ func set_card_data(new_card_data : CardData):
 	self.set(
 		"card_image_data",
 		ImageData.new(
-			"card",
-			"{name}.png".format({"name": new_card_data.card_name})
+			"card",  # scene
+			card_data.character,  # instance
+			"{name}.png".format({"name": card_data.name})  # filename
 		)
 	)
 

@@ -14,6 +14,10 @@ config/name="Jobine-godot-game"
 run/main_scene="res://scenes/basic_attack_card/scenes/BasicAttackCard.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 
+[autoload]
+
+BattleRadio="*res://scenes/battle/scripts/radio.gd"
+
 [display]
 
 window/size/viewport_width=1920

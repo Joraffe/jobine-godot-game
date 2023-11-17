@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://b5p4a7dpmrx2g"]
-
-[ext_resource type="Script" path="res://scenes/card/scripts/resources/card_data.gd" id="1_2ojdp"]
-
-[resource]
-script = ExtResource("1_2ojdp")
-card_name = "basic_redraw"

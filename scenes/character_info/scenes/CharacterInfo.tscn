@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://daqgi2hfq3lt6"]
+
+[node name="CharacterInfo" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+[node name="Broadcast" type="Node" parent="."]
+
+[node name="Reciever" type="Node" parent="."]

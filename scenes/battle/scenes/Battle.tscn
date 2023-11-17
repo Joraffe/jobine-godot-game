@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://ceykjjqnftx3c"]
+
+[ext_resource type="Script" path="res://scenes/battle/scripts/battle.gd" id="1_bvh5n"]
+[ext_resource type="Script" path="res://scenes/battle/scripts/radio.gd" id="2_vfs7i"]
+[ext_resource type="PackedScene" uid="uid://dbf1gmlx3fgyp" path="res://scenes/field/scenes/Field.tscn" id="3_e6xtr"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_bvh5n")
+
+[node name="Radio" type="Node" parent="."]
+script = ExtResource("2_vfs7i")
+
+[node name="Field" parent="." instance=ExtResource("3_e6xtr")]

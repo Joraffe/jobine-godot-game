@@ -1,22 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbf1gmlx3fgyp"]
+[gd_scene load_steps=5 format=3 uid="uid://dbf1gmlx3fgyp"]
 
 [ext_resource type="PackedScene" uid="uid://bvoq5vcuf3nfa" path="res://scenes/deck/scenes/Deck.tscn" id="1_pbxea"]
 [ext_resource type="Script" path="res://scenes/field/scripts/field.gd" id="1_v701g"]
 [ext_resource type="PackedScene" uid="uid://bd8uqor5v0lyx" path="res://scenes/hand/scenes/Hand.tscn" id="2_lgftt"]
-[ext_resource type="Script" path="res://scenes/field/scripts/signals/broadcast.gd" id="4_67w7w"]
-[ext_resource type="Script" path="res://scenes/field/scripts/signals/receiver.gd" id="5_pt32k"]
+[ext_resource type="PackedScene" uid="uid://doh4l57cjeii4" path="res://scenes/party/scenes/Party.tscn" id="6_btbxy"]
 
 [node name="Field" type="Node2D"]
 script = ExtResource("1_v701g")
 
-[node name="Broadcast" type="Node" parent="."]
-script = ExtResource("4_67w7w")
-
-[node name="Receiver" type="Node" parent="."]
-script = ExtResource("5_pt32k")
-
 [node name="Deck" parent="." instance=ExtResource("1_pbxea")]
-position = Vector2(1674, 873)
+position = Vector2(1674, 889)
 
 [node name="Hand" parent="." instance=ExtResource("2_lgftt")]
-position = Vector2(907, 844)
+position = Vector2(907, 861)
+
+[node name="Party" parent="." instance=ExtResource("6_btbxy")]
+position = Vector2(680, 325)

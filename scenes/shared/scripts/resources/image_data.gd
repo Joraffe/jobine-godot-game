@@ -3,6 +3,7 @@ class_name ImageData
 
 
 var scene_name : String
+var instance_name : String
 var image_filename : String
 var img_texture : ImageTexture
 
@@ -10,9 +11,10 @@ var img_texture : ImageTexture
 #------------------
 # Constructor
 #------------------
-func _init(scene, filename):
-	scene_name = scene
-	image_filename = filename
+func _init(_scene_name, _instance_name, _image_filename):
+	scene_name = _scene_name
+	instance_name = _instance_name
+	image_filename = _image_filename
 	img_texture = load_img_texture()
 
 
@@ -20,7 +22,9 @@ func _init(scene, filename):
 # Loading Texture
 #------------------
 func _img_dir():
-	return "res://scenes/{scene}/resources/images".format({"scene": scene_name})
+	return "res://scenes/{scene}/resources/images/{instance}".format(
+		{"scene": scene_name, "instance": instance_name}
+	)
 
 func _img_path_fmt():
 	return "{dir}/{filename}".format({"dir": _img_dir()})

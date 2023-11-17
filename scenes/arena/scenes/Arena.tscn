@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjvc8wuqgpqjq"]
+
+[ext_resource type="Script" path="res://scenes/arena/scripts/arena.gd" id="1_rmhyi"]
+[ext_resource type="PackedScene" uid="uid://doh4l57cjeii4" path="res://scenes/party/scenes/Party.tscn" id="2_in7w3"]
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_rmhyi")
+
+[node name="Party" parent="." instance=ExtResource("2_in7w3")]
+position = Vector2(-350, 2.08165e-12)

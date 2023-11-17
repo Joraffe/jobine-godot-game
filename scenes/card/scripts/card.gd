@@ -1,9 +1,9 @@
 extends Node2D
 
-var card_image_data : ImageData:
-	set = set_card_image_data
 var card_data : CardData:
 	set = set_card_data
+var card_image_data : ImageData:
+	set = set_card_image_data
 
 
 func set_card_data(new_card_data : CardData):

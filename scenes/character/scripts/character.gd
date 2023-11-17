@@ -7,6 +7,9 @@ var character_image_data : ImageData:
 	set = set_character_image_data
 
 
+#=======================
+# Setters
+#=======================
 func set_character_data(new_character_data : CharacterData):
 	character_data = new_character_data
 	# Also set the character_image_data
@@ -19,8 +22,7 @@ func set_character_data(new_character_data : CharacterData):
 		)
 	)
 
-
 func set_character_image_data(new_image_data : ImageData):
 	character_image_data = new_image_data
 	# Also update the Sprite2D with this new image
-	$"Area2D/Sprite2D".set_texture(character_image_data.get_img_texture())
+	$Area2D/Sprite2D.set_texture(character_image_data.get_img_texture())

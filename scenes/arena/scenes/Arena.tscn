@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjvc8wuqgpqjq"]
+[gd_scene load_steps=4 format=3 uid="uid://bjvc8wuqgpqjq"]
 
 [ext_resource type="Script" path="res://scenes/arena/scripts/arena.gd" id="1_rmhyi"]
 [ext_resource type="PackedScene" uid="uid://doh4l57cjeii4" path="res://scenes/party/scenes/Party.tscn" id="2_in7w3"]
+[ext_resource type="PackedScene" uid="uid://bgbti82hg83nq" path="res://scenes/enemies/scenes/Enemies.tscn" id="3_4i83q"]
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_rmhyi")
 
 [node name="Party" parent="." instance=ExtResource("2_in7w3")]
 position = Vector2(-350, 2.08165e-12)
+
+[node name="Enemies" parent="." instance=ExtResource("3_4i83q")]
+position = Vector2(260, 2.08165e-12)

@@ -25,22 +25,14 @@ func _init():
 				)
 			]
 		),
+		EnemiesData.new(
+			[
+				EnemyData.new(EnemyArchive.BABY_AXO)
+			]
+		),
 		HandData.new([])
 	)
-	BattleRadio.connect("draw_card", _on_draw_card)
 
 
 func _ready():
 	BattleRadio.emit_signal("start_battle", battle_data)
-
-
-#========================
-# Signal Handlers
-#========================
-func _on_draw_card(card_data : CardData) -> void:
-	var hand = battle_data.hand_data.get_current_hand()
-	hand.append(card_data)
-	battle_data.hand_data = HandData.new(hand)
-
-	if battle_data.is_hand_full():
-		BattleRadio.emit_signal("hand_is_full")

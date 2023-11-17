@@ -18,7 +18,3 @@ texture = SubResource("CompressedTexture2D_7ljbi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_sisx5")
-
-[node name="Broadcast" type="Node" parent="."]
-
-[node name="Receiver" type="Node" parent="."]

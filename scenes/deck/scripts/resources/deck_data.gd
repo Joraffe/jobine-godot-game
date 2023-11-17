@@ -3,6 +3,7 @@ class_name DeckData
 
 
 var deck_cards : Dictionary
+var can_draw_cards : bool
 var rng = RandomNumberGenerator.new()
 
 

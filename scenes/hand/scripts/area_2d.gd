@@ -20,8 +20,8 @@ func empty_hand():
 
 func render_hand():
 	var hand_data = hand.hand_data
-	for i in hand_data.current_hand.size():
-		var card_data = hand_data.current_hand[i]
+	for i in hand_data.hand.size():
+		var card_data = hand_data.hand[i]
 		var card_instance = instantiate_card(card_data)
 		position_card_in_hand(i, card_instance)
 

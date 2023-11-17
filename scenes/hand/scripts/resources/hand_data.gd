@@ -2,12 +2,12 @@ extends Resource
 class_name HandData
 
 
-var current_hand : Array[CardData] = []
+var hand : Array[CardData]
 
 
-func add_card_to_hand(card_data : CardData):
-	current_hand.append(card_data)
+func _init(_hand : Array[CardData]) -> void:
+	hand = _hand
 
 
-func get_current_hand():
-	return current_hand
+func get_current_hand() -> Array[CardData]:
+	return hand

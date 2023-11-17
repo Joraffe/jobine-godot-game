@@ -1,11 +1,15 @@
 extends Node2D
 
+
 var card_data : CardData:
 	set = set_card_data
 var card_image_data : ImageData:
 	set = set_card_image_data
 
 
+#=======================
+# Setters
+#=======================
 func set_card_data(new_card_data : CardData):
 	card_data = new_card_data
 	# Also set the card_image_data
@@ -17,7 +21,6 @@ func set_card_data(new_card_data : CardData):
 			"{name}.png".format({"name": card_data.name})  # filename
 		)
 	)
-
 
 func set_card_image_data(new_card_image_data : ImageData):
 	card_image_data = new_card_image_data

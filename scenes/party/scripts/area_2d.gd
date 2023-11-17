@@ -1,16 +1,15 @@
 extends Area2D
 
+
 @onready var party = get_parent()
 
 
 var character_scene = preload("res://scenes/character/scenes/Character.tscn")
 
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Sprite2D.set_texture(party.image_data.get_img_texture())
-	render_party()
 
 
 func render_party():

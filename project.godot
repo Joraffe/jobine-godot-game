@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Jobine-godot-game"
-run/main_scene="res://scenes/basic_attack_card/scenes/BasicAttackCard.tscn"
+run/main_scene="res://scenes/battle/Battle.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 
 [autoload]

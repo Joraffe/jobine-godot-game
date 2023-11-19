@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1hydx1myflmv"]
+
+[ext_resource type="Script" path="res://scenes/battle_field_discard/scripts/battle_field_discard.gd" id="1_sdxo4"]
+[ext_resource type="Script" path="res://scenes/battle_field_deck/scripts/area_2d.gd" id="2_o4m73"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n86e5"]
+size = Vector2(100, 150)
+
+[node name="BattleFieldDiscard" type="Node2D"]
+script = ExtResource("1_sdxo4")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_o4m73")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_n86e5")

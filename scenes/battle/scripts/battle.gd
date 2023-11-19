@@ -33,11 +33,13 @@ func _init() -> void:
 	var battle_field_deck_data = BattleFieldDeckData.new(
 		battle_arena_party_data.get_all_party_cards()
 	)
+	var battle_field_discard_data = BattleFieldDiscardData.new([])
 	battle_data = BattleData.new(
 		battle_arena_party_data,
 		battle_arena_enemies_data,
 		battle_field_hand_data,
-		battle_field_deck_data
+		battle_field_deck_data,
+		battle_field_discard_data
 	)
 
 

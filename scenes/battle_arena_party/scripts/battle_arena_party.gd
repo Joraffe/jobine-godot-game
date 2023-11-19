@@ -3,7 +3,11 @@ extends Node2D
 
 var data : BattleArenaPartyData:
 	set = set_battle_arena_party_data
-var image_data : ImageData = ImageData.new("battle_arena_party", "empty", "party.png")
+var image_data : ImageData = ImageData.new(
+	"battle_arena_party",
+	"empty",
+	"party.png"
+)
 
 
 #=======================
@@ -19,8 +23,8 @@ func _ready() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_party_data(new_battle_arena_party_data: BattleArenaPartyData) -> void:
-	data = new_battle_arena_party_data
+func set_battle_arena_party_data(new_data: BattleArenaPartyData) -> void:
+	data = new_data
 
 	$"Area2D".render_party()
 
@@ -29,4 +33,4 @@ func set_battle_arena_party_data(new_battle_arena_party_data: BattleArenaPartyDa
 # Signal Handlers
 #========================
 func _on_start_battle(battle_data : BattleData) -> void:
-	data = battle_data.battle_arena_party_data
+	data = battle_data.party_data

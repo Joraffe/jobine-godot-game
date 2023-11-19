@@ -20,8 +20,8 @@ func _ready() -> void:
 #=======================
 # Setters
 #=======================
-func set_hand_data(new_battle_field_hand_data : BattleFieldHandData) -> void:
-	data = new_battle_field_hand_data
+func set_hand_data(new_data : BattleFieldHandData) -> void:
+	data = new_data
 	
 	$"Area2D".render_hand()
 
@@ -30,7 +30,7 @@ func set_hand_data(new_battle_field_hand_data : BattleFieldHandData) -> void:
 # Signal Handlers
 #========================
 func _on_start_battle(battle_data : BattleData) -> void:
-	data = battle_data.battle_field_hand_data
+	data = battle_data.hand_data
 
 func _on_draw_card(card_data : BattleFieldCardData) -> void:
 	var hand = data.get_current_hand()

@@ -2,7 +2,11 @@ extends Node2D
 
 var data : BattleFieldDiscardData:
 	set = set_battle_field_discard_data
-var image_data : ImageData = ImageData.new("battle_field_discard", "empty", "discard.png")
+var image_data : ImageData = ImageData.new(
+	"battle_field_discard",
+	"empty",
+	"discard.png"
+)
 
 
 #=======================
@@ -18,12 +22,12 @@ func _ready() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_field_discard_data(new_battle_field_discard_data : BattleFieldDiscardData) -> void:
-	data = new_battle_field_discard_data
+func set_battle_field_discard_data(new_data : BattleFieldDiscardData) -> void:
+	data = new_data
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_start_battle(battle_data : BattleData) -> void:
-	data = battle_data.battle_field_discard_data
+	data = battle_data.discard_data

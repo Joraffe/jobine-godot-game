@@ -3,7 +3,11 @@ extends Node2D
 
 var data : BattleArenaEnemiesData:
 	set = set_battle_arena_enemies_data
-var image_data : ImageData = ImageData.new("battle_arena_enemies", "empty", "enemies.png")
+var image_data : ImageData = ImageData.new(
+	"battle_arena_enemies",
+	"empty",
+	"enemies.png"
+)
 
 #=======================
 # Godot Lifecycle Hooks
@@ -15,8 +19,8 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_enemies_data(new_battle_arena_enemies_data : BattleArenaEnemiesData) -> void:
-	data = new_battle_arena_enemies_data
+func set_battle_arena_enemies_data(new_data : BattleArenaEnemiesData) -> void:
+	data = new_data
 
 	$Area2D.render_enemies()
 
@@ -25,4 +29,4 @@ func set_battle_arena_enemies_data(new_battle_arena_enemies_data : BattleArenaEn
 # Signal Handlers
 #========================
 func _on_start_battle(battle_data : BattleData) -> void:
-	data = battle_data.battle_arena_enemies_data
+	data = battle_data.enemies_data

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://doh4l57cjeii4"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_party/scripts/battle_arena_party.gd" id="1_cny7o"]
+[ext_resource type="Script" path="res://scenes/battle_arena_party/scripts/area_2d.gd" id="2_lh7sr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qp35k"]
+size = Vector2(602.5, 597.5)
+
+[node name="BattleArenaParty" type="Node2D"]
+script = ExtResource("1_cny7o")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_lh7sr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_qp35k")

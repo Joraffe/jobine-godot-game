@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbf1gmlx3fgyp"]
+
+[ext_resource type="Script" path="res://scenes/battle_field/scripts/battle_field.gd" id="1_46xp3"]
+[ext_resource type="PackedScene" uid="uid://bvoq5vcuf3nfa" path="res://scenes/battle_field_deck/BattleFieldDeck.tscn" id="1_pbxea"]
+[ext_resource type="PackedScene" uid="uid://bd8uqor5v0lyx" path="res://scenes/battle_field_hand/BattleFieldHand.tscn" id="2_lgftt"]
+[ext_resource type="PackedScene" uid="uid://b1hydx1myflmv" path="res://scenes/battle_field_discard/BattleFieldDiscard.tscn" id="4_sbvxb"]
+[ext_resource type="PackedScene" uid="uid://4t1axdfwahia" path="res://scenes/battle_field_essence/BattleFieldEssence.tscn" id="5_yd3w8"]
+
+[node name="BattleField" type="Node2D"]
+script = ExtResource("1_46xp3")
+
+[node name="Deck" parent="." instance=ExtResource("1_pbxea")]
+position = Vector2(760, 110)
+
+[node name="Hand" parent="." instance=ExtResource("2_lgftt")]
+position = Vector2(10, 2.08165e-12)
+
+[node name="Discard" parent="." instance=ExtResource("4_sbvxb")]
+position = Vector2(680, -40)
+
+[node name="Essence" parent="." instance=ExtResource("5_yd3w8")]
+position = Vector2(820, -40)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hd4ldawx703b"
-path="res://.godot/imported/attack.png-7d2f319839b6abe492fe5c1bb16842bf.ctex"
+uid="uid://djep53qg2eqid"
+path="res://.godot/imported/water_slime_enemy.png-1d545f25478dc2ccfbaa46d5c1830505.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_card/resources/images/screm_pettel/attack.png"
-dest_files=["res://.godot/imported/attack.png-7d2f319839b6abe492fe5c1bb16842bf.ctex"]
+source_file="res://scenes/battle_arena_enemy/resources/images/water_slime_enemy/water_slime_enemy.png"
+dest_files=["res://.godot/imported/water_slime_enemy.png-1d545f25478dc2ccfbaa46d5c1830505.ctex"]
 
 [params]
 

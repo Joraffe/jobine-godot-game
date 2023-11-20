@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xdfxuj4g1f84"
-path="res://.godot/imported/evil_pettel.png-b65d22e20a9ee50ed4b6b317c3db29c4.ctex"
+uid="uid://5critas4wnqv"
+path="res://.godot/imported/nature_single_card.png-1eeded0b1bd103d70c8ab5f6ae2bba04.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_character/resources/images/evil_pettel/evil_pettel.png"
-dest_files=["res://.godot/imported/evil_pettel.png-b65d22e20a9ee50ed4b6b317c3db29c4.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/juno_character/nature_single_card.png"
+dest_files=["res://.godot/imported/nature_single_card.png-1eeded0b1bd103d70c8ab5f6ae2bba04.ctex"]
 
 [params]
 

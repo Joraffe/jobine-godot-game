@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtu2w4ycklodo"
-path="res://.godot/imported/redraw.png-2c207968cafd52579b67a0bf9bf24376.ctex"
+uid="uid://qw205pd0kk8t"
+path="res://.godot/imported/juno_character.png-cd8ca6a28c6ef97bce4f374c9183629b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_card/resources/images/evil_pettel/redraw.png"
-dest_files=["res://.godot/imported/redraw.png-2c207968cafd52579b67a0bf9bf24376.ctex"]
+source_file="res://scenes/battle_arena_character/resources/images/juno_character/juno_character.png"
+dest_files=["res://.godot/imported/juno_character.png-cd8ca6a28c6ef97bce4f374c9183629b.ctex"]
 
 [params]
 

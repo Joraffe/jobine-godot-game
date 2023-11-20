@@ -15,7 +15,6 @@ static func get_token(name : String) -> Token:
 
 
 static func get_tokens(token_names : Array[String]) -> Array[Token]:
-	var _effect_tokens : Array[Token] = []
 	return token_names.map(get_token)
 
 

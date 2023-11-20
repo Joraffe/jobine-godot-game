@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://do6aut5du106"
-path="res://.godot/imported/defend.png-0b6bda4f8421081430fda209f5b2522f.ctex"
+uid="uid://bny1wtosepgct"
+path="res://.godot/imported/fire_single_card.png-08c21fcb2a0e4a24f5b1b80deab85703.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_card/resources/images/flat_pettel/defend.png"
-dest_files=["res://.godot/imported/defend.png-0b6bda4f8421081430fda209f5b2522f.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/axo_character/fire_single_card.png"
+dest_files=["res://.godot/imported/fire_single_card.png-08c21fcb2a0e4a24f5b1b80deab85703.ctex"]
 
 [params]
 

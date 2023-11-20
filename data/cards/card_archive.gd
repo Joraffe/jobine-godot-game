@@ -4,25 +4,25 @@ class_name CardArchive
 
 static func get_card(name : String) -> Card:
 	match name:
-		WATER_CARD:
+		WATER_SINGLE_CARD:
 			return Card.new(
-				WATER_CARD,
+				WATER_SINGLE_CARD,
 				1,
 				ElementArchive.WATER_ELEMENT,
 				TargetingArchive.ENEMIES_SINGLE_TARGETING,
 				[TokenArchive.WATER_TOKEN]
 			)
-		FIRE_CARD:
+		FIRE_SINGLE_CARD:
 			return Card.new(
-				FIRE_CARD,
+				FIRE_SINGLE_CARD,
 				1,
 				ElementArchive.FIRE_ELEMENT,
 				TargetingArchive.ENEMIES_SINGLE_TARGETING,
 				[TokenArchive.FIRE_TOKEN]
 			)
-		NATURE_CARD:
+		NATURE_SINGLE_CARD:
 			return Card.new(
-				NATURE_CARD,
+				NATURE_SINGLE_CARD,
 				1,
 				ElementArchive.NATURE_ELEMENT,
 				TargetingArchive.ENEMIES_SINGLE_TARGETING,
@@ -41,7 +41,7 @@ static func get_card(name : String) -> Card:
 #=======================
 #    List of Cards
 #=======================
-const WATER_CARD : String = "water_card"
-const FIRE_CARD : String = "fire_card"
-const NATURE_CARD : String = "nature_card"
+const WATER_SINGLE_CARD : String = "water_single_card"
+const FIRE_SINGLE_CARD : String = "fire_single_card"
+const NATURE_SINGLE_CARD : String = "nature_single_card"
 const UNKNOWN_CARD : String = "unknown_card"

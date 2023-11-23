@@ -23,13 +23,13 @@ func _on_mouse_exited():
 
 
 func _input(event):
+	if not is_mouse_over_deck:
+		return
+
 	if not (event is InputEventMouseButton):
 		return
 
 	if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
-		return
-
-	if not is_mouse_over_deck:
 		return
 
 	if not battle_field_deck.data.has_cards():

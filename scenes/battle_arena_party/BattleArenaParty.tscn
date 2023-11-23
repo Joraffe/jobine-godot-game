@@ -7,12 +7,15 @@
 size = Vector2(602.5, 597.5)
 
 [node name="BattleArenaParty" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_cny7o")
 
 [node name="Area2D" type="Area2D" parent="."]
+y_sort_enabled = true
 script = ExtResource("2_lh7sr")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+y_sort_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)

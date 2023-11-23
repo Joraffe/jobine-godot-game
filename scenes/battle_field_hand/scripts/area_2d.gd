@@ -58,3 +58,4 @@ func position_card_in_hand(index, card_instance) -> void:
 		starting_y + card_pos.y
 	)
 	card_area_2d.position = new_card_pos
+	card_area_2d.set_sprite_original_global_position()

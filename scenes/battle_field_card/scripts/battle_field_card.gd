@@ -17,8 +17,8 @@ func set_battle_field_card_data(new_battle_field_card_data : BattleFieldCardData
 		"card_image_data",
 		ImageData.new(
 			"battle_field_card",  # scene
-			data.character,  # instance
-			"{name}.png".format({"name": data.name})  # filename
+			data.card.name,  # instance
+			"{name}.png".format({"name": data.card.name})  # filename
 		)
 	)
 

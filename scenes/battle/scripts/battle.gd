@@ -44,4 +44,4 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	BattleRadio.emit_signal("start_battle", battle_data)
+	BattleRadio.emit_signal("battle_started", battle_data)

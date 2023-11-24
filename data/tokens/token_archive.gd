@@ -15,8 +15,11 @@ static func get_token(name : String) -> Token:
 
 
 static func get_tokens(token_names : Array[String]) -> Array[Token]:
-	return token_names.map(get_token)
+	var tokens : Array[Token] = []
+	for token_name in token_names:
+		tokens.append(TokenArchive.get_token(token_name))
 
+	return tokens
 
 #=======================
 # Token Types + Effects

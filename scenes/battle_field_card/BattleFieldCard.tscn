@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dleg8jp7ooec7"]
+[gd_scene load_steps=6 format=3 uid="uid://dleg8jp7ooec7"]
 
 [ext_resource type="Script" path="res://scenes/battle_field_card/scripts/battle_field_card.gd" id="1_m1hvd"]
 [ext_resource type="Script" path="res://scenes/battle_field_card/scripts/area_2d.gd" id="2_njq7b"]
 [ext_resource type="Texture2D" uid="uid://40kuvd4mhbv1" path="res://scenes/battle_field_card/resources/images/blank.png" id="3_brny3"]
+[ext_resource type="PackedScene" uid="uid://d4mjjl4djne8u" path="res://scenes/battle_field_card_targeting/BattleFieldCardTargeting.tscn" id="4_e8v5j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8wtfh"]
 size = Vector2(198, 300)
@@ -21,3 +22,6 @@ offset = Vector2(2.08165e-12, 2.08165e-12)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
 shape = SubResource("RectangleShape2D_8wtfh")
+
+[node name="BattleFieldCardTargeting" parent="Area2D" instance=ExtResource("4_e8v5j")]
+visible = false

@@ -13,6 +13,6 @@ func _init(_name : String, _card_dicts : Array[Dictionary]):
 func create_cards_from_dicts(card_dicts : Array[Dictionary]) -> Array[BattleFieldCardData]:
 	var new_cards : Array[BattleFieldCardData] = []
 	for card_dict in card_dicts:
-		new_cards.append(BattleFieldCardData.create_from_dict(card_dict))
-	
+		new_cards.append(BattleFieldCardData.new(card_dict["name"]))
+
 	return new_cards

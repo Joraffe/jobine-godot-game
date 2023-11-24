@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5critas4wnqv"
-path="res://.godot/imported/nature_single_card.png-1eeded0b1bd103d70c8ab5f6ae2bba04.ctex"
+path="res://.godot/imported/nature_single_card.png-6e1453efa7b2d2630c47152e1ff51925.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_card/resources/images/juno_character/nature_single_card.png"
-dest_files=["res://.godot/imported/nature_single_card.png-1eeded0b1bd103d70c8ab5f6ae2bba04.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/nature_single_card/nature_single_card.png"
+dest_files=["res://.godot/imported/nature_single_card.png-6e1453efa7b2d2630c47152e1ff51925.ctex"]
 
 [params]
 

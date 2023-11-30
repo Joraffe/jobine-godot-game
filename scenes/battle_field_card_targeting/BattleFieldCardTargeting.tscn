@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://d4mjjl4djne8u"]
+
+[ext_resource type="Texture2D" uid="uid://8rp7saakraag" path="res://scenes/battle_field_card_targeting/resources/images/targeting_line_part/targeting_line_part.png" id="1_upkaw"]
+[ext_resource type="Texture2D" uid="uid://bb7optq42mgr1" path="res://scenes/battle_field_card_targeting/resources/images/targeting_arrow/targeting_arrow.png" id="2_nv4tu"]
+
+[node name="BattleFieldCardTargeting" type="Node2D"]
+z_index = 2
+
+[node name="Line2D" type="Line2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("1_upkaw")
+texture_mode = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("2_nv4tu")

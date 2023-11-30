@@ -2,11 +2,22 @@ extends Node
 
  
 # Overall Battle Related
-signal start_battle(battle_data : BattleData)
+signal battle_started(battle_data : BattleData)
+
+
+# BattleArena Related
+signal card_targeting_enabled(card_data : BattleFieldCardData)
+signal card_targeting_disabled(card_data : BattleFieldCardData)
+
 
 # Deck Related
-signal draw_card(card_data : BattleFieldCardData)
+signal card_drawn(card_data : BattleFieldCardData)
 
 
 # Hand Related
-signal hand_is_full
+signal hand_filled
+
+
+# Card Related
+signal card_selected(card_data : BattleFieldCardData)
+signal card_deselected(card_data : BattleFieldCardData)

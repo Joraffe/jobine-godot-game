@@ -8,22 +8,26 @@ var battle_data : BattleData
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	var party_data = BattleArenaPartyData.new([
-		BattleArenaCharacterData.new(
-			CharacterArchive.SCREM_PETTEL,
-			ScremPettelCards.get_starter_cards()
-		),
-		BattleArenaCharacterData.new(
-			CharacterArchive.EVIL_PETTEL,
-			EvilPettelCards.get_starter_cards()
-		),
-		BattleArenaCharacterData.new(
-			CharacterArchive.FLAT_PETTEL,
-			FlatPettelCards.get_starter_cards()
+	var character_namess : Array[String] = [
+		CharacterArchive.JUNO_CHARACTER,
+		CharacterArchive.PETTOL_CHARACTER,
+		CharacterArchive.AXO_CHARACTER
+	]
+	var starter_cards : Dictionary = SeedData.get_starter_cards(character_namess)
+
+	var characters_data : Array[BattleArenaCharacterData] = []
+	for character_name in character_namess:
+		var character_starter_cards : Array[Dictionary] = starter_cards[character_name]
+		characters_data.append(
+			BattleArenaCharacterData.new(
+				character_name,
+				character_starter_cards
+			)
 		)
-	])
+
+	var party_data = BattleArenaPartyData.new(characters_data)
 	var enemies_data = BattleArenaEnemiesData.new([
-		BattleArenaEnemyData.new(EnemyArchive.BABY_AXO)
+		BattleArenaEnemyData.new(EnemyArchive.get_random_enemy_name())
 	])
 	var hand_data = BattleFieldHandData.new([])
 	var deck_data = BattleFieldDeckData.new(party_data.get_all_party_cards())
@@ -40,4 +44,4 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	BattleRadio.emit_signal("start_battle", battle_data)
+	BattleRadio.emit_signal("battle_started", battle_data)

@@ -3,7 +3,11 @@ extends Node
 
 var data : BattleFieldHandData:
 	set = set_hand_data
-var image_data : ImageData = ImageData.new("battle_field_hand", "empty", "hand.png")
+var image_data : ImageData = ImageData.new(
+	"battle_field_hand",
+	"empty",
+	"hand.png"
+)
 
 
 #=======================

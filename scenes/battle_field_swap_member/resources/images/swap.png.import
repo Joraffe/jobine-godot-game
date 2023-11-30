@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh0wdwq7pqpgm"
-path="res://.godot/imported/pettol_character.png-d127944601e98dbc765562b94a712670.ctex"
+uid="uid://b4kgiuf8fdg0"
+path="res://.godot/imported/swap.png-515b660d31681d532adc6868ed4aa5ad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_character/resources/images/pettol_character/pettol_character.png"
-dest_files=["res://.godot/imported/pettol_character.png-d127944601e98dbc765562b94a712670.ctex"]
+source_file="res://scenes/battle_field_swap_member/resources/images/swap.png"
+dest_files=["res://.godot/imported/swap.png-515b660d31681d532adc6868ed4aa5ad.ctex"]
 
 [params]
 

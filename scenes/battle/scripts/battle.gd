@@ -25,12 +25,20 @@ func _init() -> void:
 			)
 		)
 
-	var party_data = BattleArenaPartyData.new(characters_data)
+	var party_data = BattleArenaPartyData.new(
+		characters_data,
+		characters_data[0]
+	)
 	var enemies_data = BattleArenaEnemiesData.new([
 		BattleArenaEnemyData.new(EnemyArchive.get_random_enemy_name())
 	])
 	var hand_data = BattleFieldHandData.new([])
 	var deck_data = BattleFieldDeckData.new(party_data.get_all_party_cards())
+	var swap_data = BattleFieldSwapData.new({
+		BattleFieldSwapData.ACTIVE : characters_data[0],
+		BattleFieldSwapData.TOP : characters_data[1],
+		BattleFieldSwapData.BOTTOM : characters_data[2]
+	})
 	var discard_data = BattleFieldDiscardData.new([])
 	var essence_data = BattleFieldEssenceData.new([])
 	battle_data = BattleData.new(
@@ -38,6 +46,7 @@ func _init() -> void:
 		enemies_data,
 		hand_data,
 		deck_data,
+		swap_data,
 		discard_data,
 		essence_data
 	)

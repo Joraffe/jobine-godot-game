@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 
 
 @onready var battle_field_hand = get_parent()
@@ -7,16 +7,22 @@ extends Node2D
 var battle_field_card_scene = preload("res://scenes/battle_field_card/BattleFieldCard.tscn")
 
 
-# Called when the node enters the scene tree for the first time.
+#=======================
+# Godot Lifecycle Hooks
+#=======================
 func _ready() -> void:
-	$Sprite2D.set_texture(battle_field_hand.image_data.get_img_texture())
+	$Sprite2D.set_texture(
+		battle_field_hand.image_data.get_img_texture()
+	)
 
 
+#=======================
+# Area2D Functionality
+#=======================
 func empty_hand() -> void:
 	var children = get_children()
 	for child in children:
 		child.queue_free()
-
 
 func render_hand() -> void:
 	var hand_data = battle_field_hand.data
@@ -25,13 +31,11 @@ func render_hand() -> void:
 		var card_instance = instantiate_card(card_data)
 		position_card_in_hand(i, card_instance)
 
-
 func instantiate_card(card_data : BattleFieldCardData) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
 	instance.set("data", card_data)
 	add_child(instance)
 	return instance
-
 
 func position_card_in_hand(index, card_instance) -> void:
 	var card_image_data = card_instance.card_image_data

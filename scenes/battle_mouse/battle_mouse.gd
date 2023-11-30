@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 
 var default_mouse_image = preload("res://scenes/battle_mouse/resources/images/mouse.png")

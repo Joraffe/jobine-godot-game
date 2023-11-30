@@ -18,6 +18,10 @@ signal card_drawn(card_data : BattleFieldCardData)
 signal hand_filled
 
 
+# Swap Related
+signal character_swapped(swap_member_data : BattleFieldSwapMemberData)
+
+
 # Card Related
 signal card_selected(card_data : BattleFieldCardData)
 signal card_deselected(card_data : BattleFieldCardData)

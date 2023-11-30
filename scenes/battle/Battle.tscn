@@ -9,9 +9,9 @@
 script = ExtResource("1_bvh5n")
 
 [node name="Field" parent="." instance=ExtResource("3_e6xtr")]
-position = Vector2(900, 870)
+position = Vector2(960, 870)
 
 [node name="Arena" parent="." instance=ExtResource("4_vpccr")]
 position = Vector2(960, 350)
 
-[node name="BattleMouse" parent="." instance=ExtResource("4_0eqnh")]
+[node name="Mouse" parent="." instance=ExtResource("4_0eqnh")]

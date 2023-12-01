@@ -20,7 +20,6 @@ var card_targeting_position : Vector2
 #=======================
 func _ready():
 	position_targeting()
-	
 
 	self.connect("mouse_entered", _on_mouse_entered)
 	self.connect("mouse_exited", _on_mouse_exited)
@@ -40,15 +39,15 @@ func _on_mouse_entered():
 func _on_mouse_exited():
 	is_mouse_over_card = false
 
-func _on_card_selected(card_data : BattleFieldCardData) -> void:	
-	if not is_another_card_selected and card_data != battle_field_card.data:
+func _on_card_selected(card : Card) -> void:	
+	if not is_another_card_selected and card != battle_field_card.data.card:
 		is_another_card_selected = true
 
-func _on_card_deselected(card_data : BattleFieldCardData) -> void:
-	if is_another_card_selected and card_data != battle_field_card.data:
+func _on_card_deselected(card : Card) -> void:
+	if is_another_card_selected and card != battle_field_card.data.card:
 		is_another_card_selected = false
 
-func _on_card_targeting_enabled(card_data : BattleFieldCardData) -> void:
+func _on_card_targeting_enabled() -> void:
 	if not selected:
 		return
 
@@ -57,7 +56,7 @@ func _on_card_targeting_enabled(card_data : BattleFieldCardData) -> void:
 	show_card_targeting()
 	hide_mouse_cursor()
 
-func _on_card_targeting_disabled(card_data : BattleFieldCardData) -> void:
+func _on_card_targeting_disabled() -> void:
 	if not selected:
 		return
 
@@ -98,14 +97,14 @@ func _input(event):
 
 	if not selected and _is_left_mouse_click(event):
 		select_card()
-		BattleRadio.emit_signal("card_selected", battle_field_card.data)
+		BattleRadio.emit_signal("card_selected", battle_field_card.data.card)
 		move_sprite_z_index(1)
 		move_card_to_mouse(event)
 		return
 
 	if selected and _is_right_mouse_click(event):
 		deselect_card()
-		BattleRadio.emit_signal("card_deselected", battle_field_card.data)
+		BattleRadio.emit_signal("card_deselected", battle_field_card.data.card)
 		move_sprite_z_index(0)
 		hide_card_targeting()
 		empty_targeting_line_points()

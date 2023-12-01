@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://br64jd05jl5pj"
-path="res://.godot/imported/party.png-cd75255089e2ae3303dd9158fd692d30.ctex"
+path="res://.godot/imported/lead.png-56b69f1b2f39f78255ea7ea676dc159e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_party/resources/images/empty/party.png"
-dest_files=["res://.godot/imported/party.png-cd75255089e2ae3303dd9158fd692d30.ctex"]
+source_file="res://scenes/battle_arena_lead/resources/images/empty/lead.png"
+dest_files=["res://.godot/imported/lead.png-56b69f1b2f39f78255ea7ea676dc159e.ctex"]
 
 [params]
 

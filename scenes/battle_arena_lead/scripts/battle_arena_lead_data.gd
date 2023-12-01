@@ -1,8 +1,7 @@
 extends Resource
-class_name BattleArenaCharacterData
+class_name BattleArenaLeadData
 
 
-# public data
 var character : Character
 
 

@@ -34,7 +34,11 @@ func _input(event) -> void:
 	if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
 		return
 
-	BattleRadio.emit_signal("character_swapped", battle_field_swap_member.data)
+	BattleRadio.emit_signal(
+		"character_swapped",
+		battle_field_swap_member.data.character,
+		battle_field_swap_member.data.swap_position
+	)
 
 
 #========================

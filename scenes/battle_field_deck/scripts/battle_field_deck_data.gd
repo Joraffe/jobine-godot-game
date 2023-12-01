@@ -4,13 +4,15 @@ class_name BattleFieldDeckData
 
 var rng = RandomNumberGenerator.new()
 
-var cards : Array[BattleFieldCardData]
+var cards : Array[Card]
 var shuffled_cards : Dictionary
 var can_draw_cards : bool
 
 
-func _init(_cards : Array[BattleFieldCardData]) -> void:
-	cards = _cards
+func _init(
+	cards_data : Array[Dictionary]
+) -> void:
+	cards = Card.create_multi(cards_data)
 	can_draw_cards = true
 	shuffle_cards()
 
@@ -32,7 +34,7 @@ func shuffle_cards() -> void:
 		indexes.erase(rand_key)
 
 
-func draw_card() -> BattleFieldCardData:
+func draw_card() -> Card:
 	var keys = shuffled_cards.keys()
 	var rand_key = keys[rng.randi_range(0, keys.size() - 1)]
 	var card = shuffled_cards[rand_key]

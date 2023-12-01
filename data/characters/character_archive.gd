@@ -2,37 +2,6 @@ extends Resource
 class_name CharacterArchive
 
 
-static func get_character(name : String) -> Character:
-	match name:
-		JUNO_CHARACTER:
-			return Character.new(
-				JUNO_CHARACTER,
-				ElementArchive.NATURE_ELEMENT,
-				10,
-				10
-			)
-		PETTOL_CHARACTER:
-			return Character.new(
-				PETTOL_CHARACTER,
-				ElementArchive.WATER_ELEMENT,
-				15,
-				15
-			)
-		AXO_CHARACTER:
-			return Character.new(
-				AXO_CHARACTER,
-				ElementArchive.FIRE_ELEMENT,
-				7,
-				7
-			)
-		_:
-			return Character.new(
-				UNKNOWN_CHARACTER,
-				ElementArchive.UNKNOWN_ELEMENT,
-				0,
-				0
-			)
-
 #=========================
 #   List of Characters
 #=========================

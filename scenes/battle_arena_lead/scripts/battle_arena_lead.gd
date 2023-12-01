@@ -1,12 +1,12 @@
 extends Node2D
 
 
-var data : BattleArenaPartyData:
-	set = set_battle_arena_party_data
+var data : BattleArenaLeadData:
+	set = set_battle_arena_lead_data
 var image_data : ImageData = ImageData.new(
-	"battle_arena_party",
+	"battle_arena_lead",
 	"empty",
-	"party.png"
+	"lead.png"
 )
 
 
@@ -24,18 +24,18 @@ func _ready() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_party_data(new_data: BattleArenaPartyData) -> void:
+func set_battle_arena_lead_data(new_data: BattleArenaLeadData) -> void:
 	data = new_data
-	$"Area2D".render_active_party_member()
+	$"Area2D".render_lead()
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	data = battle_data.party_data
+	data = battle_data.lead_data
 
-func _on_character_swapped(swap_member_data : BattleFieldSwapMemberData) -> void:
-	data.active_party_member = swap_member_data.character_data
-	$"Area2D".empty_active_party_member()
-	$"Area2D".render_active_party_member()
+func _on_character_swapped(character : Character, _swap_position : String) -> void:
+	data.character = character
+	$"Area2D".empty_lead()
+	$"Area2D".render_lead()

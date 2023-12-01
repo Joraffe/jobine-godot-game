@@ -2,16 +2,22 @@ extends Resource
 class_name BattleFieldHandData
 
 
-var hand : Array[BattleFieldCardData]
+var hand : Array[Card]
 
 
-func _init(_hand : Array[BattleFieldCardData]) -> void:
-	hand = _hand
+func _init(cards : Array[Dictionary]) -> void:
+	hand = Card.create_multi(cards)
 
-
-func get_current_hand() -> Array[BattleFieldCardData]:
+func get_current_hand() -> Array[Card]:
 	return hand
 
+func get_current_hand_as_dicts() -> Array[Dictionary]:
+	var hand_as_dicts : Array[Dictionary] = []
+
+	for card in hand:
+		hand_as_dicts.append(card.as_dict())
+	
+	return hand_as_dicts
 
 func is_hand_full() -> bool:
 	return get_current_hand().size() >= 5

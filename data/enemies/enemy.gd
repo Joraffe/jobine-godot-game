@@ -1,7 +1,6 @@
 extends Resource
 class_name Enemy
 
-
 var name : String
 var element : Element
 var max_hp : int

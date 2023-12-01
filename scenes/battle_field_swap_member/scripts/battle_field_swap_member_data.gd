@@ -2,14 +2,13 @@ extends Resource
 class_name BattleFieldSwapMemberData
 
 
-var character_data : BattleArenaCharacterData
-var position : String
-
+var character : Character
+var swap_position : String
 
 
 func _init(
-	_character_data : BattleArenaCharacterData,
-	_position : String
+	character_data : Dictionary,
+	position_name : String
 ) -> void:
-	character_data = _character_data
-	position = _position
+	character = Character.create(character_data)
+	swap_position = position_name

@@ -17,8 +17,8 @@ func set_battle_field_swap_member_data(new_data : BattleFieldSwapMemberData) -> 
 		"image_data",
 		ImageData.new(
 			"battle_field_swap_member", # scene
-			data.character_data.name,  # instance
-			"{name}.png".format({"name": data.character_data.name})  # filename
+			data.character.machine_name,  # instance
+			"{name}.png".format({"name": data.character.machine_name})  # filename
 		)
 	)
 

@@ -17,8 +17,8 @@ func set_battle_arena_character_data(new_battle_arena_character_data : BattleAre
 		"character_image_data",
 		ImageData.new(
 			"battle_arena_character", # scene
-			data.name,  # instance
-			"{name}.png".format({"name": data.name})  # filename
+			data.character.machine_name,  # instance
+			"{name}.png".format({"name": data.character.machine_name})  # filename
 		)
 	)
 

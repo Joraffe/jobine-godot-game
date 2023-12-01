@@ -31,9 +31,12 @@ func set_battle_field_swap_data(new_battle_swap_data : BattleFieldSwapData) -> v
 func _on_battle_started(battle_data : BattleData) -> void:
 	data = battle_data.swap_data
 
-func _on_character_swapped(swap_data : BattleFieldSwapMemberData) -> void:
-	var swap_old_position = swap_data.position
-	data.members[swap_old_position] = data.members[BattleFieldSwapData.ACTIVE]
-	data.members[BattleFieldSwapData.ACTIVE] = swap_data.character_data
+func _on_character_swapped(character : Character, swap_position : String) -> void:
+	if swap_position == BattleFieldSwapData.TOP:
+		data.top_swap_character = data.lead_character
+	elif swap_position == BattleFieldSwapData.BOTTOM:
+		data.bottom_swap_character = data.lead_character
+	data.lead_character = character
+
 	$Area2D.empty_party_swap_members()
 	$Area2D.render_party_swap_members()

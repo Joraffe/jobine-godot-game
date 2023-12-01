@@ -38,5 +38,5 @@ func _input(event):
 	if not battle_field_deck.data.can_draw_cards:
 		return
 
-	var card_data = battle_field_deck.data.draw_card()
-	BattleRadio.emit_signal("card_drawn", card_data)
+	var card = battle_field_deck.data.draw_card()
+	BattleRadio.emit_signal("card_drawn", card)

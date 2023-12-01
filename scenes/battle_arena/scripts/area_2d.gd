@@ -2,7 +2,6 @@ extends Area2D
 
 
 var is_card_selected : bool = false
-var card_selected : BattleFieldCardData
 
 
 #=======================
@@ -22,19 +21,16 @@ func _on_mouse_entered() -> void:
 	if not is_card_selected:
 		return
 
-	BattleRadio.emit_signal("card_targeting_enabled", card_selected)
+	BattleRadio.emit_signal("card_targeting_enabled")
 
 func _on_mouse_exited() -> void:
 	if not is_card_selected:
 		return
 
-	BattleRadio.emit_signal("card_targeting_disabled", card_selected)
+	BattleRadio.emit_signal("card_targeting_disabled")
 
-func _on_card_selected(card_data : BattleFieldCardData) -> void:
+func _on_card_selected(_card : Card) -> void:
 	is_card_selected = true
-	card_selected = card_data
 
-func _on_card_deselected(card_data : BattleFieldCardData) -> void:
+func _on_card_deselected(_card : Card) -> void:
 	is_card_selected = false
-	if card_selected == card_data:
-		card_selected = null

@@ -20,20 +20,23 @@ func _ready() -> void:
 # Area2D Functionality
 #=======================
 func empty_hand() -> void:
-	var children = get_children()
-	for child in children:
-		child.queue_free()
+	for child in self.get_children():
+		if child.get("data") is BattleFieldCardData:
+			child.queue_free()
 
 func render_hand() -> void:
 	var hand_data = battle_field_hand.data
 	for i in hand_data.hand.size():
-		var card_data = hand_data.hand[i]
+		var card_data = hand_data.hand[i].as_dict()
 		var card_instance = instantiate_card(card_data)
 		position_card_in_hand(i, card_instance)
 
-func instantiate_card(card_data : BattleFieldCardData) -> Node2D:
+func instantiate_card(card_data : Dictionary) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
-	instance.set("data", card_data)
+	instance.set(
+		"data",
+		BattleFieldCardData.new(card_data)
+	)
 	add_child(instance)
 	return instance
 

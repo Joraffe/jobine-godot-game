@@ -1,8 +1,8 @@
-extends Node2D
+extends Node
 
 
-var data : BattleArenaData:
-	set = set_battle_arena_data
+var data : BattleTurnData:
+	set = set_battle_turn_data
 
 
 #=======================
@@ -15,16 +15,14 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_data(new_data : BattleArenaData) -> void:
+func set_battle_turn_data(new_data : BattleTurnData) -> void:
 	data = new_data
 
-	# Maybe do additional stuff w/ Arena2D in the future
+	# Maybe do additional stuff if needed
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(_battle_data : BattleData) -> void:
-	data = BattleArenaData.new({
-		BattleArenaData.IS_CARD_SELECTED : false
-	})
+	data = BattleTurnData.new({BattleTurnData.IS_PLAYER_TURN : true})

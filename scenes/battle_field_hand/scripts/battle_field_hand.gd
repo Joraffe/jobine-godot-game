@@ -14,8 +14,8 @@ var image_data : ImageData = ImageData.new(
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect("battle_started", _on_battle_started)
-	BattleRadio.connect("card_drawn", _on_card_drawn)
+	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
+	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
 
 func _ready() -> void:
 	pass
@@ -43,4 +43,4 @@ func _on_card_drawn(card : Card) -> void:
 	data = BattleFieldHandData.new(hand_as_dicts)
 
 	if data.is_hand_full():
-		BattleRadio.emit_signal("hand_filled")
+		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)

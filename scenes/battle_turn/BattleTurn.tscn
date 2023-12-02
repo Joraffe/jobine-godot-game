@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://0nypbqhju71s"]
+
+[ext_resource type="Script" path="res://scenes/battle_turn/scripts/battle_turn.gd" id="1_ihufb"]
+
+[node name="BattleTurn" type="Node"]
+script = ExtResource("1_ihufb")

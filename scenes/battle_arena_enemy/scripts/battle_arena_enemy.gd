@@ -18,8 +18,8 @@ func set_battle_arena_enemy_data(new_battle_arena_enemy_data : BattleArenaEnemyD
 		"enemy_image_data",
 		ImageData.new(
 			"battle_arena_enemy",  # scene
-			data.name,  # instance
-			"{name}.png".format({"name": data.name})  # filename
+			data.enemy.machine_name,  # instance
+			"{name}.png".format({"name": data.enemy.machine_name})  # filename
 		)
 	)
 

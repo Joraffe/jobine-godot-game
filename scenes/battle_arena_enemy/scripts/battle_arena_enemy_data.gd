@@ -2,8 +2,8 @@ extends Resource
 class_name BattleArenaEnemyData
 
 
-var name : String
+var enemy : Enemy
 
 
-func _init(_name : String) -> void:
-	name = _name
+func _init(enemy_data : Dictionary) -> void:
+	enemy = Enemy.create(enemy_data)

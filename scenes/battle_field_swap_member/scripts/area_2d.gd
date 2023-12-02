@@ -35,7 +35,7 @@ func _input(event) -> void:
 		return
 
 	BattleRadio.emit_signal(
-		"character_swapped",
+		BattleRadio.CHARACTER_SWAPPED,
 		battle_field_swap_member.data.character,
 		battle_field_swap_member.data.swap_position
 	)

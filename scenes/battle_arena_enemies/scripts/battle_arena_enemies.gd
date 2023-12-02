@@ -13,7 +13,7 @@ var image_data : ImageData = ImageData.new(
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect("battle_started", _on_battle_started)
+	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 
 
 #=======================

@@ -23,10 +23,10 @@ func _ready():
 
 	self.connect("mouse_entered", _on_mouse_entered)
 	self.connect("mouse_exited", _on_mouse_exited)
-	BattleRadio.connect("card_selected", _on_card_selected)
-	BattleRadio.connect("card_deselected", _on_card_deselected)
-	BattleRadio.connect("card_targeting_enabled", _on_card_targeting_enabled)
-	BattleRadio.connect("card_targeting_disabled", _on_card_targeting_disabled)
+	BattleRadio.connect(BattleRadio.CARD_SELECTED, _on_card_selected)
+	BattleRadio.connect(BattleRadio.CARD_DESELECTED, _on_card_deselected)
+	BattleRadio.connect(BattleRadio.CARD_TARGETING_ENABLED, _on_card_targeting_enabled)
+	BattleRadio.connect(BattleRadio.CARD_TARGETING_DISABLED, _on_card_targeting_disabled)
 
 
 #========================

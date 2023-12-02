@@ -39,4 +39,4 @@ func _input(event):
 		return
 
 	var card = battle_field_deck.data.draw_card()
-	BattleRadio.emit_signal("card_drawn", card)
+	BattleRadio.emit_signal(BattleRadio.CARD_DRAWN, card)

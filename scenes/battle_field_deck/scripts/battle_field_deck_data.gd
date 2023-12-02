@@ -9,9 +9,7 @@ var shuffled_cards : Dictionary
 var can_draw_cards : bool
 
 
-func _init(
-	cards_data : Array[Dictionary]
-) -> void:
+func _init(cards_data : Array[Dictionary]) -> void:
 	cards = Card.create_multi(cards_data)
 	can_draw_cards = true
 	shuffle_cards()

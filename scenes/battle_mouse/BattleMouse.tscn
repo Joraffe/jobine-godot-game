@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://o6rqirjq0lkq"]
 
-[ext_resource type="Script" path="res://scenes/battle_mouse/battle_mouse.gd" id="1_eegjf"]
+[ext_resource type="Script" path="res://scenes/battle_mouse/scripts/battle_mouse.gd" id="1_dgayu"]
 
 [node name="BattleMouse" type="Node"]
-script = ExtResource("1_eegjf")
+script = ExtResource("1_dgayu")

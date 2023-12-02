@@ -15,14 +15,17 @@ func _ready() -> void:
 func render_enemies() -> void:
 	var enemies_data = battle_arena_enemies.data
 	for i in enemies_data.enemies.size():
-		var enemy_data = enemies_data.enemies[i]
+		var enemy_data = enemies_data.enemies[i].as_dict()
 		var enemy_instance = instantiate_enemy(enemy_data)
 		position_enemy(i, enemy_instance)
 
 
-func instantiate_enemy(enemy_data: BattleArenaEnemyData) -> Node2D:
+func instantiate_enemy(enemy_data: Dictionary) -> Node2D:
 	var instance = enemy_scene.instantiate()
-	instance.set("data", enemy_data)
+	instance.set(
+		"data",
+		BattleArenaEnemyData.new(enemy_data)
+	)
 	add_child(instance)
 	return instance
 

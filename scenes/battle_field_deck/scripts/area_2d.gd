@@ -7,13 +7,18 @@ extends Area2D
 var is_mouse_over_deck : bool = false
 
 
-# Called when the node enters the scene tree for the first time.
+#=======================
+# Godot Lifecycle Hooks
+#=======================
 func _ready():
 	self.connect("mouse_entered", _on_mouse_entered)
 	self.connect("mouse_exited", _on_mouse_exited)
 	$"Sprite2D".set_texture(battle_field_deck.image_data.get_img_texture())
 
 
+#========================
+# Signal Handlers
+#========================
 func _on_mouse_entered():
 	is_mouse_over_deck = true
 

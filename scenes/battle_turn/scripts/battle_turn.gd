@@ -26,3 +26,4 @@ func set_battle_turn_data(new_data : BattleTurnData) -> void:
 #========================
 func _on_battle_started(_battle_data : BattleData) -> void:
 	data = BattleTurnData.new({BattleTurnData.IS_PLAYER_TURN : true})
+	BattleRadio.emit_signal(BattleRadio.PLAYER_TURN_STARTED)

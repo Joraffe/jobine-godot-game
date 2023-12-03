@@ -29,6 +29,7 @@ signal card_deselected(card : Card)
 
 # Turn Related
 signal player_turn_started
+signal player_turn_ended
 
 
 #=====================
@@ -43,3 +44,4 @@ const CHARACTER_SWAPPED : String = "character_swapped"
 const CARD_SELECTED : String = "card_selected"
 const CARD_DESELECTED : String = "card_deselected"
 const PLAYER_TURN_STARTED : String = "player_turn_started"
+const PLAYER_TURN_ENDED : String = "player_turn_ended"

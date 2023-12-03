@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjltedfetipjy"
-path="res://.godot/imported/discard.png-77e98a0200fe13b536bb05bf3bf12b42.ctex"
+uid="uid://cl6fymfcjq4s3"
+path="res://.godot/imported/disabled.png-7d95fe5463f664cc2483ab8f9d176355.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_discard/resources/images/empty/discard.png"
-dest_files=["res://.godot/imported/discard.png-77e98a0200fe13b536bb05bf3bf12b42.ctex"]
+source_file="res://scenes/battle_field_end_turn/resources/images/disabled/disabled.png"
+dest_files=["res://.godot/imported/disabled.png-7d95fe5463f664cc2483ab8f9d176355.ctex"]
 
 [params]
 

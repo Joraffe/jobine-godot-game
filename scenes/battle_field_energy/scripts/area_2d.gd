@@ -4,6 +4,7 @@ extends Area2D
 @onready var battle_field_energy : Node2D = get_parent()
 
 
+
 #=======================
 # Area2D Functionality
 #=======================

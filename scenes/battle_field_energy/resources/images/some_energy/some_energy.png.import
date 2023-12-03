@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfdbi613vd6to"
-path="res://.godot/imported/hand.png-3d3b8e932dc33f49c04089c1082b4233.ctex"
+uid="uid://8ow6smx01s8"
+path="res://.godot/imported/some_energy.png-98241925722f5d45a157ab551cabb09d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_hand/resources/images/empty/hand.png"
-dest_files=["res://.godot/imported/hand.png-3d3b8e932dc33f49c04089c1082b4233.ctex"]
+source_file="res://scenes/battle_field_energy/resources/images/some_energy/some_energy.png"
+dest_files=["res://.godot/imported/some_energy.png-98241925722f5d45a157ab551cabb09d.ctex"]
 
 [params]
 

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scenes/battle_field_hand/scripts/area_2d.gd" id="2_cxgug"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0w5h"]
-size = Vector2(1070, 400)
+size = Vector2(1031, 300)
 
 [node name="BattleFieldHand" type="Node2D"]
 script = ExtResource("1_axte3")

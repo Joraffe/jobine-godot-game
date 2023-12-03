@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="HandData" load_steps=2 format=3 uid="uid://b54a01j8oy58u"]
-
-[ext_resource type="Script" path="res://scenes/battle_field_hand/scripts/battle_field_hand_data.gd" id="1_6je44"]
-
-[resource]
-script = ExtResource("1_6je44")
-current_hand = Array[Resource("res://scenes/card/scripts/resources/card_data.gd")]([])

@@ -9,6 +9,7 @@ var deck_data : BattleFieldDeckData
 var swap_data : BattleFieldSwapData
 var discard_data : BattleFieldDiscardData
 var essence_data : BattleFieldEssenceData
+var energy_data : BattleFieldEnergyData
 
 
 func _init(seed_data : Dictionary) -> void:
@@ -19,6 +20,7 @@ func _init(seed_data : Dictionary) -> void:
 	swap_data = BattleData.get_battle_field_swap_data(seed_data)
 	discard_data = BattleData.get_battle_field_discard_data(seed_data)
 	essence_data = BattleData.get_battle_field_essence_data(seed_data)
+	energy_data = BattleData.get_battle_field_energy_data(seed_data)
 
 
 #=======================
@@ -82,4 +84,10 @@ static func get_battle_field_essence_data(_seed_data : Dictionary) -> BattleFiel
 
 	return BattleFieldEssenceData.new({
 		BattleFieldEssenceData.CONSUMED_CARDS : consumed_cards
+	})
+
+static func get_battle_field_energy_data(_seed_data : Dictionary) -> BattleFieldEnergyData:
+	return BattleFieldEnergyData.new({
+		BattleFieldEnergyData.MAX_ENERGY: 3,
+		BattleFieldEnergyData.CURRENT_ENERGY: 3
 	})

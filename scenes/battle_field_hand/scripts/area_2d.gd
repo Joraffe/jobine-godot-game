@@ -46,7 +46,7 @@ func position_card_in_hand(index, card_instance) -> void:
 	var card_width = card_image_data.get_img_width()
 	var card_height = card_image_data.get_img_height()
 	var hand_card_margin_x = card_width / 20
-	var hand_card_margin_y = card_height / 10
+	var hand_card_margin_y = 0
 
 	# since empty hand image is centered in the middle of image
 	var center_slot_index = 2  

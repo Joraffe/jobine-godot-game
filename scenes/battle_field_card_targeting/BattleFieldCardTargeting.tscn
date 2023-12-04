@@ -15,3 +15,6 @@ texture_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 texture = ExtResource("2_nv4tu")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(6, -38.4, 6, -34.5, 42.2, 39, 38.3, 39, 30, 41.8, 30, 39.8, 1, 36.3, -31.9, 41, -36.8, 41, -40, 37.8, -40, 32.5, -3, -38.5, -3, -42)

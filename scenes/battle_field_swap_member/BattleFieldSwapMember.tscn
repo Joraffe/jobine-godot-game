@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsflb5l6842aq"]
+
+[ext_resource type="Script" path="res://scenes/battle_field_swap_member/scripts/battle_field_swap_member.gd" id="1_qya20"]
+[ext_resource type="Script" path="res://scenes/battle_field_swap_member/scripts/area_2d.gd" id="2_mlk48"]
+[ext_resource type="Texture2D" uid="uid://b4kgiuf8fdg0" path="res://scenes/battle_field_swap_member/resources/images/swap.png" id="3_jr6nd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o0cib"]
+size = Vector2(199, 198)
+
+[node name="BattleFieldSwapMember" type="Node2D"]
+script = ExtResource("1_qya20")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_mlk48")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_o0cib")
+
+[node name="SwapSprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_jr6nd")
+offset = Vector2(2.08165e-12, 2.08165e-12)

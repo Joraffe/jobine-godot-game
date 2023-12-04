@@ -3,18 +3,21 @@ extends Node
 
 var data : BattleFieldHandData:
 	set = set_hand_data
-var image_data : ImageData = ImageData.new("battle_field_hand", "empty", "hand.png")
+var image_data : ImageData = ImageData.new(
+	"battle_field_hand",
+	"empty",
+	"hand.png"
+)
 
 
 #=======================
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect("battle_started", _on_battle_started)
-	BattleRadio.connect("card_drawn", _on_card_drawn)
-
-func _ready() -> void:
-	pass
+	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
+	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
+	BattleRadio.connect(BattleRadio.ENERGY_GAINED, _on_energy_gained)
+	BattleRadio.connect(BattleRadio.CARDS_DRAWN, _on_cards_drawn)
 
 
 #=======================
@@ -22,8 +25,8 @@ func _ready() -> void:
 #=======================
 func set_hand_data(new_data : BattleFieldHandData) -> void:
 	data = new_data
-	
-	$"Area2D".render_hand()
+
+	$Area2D.render_hand()
 
 
 #========================
@@ -32,10 +35,34 @@ func set_hand_data(new_data : BattleFieldHandData) -> void:
 func _on_battle_started(battle_data : BattleData) -> void:
 	data = battle_data.hand_data
 
-func _on_card_drawn(card_data : BattleFieldCardData) -> void:
-	var hand = data.get_current_hand()
-	hand.append(card_data)
-	data = BattleFieldHandData.new(hand)
-
+func _on_card_drawn(card : Card) -> void:
+	var hand_as_dicts : Array[Dictionary] = data.get_current_hand_as_dicts()
+	var available_energy = data.available_energy
+	hand_as_dicts.append(card.as_dict())
+	data = BattleFieldHandData.new(
+		hand_as_dicts,
+		{BattleFieldHandData.AVAILABLE_ENERGY : available_energy}
+	)
 	if data.is_hand_full():
-		BattleRadio.emit_signal("hand_filled")
+		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)
+
+func _on_cards_drawn(cards : Array[Card]) -> void:
+	var cards_as_dicts : Array[Dictionary] = data.get_current_hand_as_dicts()
+	var available_energy = data.available_energy
+	for card in cards:
+		cards_as_dicts.append(card.as_dict())
+	data = BattleFieldHandData.new(
+		cards_as_dicts,
+		{
+			BattleFieldHandData.AVAILABLE_ENERGY : available_energy
+		}
+	)
+	if data.is_hand_full():
+		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)
+
+func _on_energy_gained(amount : int) -> void:
+	var new_hand_data = BattleFieldHandData.new(
+		data.get_current_hand_as_dicts(),
+		{BattleFieldHandData.AVAILABLE_ENERGY : amount}
+	)
+	data = new_hand_data

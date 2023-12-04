@@ -17,9 +17,20 @@ func set_battle_field_card_data(new_battle_field_card_data : BattleFieldCardData
 		"card_image_data",
 		ImageData.new(
 			"battle_field_card",  # scene
-			data.card.name,  # instance
-			"{name}.png".format({"name": data.card.name})  # filename
+			data.card.machine_name,  # instance
+			"{name}.png".format({"name": data.card.machine_name})  # filename
 		)
+	)
+	# Update the Card Cost Stlying as well
+	var color : Color
+	if data.available_energy >= data.card.cost:
+		color = Color.BLACK
+	else:
+		color = Color.DARK_RED
+	$Area2D/Sprite2D/Panel.update_stylebox(color)
+	$Area2D/Sprite2D/Panel/Label.update_label_styling(
+		"{cost}".format({"cost": data.card.cost}),
+		color
 	)
 
 func set_card_image_data(new_card_image_data : ImageData):

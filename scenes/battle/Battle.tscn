@@ -1,17 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://ceykjjqnftx3c"]
+[gd_scene load_steps=6 format=3 uid="uid://ceykjjqnftx3c"]
 
 [ext_resource type="Script" path="res://scenes/battle/scripts/battle.gd" id="1_bvh5n"]
 [ext_resource type="PackedScene" uid="uid://dbf1gmlx3fgyp" path="res://scenes/battle_field/BattleField.tscn" id="3_e6xtr"]
 [ext_resource type="PackedScene" uid="uid://o6rqirjq0lkq" path="res://scenes/battle_mouse/BattleMouse.tscn" id="4_0eqnh"]
 [ext_resource type="PackedScene" uid="uid://bjvc8wuqgpqjq" path="res://scenes/battle_arena/BattleArena.tscn" id="4_vpccr"]
+[ext_resource type="PackedScene" uid="uid://0nypbqhju71s" path="res://scenes/battle_turn/BattleTurn.tscn" id="5_yf273"]
 
 [node name="Battle" type="Node2D"]
 script = ExtResource("1_bvh5n")
 
 [node name="Field" parent="." instance=ExtResource("3_e6xtr")]
-position = Vector2(900, 870)
+position = Vector2(960, 870)
 
 [node name="Arena" parent="." instance=ExtResource("4_vpccr")]
 position = Vector2(960, 350)
 
-[node name="BattleMouse" parent="." instance=ExtResource("4_0eqnh")]
+[node name="Mouse" parent="." instance=ExtResource("4_0eqnh")]
+
+[node name="BattleTurn" parent="." instance=ExtResource("5_yf273")]

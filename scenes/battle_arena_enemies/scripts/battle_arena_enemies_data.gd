@@ -2,8 +2,8 @@ extends Resource
 class_name BattleArenaEnemiesData
 
 
-var enemies : Array[BattleArenaEnemyData]
+var enemies : Array[Enemy]
 
 
-func _init(_enemies : Array[BattleArenaEnemyData]) -> void:
-	enemies = _enemies
+func _init(enemies_data : Array[Dictionary]) -> void:
+	enemies = Enemy.create_multi(enemies_data)

@@ -1,18 +1,10 @@
 extends Resource
 class_name BattleArenaCharacterData
 
-var name : String
-var cards : Array[BattleFieldCardData]
+
+# public data
+var character : Character
 
 
-func _init(_name : String, _card_dicts : Array[Dictionary]):
-	name = _name
-	cards = create_cards_from_dicts(_card_dicts)
-
-
-func create_cards_from_dicts(card_dicts : Array[Dictionary]) -> Array[BattleFieldCardData]:
-	var new_cards : Array[BattleFieldCardData] = []
-	for card_dict in card_dicts:
-		new_cards.append(BattleFieldCardData.new(card_dict["name"]))
-
-	return new_cards
+func _init(character_data : Dictionary):
+	character = Character.create(character_data)

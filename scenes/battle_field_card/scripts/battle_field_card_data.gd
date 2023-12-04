@@ -6,7 +6,10 @@ var card : Card
 var available_energy : int
 
 
-func _init(card_data : Dictionary, energy_data : Dictionary):
+func _init(
+	card_data : Dictionary,
+	energy_data : Dictionary,
+):
 	card = Card.create(card_data)
 	available_energy = energy_data[AVAILABLE_ENERGY]
 

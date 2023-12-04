@@ -12,6 +12,7 @@ signal card_targeting_disabled
 
 # Deck Related
 signal card_drawn(card : Card)
+signal cards_drawn(cards : Array[Card])
 
 
 # Hand Related
@@ -44,6 +45,7 @@ const BATTLE_STARTED : String = "battle_started"
 const CARD_TARGETING_ENABLED : String = "card_targeting_enabled"
 const CARD_TARGETING_DISABLED : String = "card_targeting_disabled"
 const CARD_DRAWN : String = "card_drawn"
+const CARDS_DRAWN : String = "cards_drawn"
 const HAND_FILLED : String = "hand_filled"
 const CHARACTER_SWAPPED : String = "character_swapped"
 const CARD_SELECTED : String = "card_selected"

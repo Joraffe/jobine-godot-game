@@ -24,15 +24,30 @@ func empty_hand() -> void:
 		if child.get("data") is BattleFieldCardData:
 			child.queue_free()
 
+func get_num_rendered_cards() -> int:
+	var num_rendered : int = 0
+
+	for child in self.get_children():
+		if child.get("data") is BattleFieldCardData:
+			num_rendered += 1
+
+	return num_rendered
+
 func render_hand() -> void:
-	var hand_data = battle_field_hand.data
-	var energy_data = {
+	var num_already_rendered : int = get_num_rendered_cards()
+
+	var hand_data : BattleFieldHandData = battle_field_hand.data
+	var energy_data : Dictionary = {
 		BattleFieldHandData.AVAILABLE_ENERGY : hand_data.available_energy
 	}
-	for i in hand_data.hand.size():
+
+	for i in range(num_already_rendered, hand_data.get_current_hand_size()):
 		var card_data = hand_data.hand[i].as_dict()
-		var card_instance = instantiate_card(card_data, energy_data)
-		position_card_in_hand(i, card_instance)
+		var card_instance = instantiate_card(
+			card_data,
+			energy_data,
+		)
+		move_drawn_card_from_deck_to_hand(i, card_instance)
 
 func instantiate_card(card_data : Dictionary, energy_data : Dictionary) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
@@ -43,7 +58,21 @@ func instantiate_card(card_data : Dictionary, energy_data : Dictionary) -> Node2
 	add_child(instance)
 	return instance
 
-func position_card_in_hand(index, card_instance) -> void:
+func move_drawn_card_from_deck_to_hand(index, card_instance) -> void:
+	var deck_position = Vector2(725, 40)
+	var card_hand_position = get_card_position_in_hand(index, card_instance)
+	var card_area_2d = card_instance.get_node("Area2D")
+	card_area_2d.position = deck_position
+	var card_tween = card_instance.create_tween()
+	card_tween.tween_property(
+		card_area_2d,
+		"position",
+		card_hand_position,
+		0.5
+	)
+	card_tween.tween_callback(card_area_2d.set_sprite_original_global_position)
+
+func get_card_position_in_hand(index, card_instance) -> Vector2:
 	var card_image_data = card_instance.card_image_data
 
 	var card_width = card_image_data.get_img_width()
@@ -51,7 +80,7 @@ func position_card_in_hand(index, card_instance) -> void:
 
 	# since empty hand image is centered in the middle of image
 	var center_slot_index = 2  
-	
+
 	# math to figure out the relative width of the left-most hand slot
 	var starting_x = ((center_slot_index * -1) * (card_width + hand_card_margin_x))
 	# Total width taken up by the card width + margin between cards
@@ -63,5 +92,4 @@ func position_card_in_hand(index, card_instance) -> void:
 		starting_x + offset_x * index,
 		card_pos.y
 	)
-	card_area_2d.position = new_card_pos
-	card_area_2d.set_sprite_original_global_position()
+	return new_card_pos

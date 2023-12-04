@@ -17,9 +17,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
 	BattleRadio.connect(BattleRadio.ENERGY_GAINED, _on_energy_gained)
-
-func _ready() -> void:
-	pass
+	BattleRadio.connect(BattleRadio.CARDS_DRAWN, _on_cards_drawn)
 
 
 #=======================
@@ -27,8 +25,7 @@ func _ready() -> void:
 #=======================
 func set_hand_data(new_data : BattleFieldHandData) -> void:
 	data = new_data
-	
-	$Area2D.empty_hand()
+
 	$Area2D.render_hand()
 
 
@@ -46,7 +43,20 @@ func _on_card_drawn(card : Card) -> void:
 		hand_as_dicts,
 		{BattleFieldHandData.AVAILABLE_ENERGY : available_energy}
 	)
+	if data.is_hand_full():
+		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)
 
+func _on_cards_drawn(cards : Array[Card]) -> void:
+	var cards_as_dicts : Array[Dictionary] = data.get_current_hand_as_dicts()
+	var available_energy = data.available_energy
+	for card in cards:
+		cards_as_dicts.append(card.as_dict())
+	data = BattleFieldHandData.new(
+		cards_as_dicts,
+		{
+			BattleFieldHandData.AVAILABLE_ENERGY : available_energy
+		}
+	)
 	if data.is_hand_full():
 		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)
 

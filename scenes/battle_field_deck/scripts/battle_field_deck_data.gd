@@ -14,10 +14,11 @@ func _init(cards_data : Array[Dictionary]) -> void:
 	can_draw_cards = true
 	shuffle_cards()
 
-
 func has_cards() -> bool:
 	return shuffled_cards.size() != 0
 
+func num_remaining_cards() -> int:
+	return shuffled_cards.size()
 
 func shuffle_cards() -> void:
 	var indexes : Dictionary = {}
@@ -31,7 +32,6 @@ func shuffle_cards() -> void:
 		shuffled_cards[rand_key] = cards[rand_key]
 		indexes.erase(rand_key)
 
-
 func draw_card() -> Card:
 	var keys = shuffled_cards.keys()
 	var rand_key = keys[rng.randi_range(0, keys.size() - 1)]
@@ -39,3 +39,11 @@ func draw_card() -> Card:
 	shuffled_cards.erase(rand_key)
 	
 	return card
+
+func draw_cards(num_cards : int):
+	var cards_to_draw : Array[Card] = []
+
+	for i in range(num_cards):
+		cards_to_draw.append(draw_card())
+
+	return cards_to_draw

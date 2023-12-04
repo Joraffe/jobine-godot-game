@@ -35,26 +35,18 @@ func get_num_rendered_cards() -> int:
 
 func render_hand() -> void:
 	var num_already_rendered : int = get_num_rendered_cards()
-
 	var hand_data : BattleFieldHandData = battle_field_hand.data
-	var energy_data : Dictionary = {
-		BattleFieldHandData.AVAILABLE_ENERGY : hand_data.available_energy
-	}
+	var energy = battle_field_hand.available_energy
 
 	for i in range(num_already_rendered, hand_data.get_current_hand_size()):
 		var card_data = hand_data.hand[i].as_dict()
-		var card_instance = instantiate_card(
-			card_data,
-			energy_data,
-		)
+		var card_instance = instantiate_card(card_data, energy)
 		move_drawn_card_from_deck_to_hand(i, card_instance)
 
-func instantiate_card(card_data : Dictionary, energy_data : Dictionary) -> Node2D:
+func instantiate_card(card_data : Dictionary, available_energy : int) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
-	instance.set(
-		"data",
-		BattleFieldCardData.new(card_data, energy_data)
-	)
+	instance.set("data", BattleFieldCardData.new(card_data))
+	instance.set("available_energy", available_energy)
 	add_child(instance)
 	return instance
 

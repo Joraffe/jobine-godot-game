@@ -23,9 +23,14 @@ signal hand_filled
 signal character_swapped(character : Character, swap_position : String)
 
 
+# Enemy Related
+signal enemy_target_selected(enemy : Enemy)
+
+
 # Card Related
 signal card_selected(card : Card)
 signal card_deselected(card : Card)
+signal card_played(card : Card, targets : Array)
 
 
 # Turn Related
@@ -36,6 +41,7 @@ signal player_turn_ended
 # Energy Related
 signal energy_gained(amount: int)
 signal energy_spent(amount : int)
+signal current_energy_updated(current_energy : int)
 
 
 #=====================
@@ -48,9 +54,12 @@ const CARD_DRAWN : String = "card_drawn"
 const CARDS_DRAWN : String = "cards_drawn"
 const HAND_FILLED : String = "hand_filled"
 const CHARACTER_SWAPPED : String = "character_swapped"
+const ENEMY_TARGET_SELECTED : String = "enemy_target_selected"
 const CARD_SELECTED : String = "card_selected"
 const CARD_DESELECTED : String = "card_deselected"
+const CARD_PLAYED : String = "card_played"
 const PLAYER_TURN_STARTED : String = "player_turn_started"
 const PLAYER_TURN_ENDED : String = "player_turn_ended"
 const ENERGY_GAINED : String = "energy_gained"
 const ENERGY_SPENT : String = "energy_spent"
+const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"

@@ -27,6 +27,7 @@ func _ready():
 	BattleRadio.connect(BattleRadio.CARD_DESELECTED, _on_card_deselected)
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_ENABLED, _on_card_targeting_enabled)
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_DISABLED, _on_card_targeting_disabled)
+	BattleRadio.connect(BattleRadio.ENEMY_TARGET_SELECTED, _on_enemy_target_selected)
 
 
 #========================
@@ -40,17 +41,17 @@ func _on_mouse_exited():
 
 func _on_card_selected(card : Card) -> void:	
 	if not is_another_card_selected and card != battle_field_card.data.card:
-		is_another_card_selected = true
+		confirm_another_card_selected()
 
 func _on_card_deselected(card : Card) -> void:
 	if is_another_card_selected and card != battle_field_card.data.card:
-		is_another_card_selected = false
+		confirm_another_card_not_selected()
 
 func _on_card_targeting_enabled() -> void:
 	if not selected:
 		return
 
-	is_targeting_enabled = true
+	enable_card_targeting()
 	add_targeting_line_starting_point()
 	show_card_targeting()
 	hide_mouse_cursor()
@@ -59,10 +60,25 @@ func _on_card_targeting_disabled() -> void:
 	if not selected:
 		return
 
-	is_targeting_enabled = false
-	empty_targeting_line_points()
-	hide_card_targeting()
-	show_mouse_cursor()
+	clean_up_card_targeting()
+
+func _on_enemy_target_selected(enemy : Enemy) -> void:
+	if not selected:
+		confirm_another_card_not_selected()
+		return
+
+	# Stuff related to updating this card visually
+	deselect_card()
+	clean_up_card_targeting()
+	move_card_to_discard_pile()
+
+	# Stuff related to actually playing the card effects
+	BattleRadio.emit_signal(
+		BattleRadio.CARD_PLAYED,
+		battle_field_card.data.card,
+		[enemy]
+	)
+
 
 func _input(event):
 	if is_another_card_selected:
@@ -72,12 +88,12 @@ func _input(event):
 		return
 
 	if (not selected and _is_left_mouse_click(event)
-		and not battle_field_card.data.can_play()):
+		and not battle_field_card.can_play_card()):
 		animate_cannot_play()
 		return
 
 	if (not selected and _is_left_mouse_click(event)
-		and battle_field_card.data.can_play()):
+		and battle_field_card.can_play_card()):
 		select_card()
 		BattleRadio.emit_signal("card_selected", battle_field_card.data.card)
 		move_sprite_z_index(1)
@@ -135,6 +151,18 @@ func deselect_card() -> void:
 
 func select_card() -> void:
 	selected = true
+
+func enable_card_targeting() -> void:
+	is_targeting_enabled = true
+
+func disable_card_targeting() -> void:
+	is_targeting_enabled = false
+
+func confirm_another_card_selected() -> void:
+	is_another_card_selected = true
+
+func confirm_another_card_not_selected() -> void:
+	is_another_card_selected = false
 
 func show_card_targeting() -> void:
 	battle_field_card_targeting.visible = true
@@ -209,6 +237,22 @@ func move_card_to_targeting_position() -> void:
 		0.1
 	)
 
+func move_card_to_discard_pile() -> void:
+	var tween = create_tween()
+	tween.tween_property(
+		$Sprite2D,
+		"global_position",
+		Vector2(1600, 870),  # Roughly where the discard pile is
+		0.2
+	)
+	tween.parallel().tween_property(
+		$Sprite2D,
+		"scale",
+		Vector2(),
+		0.2
+	)
+	tween.tween_callback(battle_field_card.queue_free)
+
 func targeting_arrow_look_at_mouse(event) -> void:
 	var far_left = Vector2(350, 350)
 	var far_right = Vector2(1450, 350)
@@ -256,6 +300,12 @@ func draw_targeting_line_to_arrow() -> void:
 	targeting_line_2d.add_point(
 		targeting_line_2d.get_local_mouse_position()
 	)
+
+func clean_up_card_targeting() -> void:
+	disable_card_targeting()
+	empty_targeting_line_points()
+	hide_card_targeting()
+	show_mouse_cursor()
 
 func position_targeting() -> void:
 	# When creating cards for the first time, they're spawned

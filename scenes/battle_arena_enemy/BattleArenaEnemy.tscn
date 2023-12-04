@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dybur2v7evw1s"]
+[gd_scene load_steps=4 format=3 uid="uid://dybur2v7evw1s"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/battle_arena_enemy.gd" id="1_mcro6"]
+[ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/area_2d.gd" id="2_2isn1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xwil"]
 size = Vector2(201, 202)
@@ -9,6 +10,7 @@ size = Vector2(201, 202)
 script = ExtResource("1_mcro6")
 
 [node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_2isn1")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 

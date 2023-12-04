@@ -12,6 +12,7 @@ var image_data : ImageData:
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
 
 #=======================
 # Setters
@@ -59,4 +60,21 @@ func _on_player_turn_started() -> void:
 		BattleFieldEnergyData.CURRENT_ENERGY: 3
 	})
 
-	BattleRadio.emit_signal(BattleRadio.ENERGY_GAINED, data.current_energy)
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		data.current_energy
+	)
+
+func _on_card_played(card : Card, _targets : Array) -> void:
+	var max_energy = data.max_energy
+	var current_energy = data.current_energy
+	
+	data = BattleFieldEnergyData.new({
+		BattleFieldEnergyData.MAX_ENERGY: max_energy,
+		BattleFieldEnergyData.CURRENT_ENERGY : current_energy - card.cost
+	})
+
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		data.current_energy
+	)

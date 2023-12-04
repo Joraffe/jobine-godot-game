@@ -3,14 +3,12 @@ class_name BattleFieldHandData
 
 
 var hand : Array[Card]
-var available_energy : int
 
 const MAX_HAND_SIZE : int = 5
 
 
-func _init(cards : Array[Dictionary], energy_data : Dictionary) -> void:
+func _init(cards : Array[Dictionary]) -> void:
 	hand = Card.create_multi(cards)
-	available_energy = energy_data[AVAILABLE_ENERGY]
 
 func get_current_hand() -> Array[Card]:
 	return hand
@@ -28,6 +26,3 @@ func get_current_hand_as_dicts() -> Array[Dictionary]:
 
 func is_hand_full() -> bool:
 	return get_current_hand().size() >= 5
-
-
-const AVAILABLE_ENERGY : String = "available_energy"

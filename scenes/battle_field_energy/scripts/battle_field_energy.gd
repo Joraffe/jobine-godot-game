@@ -56,5 +56,7 @@ func _on_player_turn_started() -> void:
 	# This effectively replenishes energy at the start of turn
 	data = BattleFieldEnergyData.new({
 		BattleFieldEnergyData.MAX_ENERGY: max_energy,
-		BattleFieldEnergyData.CURRENT_ENERGY: max_energy
+		BattleFieldEnergyData.CURRENT_ENERGY: 3
 	})
+
+	BattleRadio.emit_signal(BattleRadio.ENERGY_GAINED, data.current_energy)

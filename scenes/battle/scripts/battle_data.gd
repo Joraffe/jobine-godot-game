@@ -59,7 +59,10 @@ static func get_battle_field_deck_data(seed_data : Dictionary) -> BattleFieldDec
 	return BattleFieldDeckData.new(cards_data)
 
 static func get_battle_field_hand_data(_seed_data : Dictionary) -> BattleFieldHandData:
-	return BattleFieldHandData.new([])
+	return BattleFieldHandData.new(
+		[],
+		{BattleFieldHandData.AVAILABLE_ENERGY : 3}
+	)
 
 static func get_battle_field_swap_data(seed_data : Dictionary) -> BattleFieldSwapData:
 	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]

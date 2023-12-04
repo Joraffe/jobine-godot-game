@@ -32,7 +32,6 @@ func _ready():
 #========================
 # Signal Handlers
 #========================
-# Do something with these later, perhaps animating
 func _on_mouse_entered():
 	is_mouse_over_card = true
 
@@ -65,29 +64,6 @@ func _on_card_targeting_disabled() -> void:
 	hide_card_targeting()
 	show_mouse_cursor()
 
-#========================
-# Input Handler Helpers
-#========================
-func _is_left_mouse_click(event) -> bool:
-	return (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_LEFT
-		and event.pressed
-	)
-
-
-func _is_right_mouse_click(event) -> bool:
-	return (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_RIGHT
-		and event.pressed
-	)
-
-
-func _is_mouse_move(event) -> bool:
-	return event is InputEventMouseMotion
-
-
 func _input(event):
 	if is_another_card_selected:
 		return
@@ -95,7 +71,13 @@ func _input(event):
 	if not is_mouse_over_card and not selected:
 		return
 
-	if not selected and _is_left_mouse_click(event):
+	if (not selected and _is_left_mouse_click(event)
+		and not battle_field_card.data.can_play()):
+		animate_cannot_play()
+		return
+
+	if (not selected and _is_left_mouse_click(event)
+		and battle_field_card.data.can_play()):
 		select_card()
 		BattleRadio.emit_signal("card_selected", battle_field_card.data.card)
 		move_sprite_z_index(1)
@@ -128,6 +110,26 @@ func _input(event):
 		return
 
 
+#========================
+# Input Handler Helpers
+#========================
+func _is_left_mouse_click(event) -> bool:
+	return (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	)
+
+func _is_right_mouse_click(event) -> bool:
+	return (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_RIGHT
+		and event.pressed
+	)
+
+func _is_mouse_move(event) -> bool:
+	return event is InputEventMouseMotion
+
 func deselect_card() -> void:
 	selected = false
 
@@ -149,6 +151,35 @@ func show_mouse_cursor() -> void:
 func move_sprite_z_index(new_z_index) -> void:
 	$Sprite2D.z_index = new_z_index
 
+func animate_cannot_play() -> void:
+	var tween = create_tween()
+	var slight_left = Vector2(
+		sprite_original_global_position.x - 20,
+		sprite_original_global_position.y
+	)
+	var slight_right = Vector2(
+		sprite_original_global_position.x + 20,
+		sprite_original_global_position.y
+	)
+	tween.tween_property(
+		$Sprite2D,
+		"global_position",
+		slight_left,
+		0.05,
+	)
+	tween.tween_property(
+		$Sprite2D,
+		"global_position",
+		slight_right,
+		0.05,
+	)
+	tween.tween_property(
+		$Sprite2D,
+		"global_position",
+		sprite_original_global_position,
+		0.05,
+	)
+
 func move_card_to_mouse(event) -> void:
 	var mouse_position = event.position
 
@@ -159,7 +190,6 @@ func move_card_to_mouse(event) -> void:
 		mouse_position,
 		0.05
 	)
-
 
 func move_card_to_original_position() -> void:
 	var tween = create_tween()
@@ -194,7 +224,6 @@ func targeting_arrow_look_at_mouse(event) -> void:
 	targeting_area_sprite_2d.look_at(look_at_position)
 	targeting_area_sprite_2d.rotate(PI/2)
 
-
 func move_targeting_arrow_to_mouse(event) -> void:
 	var mouse_position = event.position
 
@@ -205,7 +234,6 @@ func move_targeting_arrow_to_mouse(event) -> void:
 		mouse_position,
 		0.05
 	)
-
 
 func set_sprite_original_global_position():
 	sprite_original_global_position = Vector2(
@@ -228,7 +256,6 @@ func draw_targeting_line_to_arrow() -> void:
 	targeting_line_2d.add_point(
 		targeting_line_2d.get_local_mouse_position()
 	)
-
 
 func position_targeting() -> void:
 	# When creating cards for the first time, they're spawned

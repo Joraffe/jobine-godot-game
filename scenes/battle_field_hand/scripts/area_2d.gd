@@ -26,16 +26,19 @@ func empty_hand() -> void:
 
 func render_hand() -> void:
 	var hand_data = battle_field_hand.data
+	var energy_data = {
+		BattleFieldHandData.AVAILABLE_ENERGY : hand_data.available_energy
+	}
 	for i in hand_data.hand.size():
 		var card_data = hand_data.hand[i].as_dict()
-		var card_instance = instantiate_card(card_data)
+		var card_instance = instantiate_card(card_data, energy_data)
 		position_card_in_hand(i, card_instance)
 
-func instantiate_card(card_data : Dictionary) -> Node2D:
+func instantiate_card(card_data : Dictionary, energy_data : Dictionary) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
 	instance.set(
 		"data",
-		BattleFieldCardData.new(card_data)
+		BattleFieldCardData.new(card_data, energy_data)
 	)
 	add_child(instance)
 	return instance

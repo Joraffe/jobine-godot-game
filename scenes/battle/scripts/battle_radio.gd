@@ -32,6 +32,11 @@ signal player_turn_started
 signal player_turn_ended
 
 
+# Energy Related
+signal energy_gained(amount: int)
+signal energy_spent(amount : int)
+
+
 #=====================
 # Signal String names
 #=====================
@@ -45,3 +50,5 @@ const CARD_SELECTED : String = "card_selected"
 const CARD_DESELECTED : String = "card_deselected"
 const PLAYER_TURN_STARTED : String = "player_turn_started"
 const PLAYER_TURN_ENDED : String = "player_turn_ended"
+const ENERGY_GAINED : String = "energy_gained"
+const ENERGY_SPENT : String = "energy_spent"

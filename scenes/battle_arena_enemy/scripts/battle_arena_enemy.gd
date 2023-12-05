@@ -28,3 +28,5 @@ func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
 
 	# Also update the Sprite2D with this new image data
 	$Area2D/Sprite2D.set_texture(enemy_image_data.get_img_texture())
+	# Also update the Health Bar
+	$HealthBar.set("entity", enemy)

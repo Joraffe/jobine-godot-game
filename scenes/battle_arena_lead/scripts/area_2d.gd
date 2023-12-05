@@ -34,3 +34,4 @@ func instantiate_character(character: Character) -> void:
 	var instance = character_scene.instantiate()
 	instance.set("character", character)
 	add_child(instance)
+	instance.get_node("HealthBar").update_health_bar()

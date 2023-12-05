@@ -28,3 +28,5 @@ func set_image_data(new_image_data : ImageData):
 	image_data = new_image_data
 	# Also update the Sprite2D with this new image
 	$Area2D/Sprite2D.set_texture(image_data.get_img_texture())
+	# Also update the Health Bar
+	$HealthBar.set("entity", character)

@@ -37,4 +37,5 @@ func instantiate_enemy(enemy : Enemy) -> Node2D:
 	var instance = enemy_scene.instantiate()
 	instance.set("enemy", enemy)
 	add_child(instance)
+	instance.get_node("HealthBar").update_health_bar()
 	return instance

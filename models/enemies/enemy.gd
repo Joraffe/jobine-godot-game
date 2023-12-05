@@ -7,6 +7,7 @@ var machine_name : String
 var element_name : String
 var max_hp : int
 var current_hp : int
+var entity_type : String
 
 
 func _init(
@@ -14,13 +15,15 @@ func _init(
 	_machine_name : String,
 	_element_name : String,
 	_max_hp : int,
-	_current_hp : int
+	_current_hp : int,
+	_entity_type : String
 ):
 	human_name = _human_name
 	machine_name = _machine_name
 	element_name = _element_name
 	max_hp = _max_hp
 	current_hp = _current_hp
+	entity_type = _entity_type
 
 func as_dict() -> Dictionary:
 	return {
@@ -28,7 +31,8 @@ func as_dict() -> Dictionary:
 		MACHINE_NAME : machine_name,
 		ELEMENT_NAME : element_name,
 		MAX_HP : max_hp,
-		CURRENT_HP : current_hp
+		CURRENT_HP : current_hp,
+		ENTITY_TYPE: entity_type
 	}
 
 static func create(enemy_data : Dictionary) -> Enemy:
@@ -37,7 +41,8 @@ static func create(enemy_data : Dictionary) -> Enemy:
 		enemy_data[Enemy.MACHINE_NAME],
 		enemy_data[Enemy.ELEMENT_NAME],
 		enemy_data[Enemy.MAX_HP],
-		enemy_data[Enemy.CURRENT_HP]
+		enemy_data[Enemy.CURRENT_HP],
+		enemy_data[Enemy.ENTITY_TYPE]
 	)
 
 static func create_multi(enemies_data : Array[Dictionary]) -> Array[Enemy]:
@@ -57,3 +62,4 @@ const MACHINE_NAME : String = "machine_name"
 const ELEMENT_NAME : String = "element_name"
 const MAX_HP : String = "max_hp"
 const CURRENT_HP : String = "current_hp"
+const ENTITY_TYPE : String = "entity_type"

@@ -20,3 +20,5 @@ const ENEMIES : Dictionary = {
 const FIRE_SLIME_ENEMY : String = "fire_slime_enemy"
 const WATER_SLIME_ENEMY : String = "water_slime_enemy"
 const NATURE_SLIME_ENEMY : String = "nature_slime_enemy"
+const ENTITY_TYPE_ENEMY : String = "enemy"
+const ENTITY_TYPE_BOSS : String = "boss"

@@ -122,7 +122,8 @@ static func _get_juno_character_data() -> Dictionary:
 		Character.MACHINE_NAME : CharacterArchive.JUNO_CHARACTER,
 		Character.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
 		Character.MAX_HP : 10,
-		Character.CURRENT_HP : 10
+		Character.CURRENT_HP : 10,
+		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
 	}
 
 static func _get_juno_card_data() -> Array[Dictionary]:	
@@ -130,7 +131,7 @@ static func _get_juno_card_data() -> Array[Dictionary]:
 
 	for i in range(3):
 		var tokens : Array[String] = [TokenArchive.NATURE_TOKEN]
-		
+
 		cards.append({
 			Card.HUMAN_NAME : CardArchive.NATURE_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.NATURE_SINGLE_CARD,
@@ -149,7 +150,8 @@ static func _get_pettol_character_data() -> Dictionary:
 		Character.MACHINE_NAME : CharacterArchive.PETTOL_CHARACTER,
 		Character.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
 		Character.MAX_HP : 15,
-		Character.CURRENT_HP : 15
+		Character.CURRENT_HP : 15,
+		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
 	}
 
 static func _get_pettol_card_data() -> Array[Dictionary]:
@@ -176,7 +178,8 @@ static func _get_axo_character_data() -> Dictionary:
 		Character.MACHINE_NAME : CharacterArchive.AXO_CHARACTER,
 		Character.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
 		Character.MAX_HP : 7,
-		Character.CURRENT_HP : 7
+		Character.CURRENT_HP : 7,
+		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
 	}
 
 static func _get_axo_card_data() -> Array[Dictionary]:
@@ -203,7 +206,8 @@ static func _get_fire_slime_enemy_data() -> Dictionary:
 		Enemy.MACHINE_NAME : EnemyArchive.FIRE_SLIME_ENEMY,
 		Enemy.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
 		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10
+		Enemy.CURRENT_HP : 10,
+		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
 	}
 
 static func _get_water_slime_enemy_data() -> Dictionary:
@@ -212,7 +216,8 @@ static func _get_water_slime_enemy_data() -> Dictionary:
 		Enemy.MACHINE_NAME : EnemyArchive.WATER_SLIME_ENEMY,
 		Enemy.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
 		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10
+		Enemy.CURRENT_HP : 10,
+		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
 	}
 
 static func _get_nature_slime_enemy_data() -> Dictionary:
@@ -221,5 +226,6 @@ static func _get_nature_slime_enemy_data() -> Dictionary:
 		Enemy.MACHINE_NAME : EnemyArchive.NATURE_SLIME_ENEMY,
 		Enemy.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
 		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10
+		Enemy.CURRENT_HP : 10,
+		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
 	}

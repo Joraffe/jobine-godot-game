@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvoq5vcuf3nfa"]
+[gd_scene load_steps=5 format=3 uid="uid://bvoq5vcuf3nfa"]
 
 [ext_resource type="Script" path="res://scenes/battle_field_deck/scripts/battle_field_deck.gd" id="1_d57x2"]
 [ext_resource type="Script" path="res://scenes/battle_field_deck/scripts/area_2d.gd" id="2_ww0ok"]
+[ext_resource type="Script" path="res://scenes/battle_field_deck/scripts/label.gd" id="4_iufil"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lu735"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="BattleFieldDeck" type="Node2D"]
 script = ExtResource("1_d57x2")
@@ -12,6 +25,39 @@ script = ExtResource("2_ww0ok")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="Panel" type="Panel" parent="Area2D/Sprite2D"]
+custom_minimum_size = Vector2(50, 50)
+anchors_preset = -1
+anchor_left = 0.733333
+anchor_top = 0.7
+anchor_right = 0.9
+anchor_bottom = 0.95
+offset_left = -150.0
+offset_top = -100.0
+offset_right = -150.0
+offset_bottom = -100.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lu735")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Area2D/Sprite2D/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.5
+offset_top = -22.5
+offset_right = 8.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+script = ExtResource("4_iufil")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)

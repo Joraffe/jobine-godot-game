@@ -56,6 +56,9 @@ func _on_player_turn_started() -> void:
 			BattleRadio.CARDS_DRAWN,
 			self.draw_cards(self.max_hand_size)
 		)
+		$Area2D/Sprite2D/Panel/Label.update_deck_number(
+			self.shuffled_cards.size()
+		)
 	# If there's not enough cards in deck
 	# shuffle the discard pile into deck
 	else:

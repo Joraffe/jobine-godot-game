@@ -130,8 +130,6 @@ static func _get_juno_card_data() -> Array[Dictionary]:
 	var cards : Array[Dictionary] = []
 
 	for i in range(3):
-		var tokens : Array[String] = [TokenArchive.NATURE_TOKEN]
-
 		cards.append({
 			Card.HUMAN_NAME : CardArchive.NATURE_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.NATURE_SINGLE_CARD,
@@ -139,7 +137,7 @@ static func _get_juno_card_data() -> Array[Dictionary]:
 			Card.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
 			Card.CHARACTER_NAME : CharacterArchive.JUNO_CHARACTER,
 			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
-			Card.TOKEN_NAMES : tokens,
+			Card.EFFECT_COUNT : 1
 		})
 
 	return cards
@@ -158,8 +156,6 @@ static func _get_pettol_card_data() -> Array[Dictionary]:
 	var cards : Array[Dictionary] = []
 
 	for i in range(3):
-		var tokens : Array[String] = [TokenArchive.WATER_TOKEN]
-
 		cards.append({
 			Card.HUMAN_NAME : CardArchive.WATER_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.WATER_SINGLE_CARD,
@@ -167,7 +163,7 @@ static func _get_pettol_card_data() -> Array[Dictionary]:
 			Card.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
 			Card.CHARACTER_NAME : CharacterArchive.PETTOL_CHARACTER,
 			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
-			Card.TOKEN_NAMES : tokens,
+			Card.EFFECT_COUNT : 1
 		})
 
 	return cards
@@ -186,8 +182,6 @@ static func _get_axo_card_data() -> Array[Dictionary]:
 	var cards : Array[Dictionary] = []
 
 	for i in range(3):
-		var tokens : Array[String] = [TokenArchive.FIRE_TOKEN]
-		
 		cards.append({
 			Card.HUMAN_NAME : CardArchive.FIRE_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.FIRE_SINGLE_CARD,
@@ -195,7 +189,7 @@ static func _get_axo_card_data() -> Array[Dictionary]:
 			Card.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
 			Card.CHARACTER_NAME : CharacterArchive.AXO_CHARACTER,
 			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
-			Card.TOKEN_NAMES : tokens,
+			Card.EFFECT_COUNT : 1
 		})
 
 	return cards

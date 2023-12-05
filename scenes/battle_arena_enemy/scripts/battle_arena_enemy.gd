@@ -8,6 +8,13 @@ var enemy_image_data : ImageData:
 
 
 #=======================
+# Godot Lifecycle Hooks
+#=======================
+func _init() -> void:
+	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
+
+
+#=======================
 # Setters
 #=======================
 func set_enemy(new_enemy : Enemy) -> void:
@@ -30,3 +37,19 @@ func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
 	$Area2D/Sprite2D.set_texture(enemy_image_data.get_img_texture())
 	# Also update the Health Bar
 	$HealthBar.set("entity", enemy)
+
+
+#========================
+# Signal Handlers
+#========================
+func _on_card_played(card : Card, targets: Array) -> void:
+	if enemy not in targets:
+		return
+
+	var element_data : Dictionary = {
+		Element.HUMAN_NAME : card.element_name.capitalize(),
+		Element.MACHINE_NAME : card.element_name
+	}
+	var times_to_apply : int = card.effect_count
+	for i in range(times_to_apply):
+		$Aura.apply_element(Element.create(element_data))

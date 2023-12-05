@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0qdv2d2scwdo"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_aura/scripts/battle_arena_aura.gd" id="1_76so8"]
+[ext_resource type="PackedScene" uid="uid://ck0j0ryu7ayrr" path="res://scenes/battle_arena_aura_element/BattleArenaAuraElement.tscn" id="2_2eo2r"]
+
+[node name="BattleArenaAura" type="Node2D"]
+script = ExtResource("1_76so8")
+
+[node name="FirstAuraElement" parent="." instance=ExtResource("2_2eo2r")]
+position = Vector2(-60, 2.08165e-12)
+
+[node name="SecondAuraElement" parent="." instance=ExtResource("2_2eo2r")]
+
+[node name="ThirdAuraElement" parent="." instance=ExtResource("2_2eo2r")]
+position = Vector2(60, 2.08165e-12)

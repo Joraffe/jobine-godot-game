@@ -8,7 +8,7 @@ var cost : int  # how much it cost to play this card
 var element_name : String
 var character_name : String
 var targeting_name : String
-var token_names : Array[String]
+var effect_count : int  # how many times to apply card effect
 
 
 func _init(
@@ -18,7 +18,7 @@ func _init(
 	_element_name : String,
 	_character_name : String,
 	_targeting_name : String,
-	_token_names : Array[String]
+	_effect_count : int
 ) -> void:
 	human_name = _human_name
 	machine_name = _machine_name
@@ -26,7 +26,7 @@ func _init(
 	element_name = _element_name
 	character_name = _character_name
 	targeting_name = _targeting_name
-	token_names = _token_names
+	effect_count = _effect_count
 
 func as_dict() -> Dictionary:
 	return {
@@ -36,18 +36,18 @@ func as_dict() -> Dictionary:
 		ELEMENT_NAME : element_name,
 		CHARACTER_NAME : character_name,
 		TARGETING_NAME : targeting_name,
-		TOKEN_NAMES : token_names
+		EFFECT_COUNT : effect_count
 	}
 
 static func create(card_data : Dictionary) -> Card:
 	return Card.new(
-		card_data[Card.HUMAN_NAME],
-		card_data[Card.MACHINE_NAME],
-		card_data[Card.COST],
-		card_data[Card.ELEMENT_NAME],
-		card_data[Card.CHARACTER_NAME],
-		card_data[Card.TARGETING_NAME],
-		card_data[Card.TOKEN_NAMES]
+		card_data[HUMAN_NAME],
+		card_data[MACHINE_NAME],
+		card_data[COST],
+		card_data[ELEMENT_NAME],
+		card_data[CHARACTER_NAME],
+		card_data[TARGETING_NAME],
+		card_data[EFFECT_COUNT]
 	)
 
 static func create_multi(cards_data : Array[Dictionary]) -> Array[Card]:
@@ -68,4 +68,4 @@ const COST : String = "cost"
 const ELEMENT_NAME : String = "element_name"
 const CHARACTER_NAME : String = "character_name"
 const TARGETING_NAME : String = "targeting_name"
-const TOKEN_NAMES : String = "token_names"
+const EFFECT_COUNT : String = "effect_count"

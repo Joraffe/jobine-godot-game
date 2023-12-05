@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dybur2v7evw1s"]
+[gd_scene load_steps=6 format=3 uid="uid://dybur2v7evw1s"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/battle_arena_enemy.gd" id="1_mcro6"]
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/area_2d.gd" id="2_2isn1"]
 [ext_resource type="PackedScene" uid="uid://gyul4bm0j3du" path="res://scenes/battle_arena_health_bar/BattleArenaHealthBar.tscn" id="3_8eg3g"]
+[ext_resource type="PackedScene" uid="uid://b0qdv2d2scwdo" path="res://scenes/battle_arena_aura/BattleArenaAura.tscn" id="4_65erj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xwil"]
 size = Vector2(201, 202)
@@ -21,3 +22,6 @@ shape = SubResource("RectangleShape2D_3xwil")
 
 [node name="HealthBar" parent="." instance=ExtResource("3_8eg3g")]
 position = Vector2(2.08165e-12, 130)
+
+[node name="Aura" parent="." instance=ExtResource("4_65erj")]
+position = Vector2(2.08165e-12, -130)

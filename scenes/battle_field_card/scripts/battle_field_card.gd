@@ -1,13 +1,10 @@
 extends Node2D
 
 
-var data : BattleFieldCardData:
-	set = set_battle_field_card_data
-
+var card : Card:
+	set = set_card
 var available_energy : int:
 	set = set_available_energy
-
-
 var card_image_data : ImageData:
 	set = set_card_image_data
 
@@ -22,15 +19,15 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_field_card_data(new_battle_field_card_data : BattleFieldCardData):
-	data = new_battle_field_card_data
+func set_card(new_card : Card) -> void:
+	card = new_card
 	# Also set the card_image_data
 	self.set(
 		"card_image_data",
 		ImageData.new(
 			"battle_field_card",  # scene
-			data.card.machine_name,  # instance
-			"{name}.png".format({"name": data.card.machine_name})  # filename
+			self.card.machine_name,  # instance
+			"{name}.png".format({"name": self.card.machine_name})  # filename
 		)
 	)
 
@@ -45,7 +42,7 @@ func set_available_energy(new_available_energy : int) -> void:
 		color = Color.DARK_RED
 	$Area2D/Sprite2D/Panel.update_stylebox(color)
 	$Area2D/Sprite2D/Panel/Label.update_label_styling(
-		"{cost}".format({"cost": data.card.cost}),
+		"{cost}".format({"cost": self.card.cost}),
 		color
 	)
 
@@ -67,4 +64,4 @@ func _on_current_energy_updated(current_energy : int) -> void:
 # Data Helpers
 #========================
 func can_play_card() -> bool:
-	return available_energy >= data.card.cost
+	return self.available_energy >= self.card.cost

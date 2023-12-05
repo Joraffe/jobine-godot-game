@@ -5,6 +5,7 @@ extends Area2D
 
 var is_mouse_over_swap_member : bool = false
 
+
 #=======================
 # Godot Lifecycle Hooks
 #=======================
@@ -36,8 +37,8 @@ func _input(event) -> void:
 
 	BattleRadio.emit_signal(
 		BattleRadio.CHARACTER_SWAPPED,
-		battle_field_swap_member.data.character,
-		battle_field_swap_member.data.swap_position
+		battle_field_swap_member.swap_character,
+		battle_field_swap_member.swap_position
 	)
 
 

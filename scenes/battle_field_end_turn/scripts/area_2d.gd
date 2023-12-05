@@ -2,8 +2,6 @@ extends Area2D
 
 
 @onready var battle_field_end_turn : Node2D = get_parent()
-
-
 var is_mouse_over : bool = false
 
 
@@ -13,7 +11,6 @@ var is_mouse_over : bool = false
 func _init() -> void:
 	self.connect("mouse_entered", _on_mouse_entered)
 	self.connect("mouse_exited", _on_mouse_exited)
-
 
 
 #========================
@@ -29,7 +26,7 @@ func _input(event) -> void:
 	if not is_mouse_over:
 		return
 
-	if not battle_field_end_turn.data.enabled:
+	if not battle_field_end_turn.enabled:
 		return
 
 	if not (event is InputEventMouseButton):

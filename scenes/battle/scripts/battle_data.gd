@@ -2,45 +2,59 @@ extends Resource
 class_name BattleData
 
 
-var lead_data : BattleArenaLeadData
-var enemies_data : BattleArenaEnemiesData
-var hand_data : BattleFieldHandData
-var deck_data : BattleFieldDeckData
-var swap_data : BattleFieldSwapData
-var discard_data : BattleFieldDiscardData
-var energy_data : BattleFieldEnergyData
+var lead_character : Character
+var top_swap_character : Character
+var bottom_swap_character : Character
+var enemies : Array[Enemy]
+var cards : Array[Card]
+var discard_pile : Array[Card]
+var hand : Array[Card]
+var max_hand_size : int
+var max_energy : int
+var current_energy : int
 
 
 func _init(seed_data : Dictionary) -> void:
-	lead_data = BattleData.get_battle_arena_lead_data(seed_data)
-	enemies_data = BattleData.get_battle_arena_enemies_data(seed_data)
-	hand_data = BattleData.get_battle_field_hand_data(seed_data)
-	deck_data = BattleData.get_battle_field_deck_data(seed_data)
-	swap_data = BattleData.get_battle_field_swap_data(seed_data)
-	discard_data = BattleData.get_battle_field_discard_data(seed_data)
-	energy_data = BattleData.get_battle_field_energy_data(seed_data)
+	lead_character = BattleData.get_battle_lead_character(seed_data)
+	top_swap_character = BattleData.get_battle_top_swap_character(seed_data)
+	bottom_swap_character = BattleData.get_battle_bottom_swap_character(seed_data)
+	enemies = BattleData.get_battle_enemies(seed_data)
+	cards = BattleData.get_battle_cards(seed_data)
+	discard_pile = BattleData.get_battle_discard_pile(seed_data)
+	hand = BattleData.get_battle_hand(seed_data)
+	max_hand_size = 5  # sticking this here in case want this to change
+	max_energy = 3
+	current_energy = 3
 
 
 #=======================
 # Data Helpers
 #=======================
-static func get_battle_arena_lead_data(seed_data : Dictionary) -> BattleArenaLeadData:	
+static func get_battle_lead_character(seed_data : Dictionary) -> Character:	
 	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
-
 	# Juno starts off leading the party! :3
-	return BattleArenaLeadData.new(
-		character_seed_data[CharacterArchive.JUNO_CHARACTER]
-	)
+	return Character.create(character_seed_data[CharacterArchive.JUNO_CHARACTER])
 
-static func get_battle_arena_enemies_data(seed_data : Dictionary) -> BattleArenaEnemiesData:
-	var rand_enemy_name = EnemyArchive.get_random_enemy_name()
+static func get_battle_top_swap_character(seed_data : Dictionary) -> Character:
+	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
+	return Character.create(character_seed_data[CharacterArchive.PETTOL_CHARACTER])
+
+static func get_battle_bottom_swap_character(seed_data : Dictionary) -> Character:
+	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
+	return Character.create(character_seed_data[CharacterArchive.AXO_CHARACTER])
+
+static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
+	var battle_enemies : Array[Enemy] = []
 	var enemy_seed_data : Dictionary = seed_data[SeedData.ENEMIES]
 
 	# For now just 1 enemy, but will change in the future 
 	# with actual playtesting against multiple enemies! :3
-	return BattleArenaEnemiesData.new([enemy_seed_data[rand_enemy_name]])
+	var rand_enemy_name = EnemyArchive.get_random_enemy_name()
+	battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
 
-static func get_battle_field_deck_data(seed_data : Dictionary) -> BattleFieldDeckData:
+	return battle_enemies
+
+static func get_battle_cards(seed_data : Dictionary) -> Array[Card]:
 	var card_seed_data : Dictionary = seed_data[SeedData.CARDS]
 #	{
 #		"juno_character": [{ # juno card array }],
@@ -56,29 +70,12 @@ static func get_battle_field_deck_data(seed_data : Dictionary) -> BattleFieldDec
 		for character_card_data in character_cards_data:
 			cards_data.append(character_card_data)
 
-	return BattleFieldDeckData.new(cards_data)
+	return Card.create_multi(cards_data)
 
-static func get_battle_field_hand_data(_seed_data : Dictionary) -> BattleFieldHandData:
-	return BattleFieldHandData.new([])
+static func get_battle_hand(_seed_data : Dictionary) -> Array[Card]:
+	var battle_hand : Array[Card] = []
+	return battle_hand
 
-static func get_battle_field_swap_data(seed_data : Dictionary) -> BattleFieldSwapData:
-	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
-	
-	return BattleFieldSwapData.new(
-		character_seed_data[CharacterArchive.JUNO_CHARACTER],
-		character_seed_data[CharacterArchive.AXO_CHARACTER],
-		character_seed_data[CharacterArchive.PETTOL_CHARACTER]
-	)
-
-static func get_battle_field_discard_data(_seed_data : Dictionary) -> BattleFieldDiscardData:
-	var discard_pile : Array[Dictionary] = []
-
-	return BattleFieldDiscardData.new({
-		BattleFieldDiscardData.DISCARD_PILE : discard_pile
-	})
-
-static func get_battle_field_energy_data(_seed_data : Dictionary) -> BattleFieldEnergyData:
-	return BattleFieldEnergyData.new({
-		BattleFieldEnergyData.MAX_ENERGY: 3,
-		BattleFieldEnergyData.CURRENT_ENERGY: 3
-	})
+static func get_battle_discard_pile(_seed_data : Dictionary) -> Array[Card]:
+	var battle_discard_pile : Array[Card] = []
+	return battle_discard_pile

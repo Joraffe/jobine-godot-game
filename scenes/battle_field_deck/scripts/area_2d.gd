@@ -2,8 +2,6 @@ extends Area2D
 
 
 @onready var battle_field_deck = get_parent()
-
-
 var is_mouse_over_deck : bool = false
 
 
@@ -22,10 +20,8 @@ func _ready():
 func _on_mouse_entered():
 	is_mouse_over_deck = true
 
-
 func _on_mouse_exited():
 	is_mouse_over_deck = false
-
 
 func _input(event):
 	if not is_mouse_over_deck:

@@ -1,13 +1,23 @@
 extends Node2D
 
 
-var data : BattleFieldSwapData:
-	set = set_battle_field_swap_data
+var lead_character : Character:
+	set = set_lead_character
+var top_swap_character : Character:
+	set = set_top_swap_character
+var bottom_swap_character : Character:
+	set = set_bottom_swap_character
+
 var image_data : ImageData = ImageData.new(
 	"battle_field_swap",
 	"empty",
 	"swap.png"
 )
+
+const LEAD_CHARACTER : String = "lead_character"
+const TOP_SWAP_CHARACTER : String = "top_swap_character"
+const BOTTOM_SWAP_CHARACTER : String = "bottom_swap_character"
+
 
 #=======================
 # Godot Lifecycle Hooks
@@ -20,23 +30,31 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_field_swap_data(new_battle_swap_data : BattleFieldSwapData) -> void:
-	data = new_battle_swap_data
-	$Area2D.render_party_swap_members()
+func set_lead_character(new_character : Character) -> void:
+	lead_character = new_character
+
+func set_top_swap_character(new_character : Character) -> void:
+	top_swap_character = new_character
+
+func set_bottom_swap_character(new_character : Character) -> void:
+	bottom_swap_character = new_character
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	data = battle_data.swap_data
+	lead_character = battle_data.lead_character
+	top_swap_character = battle_data.top_swap_character
+	bottom_swap_character = battle_data.bottom_swap_character
+	$Area2D.render_party_swap_members()
 
 func _on_character_swapped(character : Character, swap_position : String) -> void:
-	if swap_position == BattleFieldSwapData.TOP:
-		data.top_swap_character = data.lead_character
-	elif swap_position == BattleFieldSwapData.BOTTOM:
-		data.bottom_swap_character = data.lead_character
-	data.lead_character = character
+	if swap_position == TOP_SWAP_CHARACTER:
+		top_swap_character = lead_character
+	elif swap_position == BOTTOM_SWAP_CHARACTER:
+		bottom_swap_character = lead_character
+	lead_character = character
 
 	$Area2D.empty_party_swap_members()
 	$Area2D.render_party_swap_members()

@@ -1,8 +1,8 @@
 extends Node2D
 
 
-var data : BattleArenaEnemyData:
-	set = set_battle_arena_enemy_data
+var enemy : Enemy:
+	set = set_enemy
 var enemy_image_data : ImageData:
 	set = set_enemy_image_data
 
@@ -10,16 +10,16 @@ var enemy_image_data : ImageData:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_enemy_data(new_battle_arena_enemy_data : BattleArenaEnemyData) -> void:
-	data = new_battle_arena_enemy_data
+func set_enemy(new_enemy : Enemy) -> void:
+	enemy = new_enemy
 
 	# Also set the image data
 	self.set(
 		"enemy_image_data",
 		ImageData.new(
 			"battle_arena_enemy",  # scene
-			data.enemy.machine_name,  # instance
-			"{name}.png".format({"name": data.enemy.machine_name})  # filename
+			enemy.machine_name,  # instance
+			"{name}.png".format({"name": enemy.machine_name})  # filename
 		)
 	)
 

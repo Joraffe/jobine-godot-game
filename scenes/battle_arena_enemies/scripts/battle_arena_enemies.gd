@@ -1,8 +1,8 @@
 extends Node2D
 
 
-var data : BattleArenaEnemiesData:
-	set = set_battle_arena_enemies_data
+var enemies : Array[Enemy]:
+	set = set_enemies
 var image_data : ImageData = ImageData.new(
 	"battle_arena_enemies",
 	"empty",
@@ -19,8 +19,8 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_enemies_data(new_data : BattleArenaEnemiesData) -> void:
-	data = new_data
+func set_enemies(new_enemies : Array[Enemy]) -> void:
+	enemies = new_enemies
 
 	$Area2D.render_enemies()
 
@@ -29,4 +29,4 @@ func set_battle_arena_enemies_data(new_data : BattleArenaEnemiesData) -> void:
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	data = battle_data.enemies_data
+	enemies = battle_data.enemies

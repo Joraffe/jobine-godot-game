@@ -2,8 +2,6 @@ extends Area2D
 
 
 @onready var battle_arena_enemy : Node2D = get_parent()
-
-
 var targetable : bool = false
 var is_mouse_over : bool = false
 
@@ -43,7 +41,7 @@ func _input(event) -> void:
 	if _is_left_mouse_click(event):
 		BattleRadio.emit_signal(
 			BattleRadio.ENEMY_TARGET_SELECTED,
-			battle_arena_enemy.data.enemy
+			battle_arena_enemy.enemy
 		)
 		return
 

@@ -40,11 +40,11 @@ func _on_mouse_exited():
 	is_mouse_over_card = false
 
 func _on_card_selected(card : Card) -> void:	
-	if not is_another_card_selected and card != battle_field_card.data.card:
+	if not is_another_card_selected and card != battle_field_card.card:
 		confirm_another_card_selected()
 
 func _on_card_deselected(card : Card) -> void:
-	if is_another_card_selected and card != battle_field_card.data.card:
+	if is_another_card_selected and card != battle_field_card.card:
 		confirm_another_card_not_selected()
 
 func _on_card_targeting_enabled() -> void:
@@ -75,7 +75,7 @@ func _on_enemy_target_selected(enemy : Enemy) -> void:
 	# Stuff related to actually playing the card effects
 	BattleRadio.emit_signal(
 		BattleRadio.CARD_PLAYED,
-		battle_field_card.data.card,
+		battle_field_card.card,
 		[enemy]
 	)
 
@@ -95,14 +95,14 @@ func _input(event):
 	if (not selected and _is_left_mouse_click(event)
 		and battle_field_card.can_play_card()):
 		select_card()
-		BattleRadio.emit_signal("card_selected", battle_field_card.data.card)
+		BattleRadio.emit_signal("card_selected", battle_field_card.card)
 		move_sprite_z_index(1)
 		move_card_to_mouse(event)
 		return
 
 	if selected and _is_right_mouse_click(event):
 		deselect_card()
-		BattleRadio.emit_signal("card_deselected", battle_field_card.data.card)
+		BattleRadio.emit_signal("card_deselected", battle_field_card.card)
 		move_sprite_z_index(0)
 		hide_card_targeting()
 		empty_targeting_line_points()

@@ -1,7 +1,7 @@
 extends Node2D
 
-var data : BattleFieldEndTurnData:
-	set = set_end_turn_data
+var enabled : bool:
+	set = set_enabled
 var image_data : ImageData:
 	set = set_image_data
 
@@ -17,12 +17,12 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_end_turn_data(new_data : BattleFieldEndTurnData) -> void:
-	data = new_data
+func set_enabled(new_status : bool) -> void:
+	enabled = new_status
 
 	# Also set the ImageData
 	var instance_name
-	if data.enabled:
+	if enabled:
 		instance_name = "enabled"
 	else:
 		instance_name = "disabled"
@@ -45,11 +45,7 @@ func set_image_data(new_image_data : ImageData) -> void:
 # Signal Handlers
 #========================
 func _on_player_turn_started() -> void:
-	data = BattleFieldEndTurnData.new({
-		BattleFieldEndTurnData.ENABLED: true
-	})
+	enabled = true
 
 func _on_player_turn_ended() -> void:
-	data = BattleFieldEndTurnData.new({
-		BattleFieldEndTurnData.ENABLED: false
-	})
+	enabled = false

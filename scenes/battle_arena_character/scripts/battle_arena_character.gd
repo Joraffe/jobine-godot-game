@@ -32,3 +32,4 @@ func set_image_data(new_image_data : ImageData):
 	$HealthBar.set("entity", character)
 	$Aura.set("aura_width", image_data.get_img_width())
 	$Aura.set("entity", character)
+	$Combo.set("entity", character)

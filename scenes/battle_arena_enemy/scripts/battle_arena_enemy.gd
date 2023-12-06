@@ -37,6 +37,9 @@ func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
 	$Area2D/Sprite2D.set_texture(enemy_image_data.get_img_texture())
 	# Also update the Health Bar
 	$HealthBar.set("entity", enemy)
+	$Aura.set("aura_width", enemy_image_data.get_img_width())
+	$Aura.set("entity", enemy)
+	$Combo.set("entity", enemy)
 
 
 #========================

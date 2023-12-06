@@ -30,3 +30,5 @@ func set_image_data(new_image_data : ImageData):
 	$Area2D/Sprite2D.set_texture(image_data.get_img_texture())
 	# Also update the Health Bar
 	$HealthBar.set("entity", character)
+	$Aura.set("aura_width", image_data.get_img_width())
+	$Aura.set("entity", character)

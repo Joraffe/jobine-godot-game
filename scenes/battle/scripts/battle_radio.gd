@@ -44,6 +44,10 @@ signal energy_spent(amount : int)
 signal current_energy_updated(current_energy : int)
 
 
+# Elements Related
+signal elements_combined(combo_data : Dictionary)
+
+
 #=====================
 # Signal String names
 #=====================
@@ -63,3 +67,4 @@ const PLAYER_TURN_ENDED : String = "player_turn_ended"
 const ENERGY_GAINED : String = "energy_gained"
 const ENERGY_SPENT : String = "energy_spent"
 const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"
+const ELEMENTS_COMBINED : String = "elements_combined"

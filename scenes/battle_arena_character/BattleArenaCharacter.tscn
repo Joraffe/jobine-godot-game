@@ -22,5 +22,5 @@ shape = SubResource("RectangleShape2D_sisx5")
 [node name="HealthBar" parent="." instance=ExtResource("2_gb08q")]
 position = Vector2(2.08165e-12, 230)
 
-[node name="BattleArenaAura" parent="." instance=ExtResource("3_6xr3q")]
+[node name="Aura" parent="." instance=ExtResource("3_6xr3q")]
 position = Vector2(2.08165e-12, -230)

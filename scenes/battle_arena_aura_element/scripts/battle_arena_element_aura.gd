@@ -1,5 +1,6 @@
 extends Node2D
 
+
 var element : Element:
 	set = set_element
 var image_data : ImageData:

@@ -3,11 +3,11 @@ extends Label
 
 func update_combo_text(combo: Combo) -> void:
 	text = "{name}".format({"name": combo.human_name})
-	if combo.machine_name == ComboArchive.EVAPORATE_COMBO:
+	if combo.machine_name == Combo.EVAPORATE:
 		set_evaporate_text_color()
-	elif combo.machine_name == ComboArchive.GROW_COMBO:
+	elif combo.machine_name == Combo.GROW:
 		set_grow_text_color()
-	elif combo.machine_name == ComboArchive.BURN_COMBO:
+	elif combo.machine_name == Combo.BURN:
 		set_burn_text_color()
 
 func reset_combo_text() -> void:

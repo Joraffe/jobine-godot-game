@@ -120,7 +120,7 @@ static func _get_juno_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Juno",
 		Character.MACHINE_NAME : CharacterArchive.JUNO_CHARACTER,
-		Character.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
+		Character.ELEMENT_NAME : Element.NATURE,
 		Character.MAX_HP : 10,
 		Character.CURRENT_HP : 10,
 		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
@@ -134,9 +134,9 @@ static func _get_juno_card_data() -> Array[Dictionary]:
 			Card.HUMAN_NAME : CardArchive.NATURE_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.NATURE_SINGLE_CARD,
 			Card.COST : 1,
-			Card.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
+			Card.ELEMENT_NAME : Element.NATURE,
 			Card.CHARACTER_NAME : CharacterArchive.JUNO_CHARACTER,
-			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
+			Card.TARGETING_NAME : Targeting.SINGLE,
 			Card.EFFECT_COUNT : 1
 		})
 
@@ -146,7 +146,7 @@ static func _get_pettol_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Pettol",
 		Character.MACHINE_NAME : CharacterArchive.PETTOL_CHARACTER,
-		Character.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
+		Character.ELEMENT_NAME : Element.WATER,
 		Character.MAX_HP : 15,
 		Character.CURRENT_HP : 15,
 		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
@@ -160,9 +160,9 @@ static func _get_pettol_card_data() -> Array[Dictionary]:
 			Card.HUMAN_NAME : CardArchive.WATER_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.WATER_SINGLE_CARD,
 			Card.COST : 1,
-			Card.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
+			Card.ELEMENT_NAME : Element.WATER,
 			Card.CHARACTER_NAME : CharacterArchive.PETTOL_CHARACTER,
-			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
+			Card.TARGETING_NAME : Targeting.SINGLE,
 			Card.EFFECT_COUNT : 1
 		})
 
@@ -172,7 +172,7 @@ static func _get_axo_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Axo",
 		Character.MACHINE_NAME : CharacterArchive.AXO_CHARACTER,
-		Character.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
+		Character.ELEMENT_NAME : Element.FIRE,
 		Character.MAX_HP : 7,
 		Character.CURRENT_HP : 7,
 		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
@@ -186,9 +186,9 @@ static func _get_axo_card_data() -> Array[Dictionary]:
 			Card.HUMAN_NAME : CardArchive.FIRE_SINGLE_CARD,
 			Card.MACHINE_NAME : CardArchive.FIRE_SINGLE_CARD,
 			Card.COST : 1,
-			Card.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
+			Card.ELEMENT_NAME : Element.FIRE,
 			Card.CHARACTER_NAME : CharacterArchive.AXO_CHARACTER,
-			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
+			Card.TARGETING_NAME : Targeting.SINGLE,
 			Card.EFFECT_COUNT : 1
 		})
 
@@ -198,7 +198,7 @@ static func _get_fire_slime_enemy_data() -> Dictionary:
 	return {
 		Enemy.HUMAN_NAME : "Fire Slime",
 		Enemy.MACHINE_NAME : EnemyArchive.FIRE_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
+		Enemy.ELEMENT_NAME : Element.FIRE,
 		Enemy.MAX_HP : 10,
 		Enemy.CURRENT_HP : 10,
 		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
@@ -208,7 +208,7 @@ static func _get_water_slime_enemy_data() -> Dictionary:
 	return {
 		Enemy.HUMAN_NAME : "Water Slime",
 		Enemy.MACHINE_NAME : EnemyArchive.WATER_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
+		Enemy.ELEMENT_NAME : Element.WATER,
 		Enemy.MAX_HP : 10,
 		Enemy.CURRENT_HP : 10,
 		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
@@ -218,7 +218,7 @@ static func _get_nature_slime_enemy_data() -> Dictionary:
 	return {
 		Enemy.HUMAN_NAME : "Nature Slime",
 		Enemy.MACHINE_NAME : EnemyArchive.NATURE_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
+		Enemy.ELEMENT_NAME : Element.NATURE,
 		Enemy.MAX_HP : 10,
 		Enemy.CURRENT_HP : 10,
 		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY

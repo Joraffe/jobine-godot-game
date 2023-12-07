@@ -127,15 +127,15 @@ func check_index_for_combo(element_index : int) -> Dictionary:
 		}
 
 		if is_evaporate_combo(element, compared_element):
-			combo_data[COMBO] = get_evaporate_combo()
+			combo_data[COMBO] = Combo.Evaporate()
 			return combo_data
 
 		if is_burn_combo(element, compared_element):
-			combo_data[COMBO] = get_burn_combo()
+			combo_data[COMBO] = Combo.Burn()
 			return combo_data
 
 		if is_grow_combo(element, compared_element):
-			combo_data[COMBO] = get_grow_combo()
+			combo_data[COMBO] = Combo.Grow()
 			return combo_data
 
 	# if we make it here, the element at the index
@@ -196,33 +196,6 @@ func tween_up_and_free_element(element : Element) -> void:
 			)
 			tween.tween_callback(child.queue_free)
 
-func _get_combo_data_by_machine_name(machine_name : String) -> Dictionary:
-	return {
-		Combo.HUMAN_NAME: machine_name.capitalize(),
-		Combo.MACHINE_NAME: machine_name
-	}
-
-func get_evaporate_combo() -> Combo:
-	return Combo.create(
-		_get_combo_data_by_machine_name(
-			ComboArchive.EVAPORATE_COMBO
-		)
-	)
-
-func get_burn_combo() -> Combo:
-	return Combo.create(
-		_get_combo_data_by_machine_name(
-			ComboArchive.BURN_COMBO
-		)
-	)
-
-func get_grow_combo() -> Combo:
-	return Combo.create(
-		_get_combo_data_by_machine_name(
-			ComboArchive.GROW_COMBO
-		)
-	)
-
 func is_same_element(first_element : Element, second_element : Element) -> bool:
 	return first_element.machine_name == second_element.machine_name
 
@@ -245,10 +218,10 @@ func is_burn_combo(first_element : Element, second_element : Element) -> bool:
 	)
 
 func _is_fire_element(element : Element) -> bool:
-	return element.machine_name == ElementArchive.FIRE_ELEMENT
+	return element.machine_name == Element.FIRE
 
 func _is_water_element(element : Element) -> bool:
-	return element.machine_name == ElementArchive.WATER_ELEMENT
+	return element.machine_name == Element.WATER
 
 func _is_nature_element(element : Element) -> bool:
-	return element.machine_name == ElementArchive.NATURE_ELEMENT
+	return element.machine_name == Element.NATURE

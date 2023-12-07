@@ -11,14 +11,6 @@ var element_registry : Dictionary = {}
 var elements : Array[Element] = []
 
 
-const FIRST_ELEMENT : String = "first_element"
-const SECOND_ELEMENT : String = "second_element"
-const COMBO : String = "combo"
-const INDEX : String = "index"
-const ELEMENT : String = "element"
-const ENTITY : String = "entity"
-
-
 #=======================
 # Godot Lifecycle Hooks
 #=======================
@@ -30,13 +22,13 @@ func _init() -> void:
 # Signal Handlers
 #=======================
 func _on_elements_combined(combo_data : Dictionary) -> void:
-	if combo_data[ENTITY] != entity:
+	if combo_data[Combo.ENTITY] != entity:
 		return
 
-	var first_combo_index = combo_data[FIRST_ELEMENT][INDEX]
-	var first_combo_element = combo_data[FIRST_ELEMENT][ELEMENT]
-	var second_combo_index = combo_data[SECOND_ELEMENT][INDEX]
-	var second_combo_element = combo_data[SECOND_ELEMENT][ELEMENT]
+	var first_combo_index = combo_data[Combo.FIRST_ELEMENT][Combo.INDEX]
+	var first_combo_element = combo_data[Combo.FIRST_ELEMENT][Combo.ELEMENT]
+	var second_combo_index = combo_data[Combo.SECOND_ELEMENT][Combo.INDEX]
+	var second_combo_element = combo_data[Combo.SECOND_ELEMENT][Combo.ELEMENT]
 
 	var new_elements : Array[Element] = []
 	for i in elements.size():
@@ -49,6 +41,9 @@ func _on_elements_combined(combo_data : Dictionary) -> void:
 	tween_up_and_free_element(first_combo_element)
 	tween_up_and_free_element(second_combo_element)
 	reposition_remaining_aura_elements()
+
+	await get_tree().create_timer(0.5).timeout
+	BattleRadio.emit_signal(BattleRadio.COMBO_APPLIED, combo_data)
 
 #========================
 # Aura Functionality
@@ -91,7 +86,7 @@ func check_for_combo() -> void:
 
 	for index in elements.size():
 		combo_data  = check_index_for_combo(index)
-		if combo_data[COMBO]:
+		if combo_data[Combo.COMBO]:
 			BattleRadio.emit_signal(
 				BattleRadio.ELEMENTS_COMBINED,
 				combo_data
@@ -100,10 +95,10 @@ func check_for_combo() -> void:
 
 func check_index_for_combo(element_index : int) -> Dictionary:
 	var combo_data : Dictionary = {
-		ENTITY: null,
-		FIRST_ELEMENT: null,
-		SECOND_ELEMENT: null,
-		COMBO: null
+		Combo.ENTITY: null,
+		Combo.FIRST_ELEMENT: null,
+		Combo.SECOND_ELEMENT: null,
+		Combo.COMBO: null
 	}
 
 	var element : Element = elements[element_index]
@@ -116,34 +111,35 @@ func check_index_for_combo(element_index : int) -> Dictionary:
 		if is_same_element(element, compared_element):
 			continue
 
-		combo_data[ENTITY] = entity
-		combo_data[FIRST_ELEMENT] = {
-			INDEX : element_index,
-			ELEMENT : element
+		combo_data[Combo.ENTITY] = entity
+		combo_data[Combo.FIRST_ELEMENT] = {
+			Combo.INDEX : element_index,
+			Combo.ELEMENT : element
 		}
-		combo_data[SECOND_ELEMENT] = {
-			INDEX : compared_index,
-			ELEMENT: compared_element
+		combo_data[Combo.SECOND_ELEMENT] = {
+			Combo.INDEX : compared_index,
+			Combo.ELEMENT: compared_element
 		}
 
 		if is_evaporate_combo(element, compared_element):
-			combo_data[COMBO] = Combo.Evaporate()
+			combo_data[Combo.COMBO] = Combo.Evaporate()
 			return combo_data
 
 		if is_burn_combo(element, compared_element):
-			combo_data[COMBO] = Combo.Burn()
+			combo_data[Combo.COMBO] = Combo.Burn()
 			return combo_data
 
 		if is_grow_combo(element, compared_element):
-			combo_data[COMBO] = Combo.Grow()
+			combo_data[Combo.COMBO] = Combo.Grow()
 			return combo_data
 
 	# if we make it here, the element at the index
 	# we are checking cannot combine with any others
 	return {
-		FIRST_ELEMENT: null,
-		SECOND_ELEMENT: null,
-		COMBO: null
+		Combo.ENTITY : null,
+		Combo.FIRST_ELEMENT: null,
+		Combo.SECOND_ELEMENT: null,
+		Combo.COMBO: null
 	}
 
 #======================

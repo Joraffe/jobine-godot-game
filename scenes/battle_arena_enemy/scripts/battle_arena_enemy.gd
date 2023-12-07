@@ -12,7 +12,8 @@ var enemy_image_data : ImageData:
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
-
+	BattleRadio.connect(BattleRadio.ENEMY_DAMAGED, _on_enemy_damaged)
+	BattleRadio.connect(BattleRadio.ENEMY_ELEMENT_APPLIED, _on_enemy_element_applied)
 
 #=======================
 # Setters
@@ -46,7 +47,7 @@ func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
 # Signal Handlers
 #========================
 func _on_card_played(card : Card, targets: Array) -> void:
-	if enemy not in targets:
+	if self.enemy not in targets:
 		return
 
 	var element_data : Dictionary = {
@@ -56,3 +57,20 @@ func _on_card_played(card : Card, targets: Array) -> void:
 	var times_to_apply : int = card.effect_count
 	for i in range(times_to_apply):
 		$Aura.apply_element(Element.create(element_data))
+
+func _on_enemy_damaged(damaged_enemy : Enemy, damage : int) -> void:
+	if self.enemy != damaged_enemy:
+		return
+
+	$HealthBar.take_damage(damage)
+
+func _on_enemy_element_applied(
+	applied_enemy : Enemy,
+	applied_element_name : String,
+	num_applied_element : int
+) -> void:
+	if self.enemy != applied_enemy:
+		return
+
+	for i in range(num_applied_element):
+		$Aura.apply_element(Element.by_machine_name(applied_element_name))

@@ -56,3 +56,10 @@ func update_health_bar() -> void:
 		max_hp,
 		current_hp
 	)
+
+func take_damage(damage : int) -> void:
+	var new_hp : int = current_hp - damage
+	if new_hp > 0:
+		current_hp = new_hp
+	elif new_hp <= 0:
+		current_hp = 0

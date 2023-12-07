@@ -25,6 +25,12 @@ signal character_swapped(character : Character, swap_position : String)
 
 # Enemy Related
 signal enemy_target_selected(enemy : Enemy)
+signal enemy_damaged(enemy : Enemy, damage : int)
+signal enemy_element_applied(
+	enemy : Enemy,
+	applied_element_name : String,
+	num_applied_element : int
+)
 
 
 # Card Related
@@ -48,6 +54,10 @@ signal current_energy_updated(current_energy : int)
 signal elements_combined(combo_data : Dictionary)
 
 
+# Combo Related
+signal combo_applied(combo_data : Dictionary)
+
+
 #=====================
 # Signal String names
 #=====================
@@ -59,6 +69,8 @@ const CARDS_DRAWN : String = "cards_drawn"
 const HAND_FILLED : String = "hand_filled"
 const CHARACTER_SWAPPED : String = "character_swapped"
 const ENEMY_TARGET_SELECTED : String = "enemy_target_selected"
+const ENEMY_DAMAGED : String = "enemy_damaged"
+const ENEMY_ELEMENT_APPLIED : String = "enemy_element_applied"
 const CARD_SELECTED : String = "card_selected"
 const CARD_DESELECTED : String = "card_deselected"
 const CARD_PLAYED : String = "card_played"
@@ -68,3 +80,4 @@ const ENERGY_GAINED : String = "energy_gained"
 const ENERGY_SPENT : String = "energy_spent"
 const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"
 const ELEMENTS_COMBINED : String = "elements_combined"
+const COMBO_APPLIED : String = "combo_applied"

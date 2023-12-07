@@ -186,3 +186,15 @@ const GROW : String = "grow"  # water + nature
 const FREEZE : String = "freeze"  # water + ice
 const SURGE : String = "surge"  # volt + nature
 const TEMPEST : String = "tempest"  # wind + volt
+
+
+#========================
+# Combo Signal constants
+#========================
+
+const FIRST_ELEMENT : String = "first_element"
+const SECOND_ELEMENT : String = "second_element"
+const COMBO : String = "combo"
+const INDEX : String = "index"
+const ELEMENT : String = "element"
+const ENTITY : String = "entity"

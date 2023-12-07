@@ -61,6 +61,22 @@ static func Aero() -> Element:
 		Element.MACHINE_NAME : Element.AERO
 	})
 
+static func by_machine_name(_machine_name : String) -> Element:
+	match _machine_name:
+		Element.FIRE:
+			return Fire()
+		Element.WATER:
+			return Water()
+		Element.NATURE:
+			return Nature()
+		Element.VOLT:
+			return Volt()
+		Element.ICE:
+			return Ice()
+		Element.AERO:
+			return Aero()
+		_:
+			return
 
 #========================
 # Init Param kwarg names

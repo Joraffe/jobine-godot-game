@@ -6,15 +6,12 @@ var combo : Combo:
 	set = set_combo
 var original_label_position : Vector2
 
-const COMBO : String = "combo"
-const ENTITY : String = "entity"
-
 
 #=======================
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.ELEMENTS_COMBINED, _on_elements_combined)
+	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
 
 
 #=======================
@@ -28,11 +25,11 @@ func set_combo(new_combo : Combo) -> void:
 #=======================
 # Signal Handlers
 #=======================
-func _on_elements_combined(combo_data : Dictionary) -> void:
-	if combo_data[ENTITY] != entity:
+func _on_combo_applied(combo_data : Dictionary) -> void:
+	if combo_data[Combo.ENTITY] != entity:
 		return
 
-	combo = combo_data[COMBO]
+	combo = combo_data[Combo.COMBO]
 
 #=======================
 # Combo Functionality

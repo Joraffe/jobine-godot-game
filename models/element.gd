@@ -19,6 +19,24 @@ func as_dict() -> Dictionary:
 		MACHINE_NAME : machine_name
 	}
 
+func is_fire() -> bool:
+	return self.machine_name == Element.FIRE
+
+func is_water() -> bool:
+	return self.machine_name == Element.WATER
+
+func is_nature() -> bool:
+	return self.machine_name == Element.NATURE
+
+func is_volt() -> bool:
+	return self.machine_name == Element.VOLT
+
+func is_ice() -> bool:
+	return self.machine_name == Element.ICE
+
+func is_aero() -> bool:
+	return self.machine_name == Element.AERO
+
 static func create(element_data : Dictionary) -> Element:
 	return Element.new(
 		element_data[HUMAN_NAME],

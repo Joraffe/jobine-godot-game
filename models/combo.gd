@@ -2,6 +2,10 @@ extends Resource
 class_name Combo
 
 
+var first_element : Element
+var second_element : Element
+
+# derived from first_element + second_element
 var human_name : String
 var machine_name : String
 var base_damage : int
@@ -11,155 +15,171 @@ var targeting_name : String
 
 
 func _init(
-	_human_name : String,
-	_machine_name : String,
-	_base_damage : int,
-	_applied_element_name : String,
-	_num_applied_element : int,
-	_targeting_name : String
+	_first_element : Element,
+	_second_element : Element,
 ) -> void:
-	human_name = _human_name
-	machine_name = _machine_name
-	base_damage = _base_damage
-	applied_element_name = _applied_element_name
-	num_applied_element = _num_applied_element
-	targeting_name = _targeting_name
+	first_element = _first_element
+	second_element = _second_element
+	# based off of first_element + second_element
+	set_combo_derived_data()
 
+func has_mono_elements() -> bool:
+	return first_element.machine_name == second_element.machine_name
+
+func is_evaporate() -> bool:
+	return (
+		(first_element.is_fire() and second_element.is_water())
+		or
+		(first_element.is_water() and second_element.is_fire())
+	)
+
+func is_burn() -> bool:
+	return (
+		(first_element.is_fire() and second_element.is_nature())
+		or
+		(first_element.is_nature() and second_element.is_fire())
+	)
+
+func is_charge() -> bool:
+	return (
+		(first_element.is_volt() and second_element.is_water())
+		or
+		(first_element.is_water() and second_element.is_volt())
+	)
+
+func is_chill() -> bool:
+	return (
+		(first_element.is_aero() and second_element.is_ice())
+		or
+		(first_element.is_ice() and second_element.is_aero())
+	)
+
+func is_melt() -> bool:
+	return (
+		(first_element.is_fire() and second_element.is_ice())
+		or
+		(first_element.is_ice() and second_element.is_fire())
+	)
+
+func is_blaze() -> bool:
+	return (
+		(first_element.is_fire() and second_element.is_aero())
+		or
+		(first_element.is_aero() and second_element.is_fire())
+	)
+
+func is_grow() -> bool:
+	return (
+		(first_element.is_nature() and second_element.is_water())
+		or
+		(first_element.is_water() and second_element.is_nature())
+	)
+
+func is_freeze() -> bool:
+	return (
+		(first_element.is_ice() and second_element.is_water())
+		or
+		(first_element.is_water() and second_element.is_ice())
+	)
+
+func is_surge() -> bool:
+	return (
+		(first_element.is_volt() and second_element.is_nature())
+		or
+		(first_element.is_nature() and second_element.is_volt())
+	)
+
+func is_tempest() -> bool:
+	return (
+		(first_element.is_volt() and second_element.is_aero())
+		or
+		(first_element.is_aero() and second_element.is_volt())
+	)
+
+func set_combo_derived_data() -> void:
+	if is_evaporate():
+		human_name = "Evaporate"
+		machine_name = Combo.EVAPORATE
+		base_damage = 2
+		applied_element_name = ""
+		num_applied_element = 0
+		targeting_name = Targeting.SINGLE
+	elif is_burn():
+		human_name = "Burn"
+		machine_name = Combo.BURN
+		base_damage = 1
+		applied_element_name = ""
+		num_applied_element = 0
+		targeting_name = Targeting.BLAST
+	elif is_charge():
+		human_name = "Charge"
+		machine_name = Combo.CHARGE
+		base_damage = 0
+		applied_element_name = Element.VOLT
+		num_applied_element = 2
+		targeting_name = Targeting.SINGLE
+	elif is_chill():
+		human_name = "Chill"
+		machine_name = Combo.CHILL
+		base_damage = 0
+		applied_element_name = Element.ICE
+		num_applied_element = 1
+		targeting_name = Targeting.ALL
+	elif is_melt():
+		human_name = "Melt"
+		machine_name = Combo.MELT
+		base_damage = 2
+		applied_element_name = ""
+		num_applied_element = 0
+		targeting_name = Targeting.SINGLE
+	elif is_blaze():
+		human_name = "Blaze"
+		machine_name = Combo.BLAZE
+		base_damage = 0
+		applied_element_name = Element.FIRE
+		num_applied_element = 1
+		targeting_name = Targeting.ALL
+	elif is_grow():
+		human_name = "Grow"
+		machine_name = Combo.GROW
+		base_damage = 1
+		applied_element_name = Element.NATURE
+		num_applied_element = 1
+		targeting_name = Targeting.SINGLE
+	elif is_freeze():
+		human_name = "Freeze"
+		machine_name = Combo.FREEZE
+		base_damage = 0
+		applied_element_name = Element.ICE
+		num_applied_element = 2
+		targeting_name = Targeting.SINGLE
+	elif is_surge():
+		human_name = "Surge"
+		machine_name = Combo.SURGE
+		base_damage = 1
+		applied_element_name = ""
+		num_applied_element = 0
+		targeting_name = Targeting.BLAST
+	elif is_tempest():
+		human_name = "Tempest"
+		machine_name = Combo.TEMPEST
+		base_damage = 0
+		applied_element_name = Element.VOLT
+		num_applied_element = 1
+		targeting_name = Targeting.ALL
+	else:
+		human_name = ""
+		machine_name = ""
+		base_damage = 0
+		applied_element_name = ""
+		num_applied_element = 0
+		targeting_name = ""
 
 static func create(combo_data : Dictionary) -> Combo:
 	return Combo.new(
-		combo_data[Combo.HUMAN_NAME],
-		combo_data[Combo.MACHINE_NAME],
-		combo_data[Combo.BASE_DAMAGE],
-		combo_data[Combo.APPLIED_ELEMENT_NAME],
-		combo_data[Combo.NUM_APPLIED_ELEMENT],
-		combo_data[Combo.TARGETING_NAME]
+		combo_data[Combo.FIRST_ELEMENT],
+		combo_data[Combo.SECOND_ELEMENT],
 	)
-
-static func Evaporate() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Evaporate",
-		Combo.MACHINE_NAME : Combo.EVAPORATE,
-		Combo.BASE_DAMAGE : 2,
-		Combo.APPLIED_ELEMENT_NAME : "",
-		Combo.NUM_APPLIED_ELEMENT : 0,
-		Combo.TARGETING_NAME : Targeting.SINGLE
-	})
-
-static func Burn() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Burn",
-		Combo.MACHINE_NAME : Combo.BURN,
-		Combo.BASE_DAMAGE : 1,
-		Combo.APPLIED_ELEMENT_NAME : "",
-		Combo.NUM_APPLIED_ELEMENT : 0,
-		Combo.TARGETING_NAME : Targeting.BLAST
-	})
-
-static func Charge() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Charge",
-		Combo.MACHINE_NAME : Combo.CHARGE,
-		Combo.BASE_DAMAGE : 1,
-		Combo.APPLIED_ELEMENT_NAME : Element.VOLT,
-		Combo.NUM_APPLIED_ELEMENT : 2,
-		Combo.TARGETING_NAME : Targeting.SINGLE
-	})
-
-static func Chill() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Chill",
-		Combo.MACHINE_NAME : Combo.CHILL,
-		Combo.BASE_DAMAGE : 0,
-		Combo.APPLIED_ELEMENT_NAME : Element.ICE,
-		Combo.NUM_APPLIED_ELEMENT : 1,
-		Combo.TARGETING_NAME : Targeting.ALL
-	})
-
-static func Melt() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Melt",
-		Combo.MACHINE_NAME : Combo.MELT,
-		Combo.BASE_DAMAGE : 2,
-		Combo.APPLIED_ELEMENT_NAME : "",
-		Combo.NUM_APPLIED_ELEMENT : 0,
-		Combo.TARGETING_NAME : Targeting.SINGLE
-	})
-
-static func Blaze() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Blaze",
-		Combo.MACHINE_NAME : Combo.BLAZE,
-		Combo.BASE_DAMAGE : 0,
-		Combo.APPLIED_ELEMENT_NAME : Element.FIRE,
-		Combo.NUM_APPLIED_ELEMENT : 1,
-		Combo.TARGETING_NAME : Targeting.Blast
-	})
-
-static func Grow() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Grow",
-		Combo.MACHINE_NAME : Combo.GROW,
-		Combo.BASE_DAMAGE : 1,
-		Combo.APPLIED_ELEMENT_NAME : Element.NATURE,
-		Combo.NUM_APPLIED_ELEMENT : 1,
-		Combo.TARGETING_NAME : Targeting.SINGLE
-	})
-
-static func Freeze() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Freeze",
-		Combo.MACHINE_NAME : Combo.FREEZE,
-		Combo.BASE_DAMAGE : 0,
-		Combo.APPLIED_ELEMENT_NAME : Element.ICE,
-		Combo.NUM_APPLIED_ELEMENT : 2,
-		Combo.TARGETING_NAME : Targeting.SINGLE
-	})
-
-static func Surge() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Surge",
-		Combo.MACHINE_NAME : Combo.SURGE,
-		Combo.BASE_DAMAGE : 1,
-		Combo.APPLIED_ELEMENT_NAME : "",
-		Combo.NUM_APPLIED_ELEMENT : 0,
-		Combo.TARGETING_NAME : Targeting.BLAST
-	})
-
-static func Tempest() -> Combo:
-	return Combo.create({
-		Combo.HUMAN_NAME : "Tempest",
-		Combo.MACHINE_NAME : Combo.TEMPEST,
-		Combo.BASE_DAMAGE : 0,
-		Combo.APPLIED_ELEMENT_NAME : Element.VOLT,
-		Combo.NUM_APPLIED_ELEMENT : 1,
-		Combo.TARGETING_NAME : Targeting.ALL
-	})
-
-static func by_machine_name(_machine_name : String) -> Combo:
-	match _machine_name:
-		Combo.EVAPORATE:
-			return Combo.Evaporate()
-		Combo.BURN:
-			return Combo.Burn()
-		Combo.CHARGE:
-			return Combo.Charge()
-		Combo.CHILL:
-			return Combo.Chill()
-		Combo.MELT:
-			return Combo.Melt()
-		Combo.BLAZE:
-			return Combo.Blaze()
-		Combo.GROW:
-			return Combo.Grow()
-		Combo.FREEZE:
-			return Combo.Freeze()
-		Combo.SURGE:
-			return Combo.Surge()
-		Combo.TEMPEST:
-			return Combo.Tempest()
-		_:
-			return null
 
 
 #========================
@@ -191,7 +211,6 @@ const TEMPEST : String = "tempest"  # wind + volt
 #========================
 # Combo Signal constants
 #========================
-
 const FIRST_ELEMENT : String = "first_element"
 const SECOND_ELEMENT : String = "second_element"
 const COMBO : String = "combo"

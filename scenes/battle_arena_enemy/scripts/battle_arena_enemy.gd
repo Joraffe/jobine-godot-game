@@ -54,7 +54,7 @@ func _on_card_played(card : Card, targets: Array) -> void:
 		Element.HUMAN_NAME : card.element_name.capitalize(),
 		Element.MACHINE_NAME : card.element_name
 	}
-	var times_to_apply : int = card.effect_count
+	var times_to_apply : int = card.element_amount
 	for i in range(times_to_apply):
 		$Aura.apply_element(Element.create(element_data))
 

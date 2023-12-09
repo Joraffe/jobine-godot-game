@@ -37,21 +37,21 @@ static func seed_character_data(config_file : ConfigFile) -> void:
 	# Juno Character Data
 	config_file.set_value(
 		CHARACTERS,
-		CharacterArchive.JUNO_CHARACTER,
+		Character.JUNO,
 		SeedData._get_juno_character_data()
 	)
 
 	# Pettol Character Data
 	config_file.set_value(
 		CHARACTERS,
-		CharacterArchive.PETTOL_CHARACTER,
+		Character.PETTOL,
 		SeedData._get_pettol_character_data()
 	)
 
 	# Axo Character Data
 	config_file.set_value(
 		CHARACTERS,
-		CharacterArchive.AXO_CHARACTER,
+		Character.AXO,
 		SeedData._get_axo_character_data()
 	)
 
@@ -92,22 +92,22 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 	# Juno Card Data
 	config_file.set_value(
 		CARDS,
-		CharacterArchive.JUNO_CHARACTER,
-		SeedData._get_juno_card_data()
+		Character.JUNO,
+		SeedData._get_juno_card_names()
 	)
 
 	# Pettol Card Data
 	config_file.set_value(
 		CARDS,
-		CharacterArchive.PETTOL_CHARACTER,
-		SeedData._get_pettol_card_data()
+		Character.PETTOL,
+		SeedData._get_pettol_card_names()
 	)
 
 	# Axo Card Data
 	config_file.set_value(
 		CARDS,
-		CharacterArchive.AXO_CHARACTER,
-		SeedData._get_axo_card_data()
+		Character.AXO,
+		SeedData._get_axo_card_names()
 	)
 
 	config_file.save(SEED_DATA_CFG_PATH)
@@ -119,79 +119,52 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 static func _get_juno_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Juno",
-		Character.MACHINE_NAME : CharacterArchive.JUNO_CHARACTER,
+		Character.MACHINE_NAME : Character.JUNO,
 		Character.ELEMENT_NAME : Element.NATURE,
 		Character.MAX_HP : 10,
 		Character.CURRENT_HP : 10,
-		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
+		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
 	}
 
-static func _get_juno_card_data() -> Array[Dictionary]:	
-	var cards : Array[Dictionary] = []
-
-	for i in range(3):
-		cards.append({
-			Card.HUMAN_NAME : CardArchive.NATURE_SINGLE_CARD,
-			Card.MACHINE_NAME : CardArchive.NATURE_SINGLE_CARD,
-			Card.COST : 1,
-			Card.ELEMENT_NAME : Element.NATURE,
-			Card.CHARACTER_NAME : CharacterArchive.JUNO_CHARACTER,
-			Card.TARGETING_NAME : Targeting.SINGLE,
-			Card.EFFECT_COUNT : 1
-		})
-
+static func _get_juno_card_names() -> Array[String]:
+	var cards : Array[String] = []
+	cards.append(Card.PETAL_STORM)
+	cards.append(Card.PETAL_STORM)
+	cards.append(Card.BLOOM)
 	return cards
 
 static func _get_pettol_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Pettol",
-		Character.MACHINE_NAME : CharacterArchive.PETTOL_CHARACTER,
-		Character.ELEMENT_NAME : Element.WATER,
+		Character.MACHINE_NAME : Character.PETTOL,
+		Character.ELEMENT_NAME : Element.VOLT,
 		Character.MAX_HP : 15,
 		Character.CURRENT_HP : 15,
-		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
+		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
 	}
 
-static func _get_pettol_card_data() -> Array[Dictionary]:
-	var cards : Array[Dictionary] = []
-
-	for i in range(3):
-		cards.append({
-			Card.HUMAN_NAME : CardArchive.WATER_SINGLE_CARD,
-			Card.MACHINE_NAME : CardArchive.WATER_SINGLE_CARD,
-			Card.COST : 1,
-			Card.ELEMENT_NAME : Element.WATER,
-			Card.CHARACTER_NAME : CharacterArchive.PETTOL_CHARACTER,
-			Card.TARGETING_NAME : Targeting.SINGLE,
-			Card.EFFECT_COUNT : 1
-		})
-
+static func _get_pettol_card_names() -> Array[String]:
+	var cards : Array[String] = []
+	cards.append(Card.CHOMP)
+	cards.append(Card.CHOMP)
+	cards.append(Card.PETTOL_BEAM)
 	return cards
 
 static func _get_axo_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Axo",
-		Character.MACHINE_NAME : CharacterArchive.AXO_CHARACTER,
+		Character.MACHINE_NAME : Character.AXO,
 		Character.ELEMENT_NAME : Element.FIRE,
 		Character.MAX_HP : 7,
 		Character.CURRENT_HP : 7,
-		Character.ENTITY_TYPE : CharacterArchive.ENTITY_TYPE_CHARACTER
+		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
 	}
 
-static func _get_axo_card_data() -> Array[Dictionary]:
-	var cards : Array[Dictionary] = []
-
-	for i in range(3):
-		cards.append({
-			Card.HUMAN_NAME : CardArchive.FIRE_SINGLE_CARD,
-			Card.MACHINE_NAME : CardArchive.FIRE_SINGLE_CARD,
-			Card.COST : 1,
-			Card.ELEMENT_NAME : Element.FIRE,
-			Card.CHARACTER_NAME : CharacterArchive.AXO_CHARACTER,
-			Card.TARGETING_NAME : Targeting.SINGLE,
-			Card.EFFECT_COUNT : 1
-		})
-
+static func _get_axo_card_names() -> Array[String]:
+	var cards : Array[String] = []
+	cards.append(Card.SCALD)
+	cards.append(Card.SCALD)
+	cards.append(Card.SWIFT_SWIM)
 	return cards
 
 static func _get_fire_slime_enemy_data() -> Dictionary:

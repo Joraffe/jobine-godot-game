@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btbbp3umvhe4m"
-path="res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"
+uid="uid://m3ween4eu4vg"
+path="res://.godot/imported/chomp.png-7f83685a81920d0f8d51ebaf0ba9f9f1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_aura_element/resources/images/nature/element_aura.png"
-dest_files=["res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/chomp/chomp.png"
+dest_files=["res://.godot/imported/chomp.png-7f83685a81920d0f8d51ebaf0ba9f9f1.ctex"]
 
 [params]
 

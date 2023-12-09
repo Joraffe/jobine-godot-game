@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btbbp3umvhe4m"
-path="res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"
+uid="uid://dtt145g2r7scl"
+path="res://.godot/imported/pettol_beam.png-abe448d475e7b2308da00a33f09707a7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_aura_element/resources/images/nature/element_aura.png"
-dest_files=["res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/pettol_beam/pettol_beam.png"
+dest_files=["res://.godot/imported/pettol_beam.png-abe448d475e7b2308da00a33f09707a7.ctex"]
 
 [params]
 

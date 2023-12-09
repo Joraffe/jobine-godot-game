@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btbbp3umvhe4m"
-path="res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"
+uid="uid://dnx6dcorqa3bd"
+path="res://.godot/imported/juno.png-f443b11d925c94966efae6021430b44e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_aura_element/resources/images/nature/element_aura.png"
-dest_files=["res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"]
+source_file="res://scenes/battle_arena_character/resources/images/juno/juno.png"
+dest_files=["res://.godot/imported/juno.png-f443b11d925c94966efae6021430b44e.ctex"]
 
 [params]
 

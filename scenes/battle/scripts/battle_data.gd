@@ -33,15 +33,15 @@ func _init(seed_data : Dictionary) -> void:
 static func get_battle_lead_character(seed_data : Dictionary) -> Character:	
 	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
 	# Juno starts off leading the party! :3
-	return Character.create(character_seed_data[CharacterArchive.JUNO_CHARACTER])
+	return Character.create(character_seed_data[Character.JUNO])
 
 static func get_battle_top_swap_character(seed_data : Dictionary) -> Character:
 	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
-	return Character.create(character_seed_data[CharacterArchive.PETTOL_CHARACTER])
+	return Character.create(character_seed_data[Character.PETTOL])
 
 static func get_battle_bottom_swap_character(seed_data : Dictionary) -> Character:
 	var character_seed_data : Dictionary = seed_data[SeedData.CHARACTERS]
-	return Character.create(character_seed_data[CharacterArchive.AXO_CHARACTER])
+	return Character.create(character_seed_data[Character.AXO])
 
 static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
 	var battle_enemies : Array[Enemy] = []
@@ -61,16 +61,16 @@ static func get_battle_cards(seed_data : Dictionary) -> Array[Card]:
 #		"pettol_character": [{ # pettol card array }],
 #		"axo_character": [{ # axo card array }],
 #	}
-	var cards_data : Array[Dictionary] = []
+	var card_names : Array[String] = []
 
 	# iterate through all character cards
 	for character_name in card_seed_data.keys():
-		var character_cards_data : Array[Dictionary]
-		character_cards_data = card_seed_data[character_name]
-		for character_card_data in character_cards_data:
-			cards_data.append(character_card_data)
+		var character_card_names : Array[String]
+		character_card_names = card_seed_data[character_name]
+		for character_card_name in character_card_names:
+			card_names.append(character_card_name)
 
-	return Card.create_multi(cards_data)
+	return Card.by_machine_names(card_names)
 
 static func get_battle_hand(_seed_data : Dictionary) -> Array[Card]:
 	var battle_hand : Array[Card] = []

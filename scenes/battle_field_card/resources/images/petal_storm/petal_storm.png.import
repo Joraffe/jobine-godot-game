@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btbbp3umvhe4m"
-path="res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"
+uid="uid://df6wduqfstcgx"
+path="res://.godot/imported/petal_storm.png-69755d2e8cf8f6a3537b3469a3d93a5d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_aura_element/resources/images/nature/element_aura.png"
-dest_files=["res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/petal_storm/petal_storm.png"
+dest_files=["res://.godot/imported/petal_storm.png-69755d2e8cf8f6a3537b3469a3d93a5d.ctex"]
 
 [params]
 

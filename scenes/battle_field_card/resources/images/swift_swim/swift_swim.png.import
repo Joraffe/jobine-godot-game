@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btbbp3umvhe4m"
-path="res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"
+uid="uid://bswxvu5avaonk"
+path="res://.godot/imported/swift_swim.png-7ada25a8be0734a4ba2807963c2de683.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_aura_element/resources/images/nature/element_aura.png"
-dest_files=["res://.godot/imported/element_aura.png-35f8d57d3260cbb5aaa7cd086c3d6e7f.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/swift_swim/swift_swim.png"
+dest_files=["res://.godot/imported/swift_swim.png-7ada25a8be0734a4ba2807963c2de683.ctex"]
 
 [params]
 

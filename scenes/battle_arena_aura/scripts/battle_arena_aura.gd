@@ -102,13 +102,16 @@ func check_index_for_combo(element_index : int) -> Dictionary:
 	}
 
 	var element : Element = elements[element_index]
-
 	for compared_index in elements.size():
 		if compared_index == element_index:
 			continue
 
 		var compared_element : Element = elements[compared_index]
-		if is_same_element(element, compared_element):
+		var combo = Combo.create({
+			Combo.FIRST_ELEMENT: element,
+			Combo.SECOND_ELEMENT: compared_element
+		})
+		if combo.has_mono_elements():
 			continue
 
 		combo_data[Combo.ENTITY] = entity
@@ -120,18 +123,8 @@ func check_index_for_combo(element_index : int) -> Dictionary:
 			Combo.INDEX : compared_index,
 			Combo.ELEMENT: compared_element
 		}
-
-		if is_evaporate_combo(element, compared_element):
-			combo_data[Combo.COMBO] = Combo.Evaporate()
-			return combo_data
-
-		if is_burn_combo(element, compared_element):
-			combo_data[Combo.COMBO] = Combo.Burn()
-			return combo_data
-
-		if is_grow_combo(element, compared_element):
-			combo_data[Combo.COMBO] = Combo.Grow()
-			return combo_data
+		combo_data[Combo.COMBO] = combo
+		return combo_data
 
 	# if we make it here, the element at the index
 	# we are checking cannot combine with any others
@@ -191,33 +184,3 @@ func tween_up_and_free_element(element : Element) -> void:
 				0.5
 			)
 			tween.tween_callback(child.queue_free)
-
-func is_same_element(first_element : Element, second_element : Element) -> bool:
-	return first_element.machine_name == second_element.machine_name
-
-func is_evaporate_combo(first_element : Element, second_element : Element) -> bool:
-	return (
-		(_is_fire_element(first_element) and _is_water_element(second_element))
-		or (_is_water_element(first_element) and _is_fire_element(second_element))
-	)
-
-func is_grow_combo(first_element : Element, second_element : Element) -> bool:
-	return (
-		(_is_nature_element(first_element) and _is_water_element(second_element))
-		or (_is_water_element(first_element) and _is_nature_element(second_element))
-	)
-
-func is_burn_combo(first_element : Element, second_element : Element) -> bool:
-	return (
-		(_is_fire_element(first_element) and _is_nature_element(second_element))
-		or (_is_nature_element(first_element) and _is_fire_element(second_element))
-	)
-
-func _is_fire_element(element : Element) -> bool:
-	return element.machine_name == Element.FIRE
-
-func _is_water_element(element : Element) -> bool:
-	return element.machine_name == Element.WATER
-
-func _is_nature_element(element : Element) -> bool:
-	return element.machine_name == Element.NATURE

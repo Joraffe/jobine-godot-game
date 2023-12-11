@@ -15,6 +15,7 @@ var sprite_original_global_position : Vector2
 var card_targeting_position : Vector2
 var card_played : bool = false
 var card_primary_target_name : String
+var lead_character : Character
 
 
 #=======================

@@ -1,12 +1,14 @@
 extends Node
 
 
-var hand : Array[Card]:
+var hand : Array[Card] :
 	set = set_hand
-var max_hand_size : int:
+var max_hand_size : int :
 	set = set_max_hand_size
-var available_energy : int:
+var available_energy : int :
 	set = set_available_energy
+var lead_character : Character : 
+	set = set_lead_character
 
 var image_data : ImageData = ImageData.new(
 	"battle_field_hand",
@@ -39,13 +41,18 @@ func set_max_hand_size(new_max_hand_size : int) -> void:
 func set_available_energy(new_available_energy : int) -> void:
 	available_energy = new_available_energy
 
+func set_lead_character(new_lead_character : Character) -> void:
+	lead_character = new_lead_character
+
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	hand = battle_data.hand
 	max_hand_size = battle_data.max_hand_size
+	lead_character = battle_data.lead_character
+	hand = battle_data.hand
+
 
 func _on_card_drawn(drawn_card : Card) -> void:
 	var new_hand : Array[Card] = []
@@ -76,6 +83,9 @@ func _on_cards_drawn(drawn_cards : Array[Card]) -> void:
 
 func _on_current_energy_updated(current_energy : int) -> void:
 	available_energy = current_energy
+
+func _on_current_lead_updated(current_lead : Character) -> void:
+	lead_character = current_lead
 
 
 #=======================

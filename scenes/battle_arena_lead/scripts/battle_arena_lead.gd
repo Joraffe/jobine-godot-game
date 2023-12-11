@@ -24,7 +24,13 @@ func _init() -> void:
 #=======================
 func set_lead_character(new_character : Character) -> void:
 	lead_character = new_character
+
+	$Area2D.empty_lead()
 	$Area2D.render_lead()
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_LEAD_UPDATED,
+		lead_character
+	)
 
 
 #========================
@@ -35,5 +41,3 @@ func _on_battle_started(battle_data : BattleData) -> void:
 
 func _on_character_swapped(character : Character, _swap_position : String) -> void:
 	lead_character = character
-	$Area2D.empty_lead()
-	$Area2D.render_lead()

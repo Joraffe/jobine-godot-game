@@ -21,6 +21,7 @@ signal hand_filled
 
 # Swap Related
 signal character_swapped(character : Character, swap_position : String)
+signal current_lead_updated(current_lead : Character)
 signal current_swaps_updated(current_swaps : int)
 
 
@@ -79,6 +80,7 @@ const HAND_FILLED : String = "hand_filled"
 
 const CHARACTER_SWAPPED : String = "character_swapped"
 const CURRENT_SWAPS_UPDATED : String = "current_swaps_updated"
+const CURRENT_LEAD_UPDATED : String = "current_lead_updated"
 
 
 const ENEMY_TARGET_SELECTED : String = "enemy_target_selected"

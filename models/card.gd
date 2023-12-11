@@ -10,9 +10,14 @@ var character_name : String
 var targeting_name : String
 var base_damage : int
 var element_amount : int
-var combo_trigger_name : String  # name of the combo that gives bonus effects
+var combo_element_name : String  # name of the element to form a combo that gives bonus effects
 var combo_bonus_name : String  # name of the bonus effects
 var combo_bonus_data : Dictionary  # params for the Combo Bonus
+var combo_bonus_targeting_name : String
+
+# derived values
+var combo_trigger : Combo
+var combo_bonus : ComboBonus
 
 
 func _init(
@@ -24,9 +29,10 @@ func _init(
 	_targeting_name : String,
 	_base_damage : int,
 	_element_amount : int,
-	_combo_trigger_name : String,
+	_combo_element_name : String,
 	_combo_bonus_name : String,
-	_combo_bonus_data : Dictionary
+	_combo_bonus_data : Dictionary,
+	_combo_bonus_targeting_name : String
 ) -> void:
 	human_name = _human_name
 	machine_name = _machine_name
@@ -36,9 +42,47 @@ func _init(
 	targeting_name = _targeting_name
 	base_damage = _base_damage
 	element_amount = _element_amount
-	combo_trigger_name = _combo_trigger_name
+	combo_element_name = _combo_element_name
 	combo_bonus_name = _combo_bonus_name
 	combo_bonus_data = _combo_bonus_data
+	combo_bonus_targeting_name = _combo_bonus_targeting_name
+	set_combo_derived_data()
+
+func set_combo_derived_data() -> void:
+	combo_trigger = Combo.create({
+		Combo.FIRST_ELEMENT : Element.by_machine_name(self.element_name),
+		Combo.SECOND_ELEMENT : Element.by_machine_name(self.combo_element_name)
+	})
+	combo_bonus = ComboBonus.by_machine_name(
+		self.combo_bonus_name,
+		self.combo_bonus_data
+	)
+
+func card_text() -> String:
+	var text : String = ""
+
+	if element_amount != 0:
+		var element = Element.by_machine_name(self.element_name)
+
+		text += "Apply {amount} {element}.\n".format({
+			"amount" : self.element_amount,
+			"element" : element.human_name
+		})
+
+	if base_damage != 0:
+		text += "Deal {dmg} damage.\n".format({
+			"dmg" : self.base_damage
+		})
+
+	if combo_bonus_name != "":
+		text += "{trigger}:\n".format({
+			"trigger" : self.combo_trigger.human_name
+		})
+		text += "{bonus}".format({
+			"bonus" : self.combo_bonus.card_text()
+		})
+
+	return text
 
 
 static func create(card_data : Dictionary) -> Card:
@@ -51,9 +95,10 @@ static func create(card_data : Dictionary) -> Card:
 		card_data[Card.TARGETING_NAME],
 		card_data[Card.BASE_DAMAGE],
 		card_data[Card.ELEMENT_AMOUNT],
-		card_data[Card.COMBO_TRIGGER_NAME],
+		card_data[Card.COMBO_ELEMENT_NAME],
 		card_data[Card.COMBO_BONUS_NAME],
-		card_data[Card.COMBO_BONUS_DATA]
+		card_data[Card.COMBO_BONUS_DATA],
+		card_data[Card.COMBO_BONUS_TARGETING_NAME]
 	)
 
 static func create_multi(cards_data : Array[Dictionary]) -> Array[Card]:
@@ -101,10 +146,17 @@ const CHARACTER_NAME : String = "character_name"
 const TARGETING_NAME : String = "targeting_name"
 const BASE_DAMAGE : String = "base_damage"
 const ELEMENT_AMOUNT : String = "element_amount"
-const COMBO_TRIGGER_NAME : String = "combo_trigger_name"
+const COMBO_ELEMENT_NAME : String = "combo_element_name"
 const COMBO_BONUS_NAME : String = "combo_bonus_name"
 const COMBO_BONUS_DATA : String = "combo_bonus_data"
+const COMBO_BONUS_TARGETING_NAME : String = "combo_bonus_targeting_name"
 
+
+#========================
+# Other constants
+#========================
+const COMBO_TRIGGER : String = "combo_trigger"
+const COMBO_BONUS : String = "combo_bonus"
 
 #=======================
 # Juno Cards
@@ -122,9 +174,12 @@ static func PetalStorm() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_TRIGGER_NAME : Combo.SURGE,
+		Card.COMBO_ELEMENT_NAME : Element.VOLT,
 		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_CARDS,
-		Card.COMBO_BONUS_DATA : {ComboBonus.CARD_DRAW_AMOUNT : 1}
+		Card.COMBO_BONUS_DATA : {
+			ComboBonus.CARD_DRAW_AMOUNT : 1
+		},
+		Card.COMBO_BONUS_TARGETING_NAME : ""
 	})
 
 static func Bloom() -> Card:
@@ -137,9 +192,10 @@ static func Bloom() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_TRIGGER_NAME : Combo.GROW,
+		Card.COMBO_ELEMENT_NAME : Element.WATER,
 		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_HEAL,
-		Card.COMBO_BONUS_DATA : {ComboBonus.HEAL_AMOUNT : 1}
+		Card.COMBO_BONUS_DATA : {ComboBonus.HEAL_AMOUNT : 1},
+		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
 
@@ -159,9 +215,10 @@ static func PettolBeam() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_TRIGGER_NAME : Combo.CHARGE,
+		Card.COMBO_ELEMENT_NAME : Element.WATER,
 		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_DAMAGE,
-		Card.COMBO_BONUS_DATA : {ComboBonus.DAMAGE : 1}
+		Card.COMBO_BONUS_DATA : {ComboBonus.DAMAGE : 1},
+		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
 static func Chomp() -> Card:
@@ -174,9 +231,10 @@ static func Chomp() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_TRIGGER_NAME : Combo.SURGE,
+		Card.COMBO_ELEMENT_NAME : Element.NATURE,
 		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_ENERGY,
-		Card.COMBO_BONUS_DATA : {ComboBonus.ENERGY_AMOUNT : 1}
+		Card.COMBO_BONUS_DATA : {ComboBonus.ENERGY_AMOUNT : 1},
+		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
 
@@ -197,12 +255,13 @@ static func SwiftSwim() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_TRIGGER_NAME : Combo.CHARGE,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_STATUS_SELF,
+		Card.COMBO_ELEMENT_NAME : Element.VOLT,
+		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_STATUS,
 		Card.COMBO_BONUS_DATA : {
 			ComboBonus.STATUS_NAME : Status.HASTE,
 			ComboBonus.STATUS_DURATION : 1
-		}
+		},
+		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
 static func Scald() -> Card:
@@ -215,10 +274,11 @@ static func Scald() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_TRIGGER_NAME : Combo.EVAPORATE,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_STATUS_OTHER,
+		Card.COMBO_ELEMENT_NAME : Element.FIRE,
+		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_STATUS,
 		Card.COMBO_BONUS_DATA : {
 			ComboBonus.STATUS_NAME : Status.VULNERABLE,
 			ComboBonus.STATUS_DURATION : 1
-		}
+		},
+		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})

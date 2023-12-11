@@ -22,6 +22,7 @@ func set_combo(new_combo : Combo) -> void:
 	$Label.update_combo_text(combo)
 	animate_combo_text()
 
+
 #=======================
 # Signal Handlers
 #=======================
@@ -30,6 +31,7 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 		return
 
 	combo = combo_data[Combo.COMBO]
+
 
 #=======================
 # Combo Functionality

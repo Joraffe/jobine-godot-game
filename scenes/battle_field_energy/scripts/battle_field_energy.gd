@@ -19,6 +19,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
 
 #=======================
 # Setters
@@ -70,9 +71,21 @@ func _on_player_turn_started() -> void:
 		current_energy
 	)
 
-func _on_card_played(card : Card, _targets : Array) -> void:
+func _on_card_played(card : Card, _targeting : Targeting) -> void:
 	current_energy = self.current_energy - card.cost
 
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		current_energy
+	)
+
+func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
+	var scope_name : String = combo_bonus_data[ComboBonus.SCOPE]
+	if scope_name != ComboBonus.ENERGY_SCOPE:
+		return
+
+	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+	current_energy = self.current_energy + combo_bonus.energy_amount
 	BattleRadio.emit_signal(
 		BattleRadio.CURRENT_ENERGY_UPDATED,
 		current_energy

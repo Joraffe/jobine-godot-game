@@ -30,6 +30,12 @@ func set_card(new_card : Card) -> void:
 			"{name}.png".format({"name": self.card.machine_name})  # filename
 		)
 	)
+	$Area2D/Sprite2D/EffectPanel/MarginContainer/EffectLabel.update_effect_label_text(
+		card.card_text()
+	)
+	$Area2D/Sprite2D/NamePanel/NameLabel.update_name_label_text(
+		card.human_name
+	)
 
 func set_available_energy(new_available_energy : int) -> void:
 	available_energy = new_available_energy
@@ -40,8 +46,8 @@ func set_available_energy(new_available_energy : int) -> void:
 		color = Color.BLACK
 	else:
 		color = Color.DARK_RED
-	$Area2D/Sprite2D/Panel.update_stylebox(color)
-	$Area2D/Sprite2D/Panel/Label.update_label_styling(
+	$Area2D/Sprite2D/CostPanel.update_stylebox(color)
+	$Area2D/Sprite2D/CostPanel/CostLabel.update_label_styling(
 		"{cost}".format({"cost": self.card.cost}),
 		color
 	)

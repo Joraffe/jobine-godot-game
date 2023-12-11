@@ -11,9 +11,9 @@ var enemy_image_data : ImageData:
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
 	BattleRadio.connect(BattleRadio.ENEMY_DAMAGED, _on_enemy_damaged)
 	BattleRadio.connect(BattleRadio.ENEMY_ELEMENT_APPLIED, _on_enemy_element_applied)
+
 
 #=======================
 # Setters
@@ -36,9 +36,10 @@ func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
 
 	# Also update the Sprite2D with this new image data
 	$Area2D/Sprite2D.set_texture(enemy_image_data.get_img_texture())
-	# Also update the Health Bar
-	$HealthBar.set("entity", enemy)
+
 	$Aura.set("aura_width", enemy_image_data.get_img_width())
+	# Also update child nodes with the enetity
+	$HealthBar.set("entity", enemy)
 	$Aura.set("entity", enemy)
 	$Combo.set("entity", enemy)
 
@@ -46,18 +47,6 @@ func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
 #========================
 # Signal Handlers
 #========================
-func _on_card_played(card : Card, targets: Array) -> void:
-	if self.enemy not in targets:
-		return
-
-	var element_data : Dictionary = {
-		Element.HUMAN_NAME : card.element_name.capitalize(),
-		Element.MACHINE_NAME : card.element_name
-	}
-	var times_to_apply : int = card.element_amount
-	for i in range(times_to_apply):
-		$Aura.apply_element(Element.create(element_data))
-
 func _on_enemy_damaged(damaged_enemy : Enemy, damage : int) -> void:
 	if self.enemy != damaged_enemy:
 		return
@@ -74,3 +63,23 @@ func _on_enemy_element_applied(
 
 	for i in range(num_applied_element):
 		$Aura.apply_element(Element.by_machine_name(applied_element_name))
+
+
+#=======================
+# Enemy Functionality
+#=======================
+func play_card_on_enemy(card : Card, targeting : Targeting) -> void:
+	if self.enemy.machine_name != targeting.primary_target_name:
+		return
+
+	var element_data : Dictionary = {
+		Element.HUMAN_NAME : card.element_name.capitalize(),
+		Element.MACHINE_NAME : card.element_name
+	}
+
+	var times_to_apply : int = card.element_amount
+	for i in range(times_to_apply):
+		$Aura.apply_element(Element.create(element_data))
+
+	if card.base_damage != 0:
+		$HealthBar.take_damage(card.base_damage)

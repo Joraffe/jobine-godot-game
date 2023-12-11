@@ -36,7 +36,7 @@ signal enemy_element_applied(
 # Card Related
 signal card_selected(card : Card)
 signal card_deselected(card : Card)
-signal card_played(card : Card, targets : Array)
+signal card_played(card : Card, targeting : Targeting)
 
 
 # Turn Related
@@ -56,7 +56,7 @@ signal elements_combined(combo_data : Dictionary)
 
 # Combo Related
 signal combo_applied(combo_data : Dictionary)
-
+signal combo_bonus_applied(combo_bonus_data : Dictionary)
 
 #=====================
 # Signal String names
@@ -81,3 +81,4 @@ const ENERGY_SPENT : String = "energy_spent"
 const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"
 const ELEMENTS_COMBINED : String = "elements_combined"
 const COMBO_APPLIED : String = "combo_applied"
+const COMBO_BONUS_APPLIED : String = "combo_bonus_applied"

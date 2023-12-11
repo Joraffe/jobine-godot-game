@@ -89,7 +89,7 @@ func check_for_combo() -> void:
 		if combo_data[Combo.COMBO]:
 			BattleRadio.emit_signal(
 				BattleRadio.ELEMENTS_COMBINED,
-				combo_data
+				combo_data,
 			)
 			break
 

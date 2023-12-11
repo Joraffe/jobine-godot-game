@@ -34,7 +34,7 @@ func set_discard_pile(new_discard_pile : Array[Card]) -> void:
 func _on_battle_started(battle_data : BattleData) -> void:
 	discard_pile = battle_data.discard_pile
 
-func _on_card_played(played_card : Card, _targets : Array) -> void:
+func _on_card_played(played_card : Card, _targeting : Targeting) -> void:
 	var new_discard_pile : Array[Card] = []
 
 	for card_in_discard_pile in self.discard_pile:

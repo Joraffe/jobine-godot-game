@@ -13,6 +13,8 @@ var selected : bool = false
 var is_targeting_enabled : bool = false
 var sprite_original_global_position : Vector2
 var card_targeting_position : Vector2
+var card_played : bool = false
+var card_primary_target_name : String
 
 
 #=======================
@@ -28,6 +30,7 @@ func _ready():
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_ENABLED, _on_card_targeting_enabled)
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_DISABLED, _on_card_targeting_disabled)
 	BattleRadio.connect(BattleRadio.ENEMY_TARGET_SELECTED, _on_enemy_target_selected)
+	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
 
 
 #========================
@@ -71,14 +74,47 @@ func _on_enemy_target_selected(enemy : Enemy) -> void:
 	deselect_card()
 	clean_up_card_targeting()
 	move_card_to_discard_pile()
+	set_card_played()
+	set_card_primary_target_name(enemy.machine_name)
+
+	var targeting_name : String = battle_field_card.card.targeting_name
+	var targeting : Targeting = Targeting.by_machine_name(
+		targeting_name,
+		card_primary_target_name
+	)
 
 	# Stuff related to actually playing the card effects
 	BattleRadio.emit_signal(
 		BattleRadio.CARD_PLAYED,
 		battle_field_card.card,
-		[enemy]
+		targeting
 	)
 
+func _on_combo_applied(combo_data : Dictionary) -> void:
+	if not self.card_played:
+		return
+
+	var combo_name : String = combo_data[Combo.COMBO].machine_name
+	var combo_trigger_name = battle_field_card.card.combo_trigger.machine_name
+	if combo_name != combo_trigger_name:
+		return
+
+	var combo_bonus_targeting : Targeting = Targeting.by_machine_name(
+		battle_field_card.card.combo_bonus_targeting_name,
+		card_primary_target_name
+	)
+	var combo_bonus_data : Dictionary = {
+		ComboBonus.ENTITY_NAME : card_primary_target_name,
+		ComboBonus.SCOPE : battle_field_card.card.combo_bonus.scope(),
+		ComboBonus.COMBO_TRIGGER : battle_field_card.card.combo_trigger,
+		ComboBonus.COMBO_BONUS : battle_field_card.card.combo_bonus,
+		ComboBonus.TARGETING : combo_bonus_targeting
+	}
+
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_BONUS_APPLIED,
+		combo_bonus_data
+	)
 
 func _input(event):
 	if is_another_card_selected:
@@ -251,7 +287,16 @@ func move_card_to_discard_pile() -> void:
 		Vector2(),
 		0.2
 	)
-	tween.tween_callback(battle_field_card.queue_free)
+	tween.tween_callback(hide_card_after_played)
+
+func hide_card_after_played() -> void:
+	battle_field_card.visible = false
+
+func set_card_played() -> void:
+	card_played = true
+
+func set_card_primary_target_name(target_name : String) -> void:
+	card_primary_target_name = target_name
 
 func targeting_arrow_look_at_mouse(event) -> void:
 	var far_left = Vector2(350, 350)

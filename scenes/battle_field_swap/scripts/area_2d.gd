@@ -50,4 +50,5 @@ func position_swap_member(instance : Node2D, swap_position : String) -> void:
 	elif swap_position == battle_field_swap.BOTTOM_SWAP_CHARACTER:
 		pos_y = -100
 	member_area_2d.position = Vector2(-75, pos_y)
+	member_area_2d.set_sprite_original_global_position()
 	member_swap_icon.position = Vector2(100, pos_y)

@@ -94,6 +94,9 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 	if not self.card_played:
 		return
 
+	if not battle_field_card.card.combo_trigger:
+		return
+
 	var combo_name : String = combo_data[Combo.COMBO].machine_name
 	var combo_trigger_name = battle_field_card.card.combo_trigger.machine_name
 	if combo_name != combo_trigger_name:

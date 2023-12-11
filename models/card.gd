@@ -49,19 +49,20 @@ func _init(
 	set_combo_derived_data()
 
 func set_combo_derived_data() -> void:
-	combo_trigger = Combo.create({
-		Combo.FIRST_ELEMENT : Element.by_machine_name(self.element_name),
-		Combo.SECOND_ELEMENT : Element.by_machine_name(self.combo_element_name)
-	})
-	combo_bonus = ComboBonus.by_machine_name(
-		self.combo_bonus_name,
-		self.combo_bonus_data
-	)
+	if self.combo_element_name != "":
+		combo_trigger = Combo.create({
+			Combo.FIRST_ELEMENT : Element.by_machine_name(self.element_name),
+			Combo.SECOND_ELEMENT : Element.by_machine_name(self.combo_element_name)
+		})
+		combo_bonus = ComboBonus.by_machine_name(
+			self.combo_bonus_name,
+			self.combo_bonus_data
+		)
 
 func card_text() -> String:
 	var text : String = ""
 
-	if element_amount != 0:
+	if self.element_amount != 0:
 		var element = Element.by_machine_name(self.element_name)
 
 		text += "Apply {amount} {element}.\n".format({
@@ -69,13 +70,13 @@ func card_text() -> String:
 			"element" : element.human_name
 		})
 
-	if base_damage != 0:
+	if self.base_damage != 0:
 		text += "Deal {dmg} damage.\n".format({
 			"dmg" : self.base_damage
 		})
 
-	if combo_bonus_name != "":
-		text += "{trigger}:\n".format({
+	if self.combo_trigger and self.combo_bonus:
+		text += "\n{trigger}:\n".format({
 			"trigger" : self.combo_trigger.human_name
 		})
 		text += "{bonus}".format({
@@ -111,16 +112,16 @@ static func create_multi(cards_data : Array[Dictionary]) -> Array[Card]:
 
 static func by_machine_name(card_machine_name : String) -> Card:
 	match card_machine_name:
-		Card.PETAL_STORM:
-			return PetalStorm()
+		Card.FLORAL_DART:
+			return FloralDart()
 		Card.BLOOM:
 			return Bloom()
 		Card.PETTOL_BEAM:
 			return PettolBeam()
 		Card.CHOMP:
 			return Chomp()
-		Card.SCALD:
-			return Scald()
+		Card.AQUA_SHOT:
+			return AquaShot()
 		Card.SWIFT_SWIM:
 			return SwiftSwim()
 		_:
@@ -161,24 +162,22 @@ const COMBO_BONUS : String = "combo_bonus"
 #=======================
 # Juno Cards
 #=======================
-const PETAL_STORM : String = "petal_storm"
+const FLORAL_DART : String = "floral_dart"
 const BLOOM : String = "bloom"
 
-static func PetalStorm() -> Card:
+static func FloralDart() -> Card:
 	return Card.create({
-		Card.HUMAN_NAME : "Petal Storm",
-		Card.MACHINE_NAME : Card.PETAL_STORM,
+		Card.HUMAN_NAME : "Floral Dart",
+		Card.MACHINE_NAME : Card.FLORAL_DART,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.NATURE,
 		Card.CHARACTER_NAME : Character.JUNO,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_ELEMENT_NAME : Element.VOLT,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_CARDS,
-		Card.COMBO_BONUS_DATA : {
-			ComboBonus.CARD_DRAW_AMOUNT : 1
-		},
+		Card.COMBO_ELEMENT_NAME : "",
+		Card.COMBO_BONUS_NAME : "",
+		Card.COMBO_BONUS_DATA : {},
 		Card.COMBO_BONUS_TARGETING_NAME : ""
 	})
 
@@ -193,8 +192,8 @@ static func Bloom() -> Card:
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
 		Card.COMBO_ELEMENT_NAME : Element.WATER,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_HEAL,
-		Card.COMBO_BONUS_DATA : {ComboBonus.HEAL_AMOUNT : 1},
+		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_ENERGY,
+		Card.COMBO_BONUS_DATA : {ComboBonus.ENERGY_AMOUNT : 1},
 		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
@@ -231,10 +230,10 @@ static func Chomp() -> Card:
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_ELEMENT_NAME : Element.NATURE,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_ENERGY,
-		Card.COMBO_BONUS_DATA : {ComboBonus.ENERGY_AMOUNT : 1},
-		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
+		Card.COMBO_ELEMENT_NAME : "",
+		Card.COMBO_BONUS_NAME : "",
+		Card.COMBO_BONUS_DATA : {},
+		Card.COMBO_BONUS_TARGETING_NAME : ""
 	})
 
 
@@ -242,7 +241,7 @@ static func Chomp() -> Card:
 # Axo Cards
 #=======================
 const SWIFT_SWIM : String = "swift_swim"
-const SCALD : String = "scald"
+const AQUA_SHOT : String = "aqua_shot"
 
 
 static func SwiftSwim() -> Card:
@@ -256,29 +255,23 @@ static func SwiftSwim() -> Card:
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
 		Card.COMBO_ELEMENT_NAME : Element.VOLT,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_STATUS,
-		Card.COMBO_BONUS_DATA : {
-			ComboBonus.STATUS_NAME : Status.HASTE,
-			ComboBonus.STATUS_DURATION : 1
-		},
-		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
+		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_SWAP,
+		Card.COMBO_BONUS_DATA : {ComboBonus.SWAP_AMOUNT : 1},
+		Card.COMBO_BONUS_TARGETING_NAME : ""
 	})
 
-static func Scald() -> Card:
+static func AquaShot() -> Card:
 	return Card.create({
-		Card.HUMAN_NAME : "Scald",
-		Card.MACHINE_NAME : Card.SCALD,
+		Card.HUMAN_NAME : "Aqua Shot",
+		Card.MACHINE_NAME : Card.AQUA_SHOT,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.WATER,
 		Card.CHARACTER_NAME : Character.AXO,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
-		Card.COMBO_ELEMENT_NAME : Element.FIRE,
-		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_STATUS,
-		Card.COMBO_BONUS_DATA : {
-			ComboBonus.STATUS_NAME : Status.VULNERABLE,
-			ComboBonus.STATUS_DURATION : 1
-		},
+		Card.COMBO_ELEMENT_NAME : "",
+		Card.COMBO_BONUS_NAME : "",
+		Card.COMBO_BONUS_DATA : {},
 		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})

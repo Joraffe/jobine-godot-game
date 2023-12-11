@@ -128,8 +128,8 @@ static func _get_juno_character_data() -> Dictionary:
 
 static func _get_juno_card_names() -> Array[String]:
 	var cards : Array[String] = []
-	cards.append(Card.PETAL_STORM)
-	cards.append(Card.PETAL_STORM)
+	cards.append(Card.FLORAL_DART)
+	cards.append(Card.FLORAL_DART)
 	cards.append(Card.BLOOM)
 	return cards
 
@@ -162,8 +162,8 @@ static func _get_axo_character_data() -> Dictionary:
 
 static func _get_axo_card_names() -> Array[String]:
 	var cards : Array[String] = []
-	cards.append(Card.SCALD)
-	cards.append(Card.SCALD)
+	cards.append(Card.AQUA_SHOT)
+	cards.append(Card.AQUA_SHOT)
 	cards.append(Card.SWIFT_SWIM)
 	return cards
 

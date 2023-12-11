@@ -19,6 +19,9 @@ var shield_element_name : String
 var status_name : String  # if this bonus applies
 var status_duration : int
 
+# swap related
+var swap_amount : int
+
 # - card related (drawing, discarding)
 var card_draw_amount : int
 
@@ -39,6 +42,7 @@ func _init(
 	_shield_element_name : String,
 	_status_name : String,
 	_status_duration : int,
+	_swap_amount : int,
 	_card_draw_amount : int,
 	_energy_amount : int
 ) -> void:
@@ -49,6 +53,7 @@ func _init(
 	shield_element_name = _shield_element_name
 	status_name = _status_name
 	status_duration = _status_duration
+	swap_amount = _swap_amount
 	card_draw_amount = _card_draw_amount
 	energy_amount = _energy_amount
 	set_derived_data()
@@ -68,6 +73,9 @@ func is_extra_heal() -> bool:
 
 func is_extra_shield() -> bool:
 	return self.machine_name == ComboBonus.EXTRA_SHIELD
+
+func is_extra_swap() -> bool:
+	return self.machine_name == ComboBonus.EXTRA_SWAP
 
 func is_extra_energy() -> bool:
 	return self.machine_name == ComboBonus.EXTRA_ENERGY
@@ -91,6 +99,9 @@ func is_other_targeting() -> bool:
 	]
 
 func scope() -> String:
+	if self.is_extra_swap():
+		return ComboBonus.SWAP_SCOPE
+
 	if self.is_extra_cards():
 		return ComboBonus.CARD_SCOPE
 
@@ -132,6 +143,10 @@ func card_text() -> String:
 			"amount" : self.shield_strength,
 			"element" : self.shield_element.human_name
 		})
+	elif self.is_extra_swap():
+		bonus_text = "Gain {amount} swap.".format({
+			"amount" : self.swap_amount
+		})
 	elif self.is_extra_energy():
 		bonus_text = "Gain {amount} energy.".format({
 			"amount" : self.energy_amount,
@@ -165,6 +180,7 @@ static func create(combo_bonus_data : Dictionary) -> ComboBonus:
 		combo_bonus_data[ComboBonus.SHIELD_ELEMENT_NAME],
 		combo_bonus_data[ComboBonus.STATUS_NAME],
 		combo_bonus_data[ComboBonus.STATUS_DURATION],
+		combo_bonus_data[ComboBonus.SWAP_AMOUNT],
 		combo_bonus_data[ComboBonus.CARD_DRAW_AMOUNT],
 		combo_bonus_data[ComboBonus.ENERGY_AMOUNT]
 	)
@@ -178,6 +194,7 @@ static func ExtraDamage(extra_damage : int) -> ComboBonus:
 		ComboBonus.SHIELD_ELEMENT_NAME : "",
 		ComboBonus.STATUS_NAME : "",
 		ComboBonus.STATUS_DURATION : 0,
+		ComboBonus.SWAP_AMOUNT : 0,
 		ComboBonus.CARD_DRAW_AMOUNT : 0,
 		ComboBonus.ENERGY_AMOUNT : 0
 	})
@@ -191,6 +208,7 @@ static func ExtraHeal(card_heal_amount : int) -> ComboBonus:
 		ComboBonus.SHIELD_ELEMENT_NAME : "",
 		ComboBonus.STATUS_NAME : "",
 		ComboBonus.STATUS_DURATION : 0,
+		ComboBonus.SWAP_AMOUNT : 0,
 		ComboBonus.CARD_DRAW_AMOUNT : 0,
 		ComboBonus.ENERGY_AMOUNT : 0
 	})
@@ -207,6 +225,21 @@ static func ExtraShield(
 		ComboBonus.SHIELD_ELEMENT_NAME : card_shield_element_name,
 		ComboBonus.STATUS_NAME : "",
 		ComboBonus.STATUS_DURATION : 0,
+		ComboBonus.SWAP_AMOUNT : 0,
+		ComboBonus.CARD_DRAW_AMOUNT : 0,
+		ComboBonus.ENERGY_AMOUNT : 0
+	})
+
+static func ExtraSwap(extra_swaps : int) -> ComboBonus:
+	return ComboBonus.create({
+		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_SWAP,
+		ComboBonus.DAMAGE : 0,
+		ComboBonus.HEAL_AMOUNT : 0,
+		ComboBonus.SHIELD_STRENGTH : 0,
+		ComboBonus.SHIELD_ELEMENT_NAME : "",
+		ComboBonus.STATUS_NAME : "",
+		ComboBonus.STATUS_DURATION : 0,
+		ComboBonus.SWAP_AMOUNT : extra_swaps,
 		ComboBonus.CARD_DRAW_AMOUNT : 0,
 		ComboBonus.ENERGY_AMOUNT : 0
 	})
@@ -220,6 +253,7 @@ static func ExtraEnergy(extra_energy : int) -> ComboBonus:
 		ComboBonus.SHIELD_ELEMENT_NAME : "",
 		ComboBonus.STATUS_NAME : "",
 		ComboBonus.STATUS_DURATION : 0,
+		ComboBonus.SWAP_AMOUNT : 0,
 		ComboBonus.CARD_DRAW_AMOUNT : 0,
 		ComboBonus.ENERGY_AMOUNT : extra_energy
 	})
@@ -233,6 +267,7 @@ static func ExtraCards(extra_cards : int) -> ComboBonus:
 		ComboBonus.SHIELD_ELEMENT_NAME : "",
 		ComboBonus.STATUS_NAME : "",
 		ComboBonus.STATUS_DURATION : 0,
+		ComboBonus.SWAP_AMOUNT : 0,
 		ComboBonus.CARD_DRAW_AMOUNT : extra_cards,
 		ComboBonus.ENERGY_AMOUNT : 0
 	})
@@ -249,6 +284,7 @@ static func ExtraStatus(
 		ComboBonus.SHIELD_ELEMENT_NAME : "",
 		ComboBonus.STATUS_NAME : card_status_name,
 		ComboBonus.STATUS_DURATION : card_duration,
+		ComboBonus.SWAP_AMOUNT : 0,
 		ComboBonus.CARD_DRAW_AMOUNT : 0,
 		ComboBonus.ENERGY_AMOUNT : 0
 	})
@@ -269,6 +305,8 @@ static func by_machine_name(bonus_machine_name : String, bonus_data : Dictionary
 				bonus_data[ComboBonus.SHIELD_STRENGTH],
 				bonus_data[ComboBonus.SHIELD_ELEMENT_NAME]
 			)
+		ComboBonus.EXTRA_SWAP:
+			return ExtraSwap(bonus_data[ComboBonus.SWAP_AMOUNT])
 		ComboBonus.EXTRA_ENERGY:
 			return ExtraEnergy(bonus_data[ComboBonus.ENERGY_AMOUNT])
 		ComboBonus.EXTRA_CARDS:
@@ -293,6 +331,7 @@ const SHIELD_STRENGTH : String = "shield_strength"
 const SHIELD_ELEMENT_NAME : String = "shield_element_name"
 const STATUS_NAME : String = "status_name"
 const STATUS_DURATION : String = "status_duration"
+const SWAP_AMOUNT : String = "swap_amount"
 const CARD_DRAW_AMOUNT : String = "card_draw_amount"
 const ENERGY_AMOUNT : String = "energy_amount"
 
@@ -301,6 +340,7 @@ const ENERGY_AMOUNT : String = "energy_amount"
 # Bonus machine_name list
 #=========================
 const EXTRA_DAMAGE : String = "extra_damage"
+const EXTRA_SWAP : String = "extra_swap"
 const EXTRA_HEAL : String = "extra_heal"
 const EXTRA_SHIELD : String = "extra_shield"
 const EXTRA_ENERGY : String = "extra_energy"
@@ -318,5 +358,6 @@ const TARGETING : String = "targeting"
 const SCOPE : String = "scope"
 const ENEMIES_SCOPE : String = "enemies_scope"
 const CHARACTERS_SCOPE : String = "characters_scope"
-const ENERGY_SCOPE : String = "energy"
-const CARD_SCOPE : String = "card"
+const ENERGY_SCOPE : String = "energy_scope"
+const CARD_SCOPE : String = "card_scope"
+const SWAP_SCOPE : String = "swap_scope"

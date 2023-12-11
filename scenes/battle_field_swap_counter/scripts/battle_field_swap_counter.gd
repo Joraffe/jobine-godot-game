@@ -30,15 +30,14 @@ func set_num_available_swaps(new_num_available_swaps : int) -> void:
 # Signal Handlers
 #========================
 func _on_player_turn_started() -> void:
-	num_available_swaps = 1
+	num_available_swaps = 2
 
 func _on_character_swapped(_character : Character, _swap_position : String) -> void:
 	num_available_swaps = self.num_available_swaps - 1
 
 func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var scope : String = combo_bonus_data[ComboBonus.SCOPE]
-	if scope != ComboBonus.SWAP_SCOPE:
+	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+	if not combo_bonus.is_extra_swap():
 		return
 
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
 	num_available_swaps = self.num_available_swaps + combo_bonus.swap_amount

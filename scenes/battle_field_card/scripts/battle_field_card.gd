@@ -48,7 +48,7 @@ func set_available_energy(new_available_energy : int) -> void:
 	if has_enough_energy():
 		color = Color.BLACK
 	else:
-		color = Color.DARK_RED
+		color = Color.RED
 	$Area2D/Sprite2D/CostPanel.update_stylebox(color)
 	$Area2D/Sprite2D/CostPanel/CostLabel.update_label_styling(
 		"{cost}".format({"cost": self.card.cost}),

@@ -98,24 +98,6 @@ func is_other_targeting() -> bool:
 		ComboBonus.EXTRA_STATUS
 	]
 
-func scope() -> String:
-	if self.is_extra_swap():
-		return ComboBonus.SWAP_SCOPE
-
-	if self.is_extra_cards():
-		return ComboBonus.CARD_SCOPE
-
-	if self.is_extra_energy():
-		return ComboBonus.ENERGY_SCOPE
-
-	if self.is_other_targeting():
-		return ComboBonus.ENEMIES_SCOPE
-
-	if self.is_self_targeting():
-		return ComboBonus.CHARACTERS_SCOPE
-
-	return ""
-
 func enemy_activation_text() -> String:
 	var activation_text : String
 
@@ -355,9 +337,3 @@ const ENTITY_NAME : String = "entity_name"
 const COMBO_TRIGGER : String = "combo_trigger"
 const COMBO_BONUS : String = "combo_bonus"
 const TARGETING : String = "targeting"
-const SCOPE : String = "scope"
-const ENEMIES_SCOPE : String = "enemies_scope"
-const CHARACTERS_SCOPE : String = "characters_scope"
-const ENERGY_SCOPE : String = "energy_scope"
-const CARD_SCOPE : String = "card_scope"
-const SWAP_SCOPE : String = "swap_scope"

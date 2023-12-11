@@ -72,13 +72,11 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 		return
 
 func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus_scope_name : String = combo_bonus_data[ComboBonus.SCOPE]
-	if combo_bonus_scope_name != ComboBonus.ENEMIES_SCOPE:
+	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+	if not (combo_bonus.is_extra_damage() or combo_bonus.is_extra_status()):
 		return
 
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
 	var targeting = combo_bonus_data[ComboBonus.TARGETING]
-
 	if targeting.is_single_targeting():
 		var enemy_name : String = targeting.primary_target_name
 		var target_enemy : Enemy = self.get_enemy_by_name(enemy_name)
@@ -97,7 +95,6 @@ func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
 		for enemy in self.enemies:
 			self.apply_combo_bonus_to_enemy(combo_bonus, enemy)
 		return
-
 
 
 #======================

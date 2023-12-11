@@ -109,7 +109,6 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 	)
 	var combo_bonus_data : Dictionary = {
 		ComboBonus.ENTITY_NAME : card_primary_target_name,
-		ComboBonus.SCOPE : battle_field_card.card.combo_bonus.scope(),
 		ComboBonus.COMBO_TRIGGER : battle_field_card.card.combo_trigger,
 		ComboBonus.COMBO_BONUS : battle_field_card.card.combo_bonus,
 		ComboBonus.TARGETING : combo_bonus_targeting

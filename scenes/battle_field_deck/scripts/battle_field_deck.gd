@@ -22,8 +22,9 @@ var image_data : ImageData = ImageData.new(
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
-	BattleRadio.connect(BattleRadio.HAND_FILLED, _on_hand_filled)
+	BattleRadio.connect(BattleRadio.CURRENT_HAND_SIZE_UPDATED, _on_current_hand_size_updated)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
 
 
 #=======================
@@ -61,11 +62,37 @@ func _on_player_turn_started() -> void:
 		)
 	# If there's not enough cards in deck
 	# shuffle the discard pile into deck
+	# and then draw cards
 	else:
 		pass
 
-func _on_hand_filled() -> void:
-	can_draw = false
+
+func _on_current_hand_size_updated(current_hand_size : int) -> void:
+	if current_hand_size == self.max_hand_size:
+		can_draw = false
+
+func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
+	print('draw cards combo_bonus_applied')
+	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+	if not combo_bonus.is_extra_cards():
+		return
+
+	if not self.can_draw:
+		return
+
+	var num_bonus_cards : int = combo_bonus.card_draw_amount
+
+	# if there's enough cards in deck to draw cards
+	if self.num_remaining_cards() >= num_bonus_cards:
+		BattleRadio.emit_signal(
+			BattleRadio.CARDS_DRAWN,
+			self.draw_cards(num_bonus_cards)
+		)
+	else:
+	# If there's not enough cards in deck
+	# shuffle the discard pile into deck
+	# and then draw cards
+		pass
 
 
 #=======================

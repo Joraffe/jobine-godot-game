@@ -34,6 +34,11 @@ func set_hand(new_hand : Array[Card]) -> void:
 	hand = new_hand
 
 	$Area2D.render_hand()
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_HAND_SIZE_UPDATED,
+		self.hand.size()
+	)
+
 
 func set_max_hand_size(new_max_hand_size : int) -> void:
 	max_hand_size = new_max_hand_size
@@ -77,9 +82,6 @@ func _on_cards_drawn(drawn_cards : Array[Card]) -> void:
 		new_hand.append(drawn_card)
 
 	hand = new_hand
-
-	if self.is_hand_full():
-		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)
 
 func _on_current_energy_updated(current_energy : int) -> void:
 	available_energy = current_energy

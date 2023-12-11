@@ -17,6 +17,7 @@ signal cards_drawn(cards : Array[Card])
 
 # Hand Related
 signal hand_filled
+signal current_hand_size_updated(current_hand_size_updated : int)
 
 
 # Swap Related
@@ -76,6 +77,7 @@ const CARDS_DRAWN : String = "cards_drawn"
 
 
 const HAND_FILLED : String = "hand_filled"
+const CURRENT_HAND_SIZE_UPDATED : String = "current_hand_size_updated"
 
 
 const CHARACTER_SWAPPED : String = "character_swapped"

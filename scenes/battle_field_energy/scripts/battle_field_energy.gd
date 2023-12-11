@@ -80,11 +80,10 @@ func _on_card_played(card : Card, _targeting : Targeting) -> void:
 	)
 
 func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var scope_name : String = combo_bonus_data[ComboBonus.SCOPE]
-	if scope_name != ComboBonus.ENERGY_SCOPE:
+	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+	if not combo_bonus.is_extra_energy():
 		return
 
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
 	current_energy = self.current_energy + combo_bonus.energy_amount
 	BattleRadio.emit_signal(
 		BattleRadio.CURRENT_ENERGY_UPDATED,

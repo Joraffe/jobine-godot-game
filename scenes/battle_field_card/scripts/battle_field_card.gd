@@ -7,6 +7,8 @@ var available_energy : int :
 	set = set_available_energy
 var lead_character : Character :
 	set = set_lead_character
+var is_player_turn : bool :
+	set = set_is_player_turn
 var card_image_data : ImageData:
 	set = set_card_image_data
 
@@ -17,7 +19,8 @@ var card_image_data : ImageData:
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
-
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
 
 #=======================
 # Setters
@@ -58,6 +61,9 @@ func set_available_energy(new_available_energy : int) -> void:
 func set_lead_character(new_lead_character : Character) -> void:
 	lead_character = new_lead_character
 
+func set_is_player_turn(new_is_player_turn : bool) -> void:
+	is_player_turn = new_is_player_turn
+
 func set_card_image_data(new_card_image_data : ImageData):
 	card_image_data = new_card_image_data
 
@@ -73,6 +79,12 @@ func _on_current_lead_updated(updated_leader : Character) -> void:
 
 func _on_current_energy_updated(current_energy : int) -> void:
 	available_energy = current_energy
+
+func _on_player_turn_started() -> void:
+	is_player_turn = true
+
+func _on_player_turn_ended() -> void:
+	is_player_turn = false
 
 
 #========================

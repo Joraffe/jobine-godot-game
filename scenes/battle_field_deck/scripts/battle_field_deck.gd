@@ -1,12 +1,14 @@
 extends Node2D
 
 
-var cards : Array[Card]:
+var cards : Array[Card] :
 	set = set_cards
-var can_draw : bool:
+var can_draw : bool :
 	set = set_can_draw
-var max_hand_size : int:
+var max_hand_size : int :
 	set = set_max_hand_size
+var is_player_turn : bool :
+	set = set_is_player_turn
 
 var shuffled_cards : Dictionary
 var rng = RandomNumberGenerator.new()
@@ -24,6 +26,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CURRENT_HAND_SIZE_UPDATED, _on_current_hand_size_updated)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
 
 
@@ -42,6 +45,9 @@ func set_can_draw(new_can_draw : bool) -> void:
 func set_max_hand_size(new_max_hand_size : int) -> void:
 	max_hand_size = new_max_hand_size
 
+func set_is_player_turn(new_is_player_turn : bool) -> void:
+	is_player_turn = new_is_player_turn
+
 
 #========================
 # Signal Handlers
@@ -51,6 +57,8 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	max_hand_size = battle_data.max_hand_size
 
 func _on_player_turn_started() -> void:
+	is_player_turn = true
+
 	# If there's enough cards to draw a full hand
 	if self.num_remaining_cards() >= self.max_hand_size:
 		BattleRadio.emit_signal(
@@ -66,6 +74,8 @@ func _on_player_turn_started() -> void:
 	else:
 		pass
 
+func _on_player_turn_ended() -> void:
+	is_player_turn = false
 
 func _on_current_hand_size_updated(current_hand_size : int) -> void:
 	if current_hand_size == self.max_hand_size:

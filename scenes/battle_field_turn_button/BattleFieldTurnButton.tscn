@@ -1,16 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://bepym6av6ei68"]
+[gd_scene load_steps=5 format=3 uid="uid://bepym6av6ei68"]
 
-[ext_resource type="Script" path="res://scenes/battle_field_end_turn/scripts/battle_field_end_turn.gd" id="1_v0pqe"]
-[ext_resource type="Script" path="res://scenes/battle_field_end_turn/scripts/area_2d.gd" id="2_hg2e8"]
+[ext_resource type="Script" path="res://scenes/battle_field_turn_button/scripts/battle_field_turn_button.gd" id="1_undsf"]
+[ext_resource type="Script" path="res://scenes/battle_field_turn_button/scripts/area_2d.gd" id="2_roo8m"]
+[ext_resource type="Script" path="res://scenes/battle_field_turn_button/scripts/label.gd" id="3_du07q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rgp80"]
 size = Vector2(200, 100)
 
-[node name="BattleFieldEndTurn" type="Node2D"]
-script = ExtResource("1_v0pqe")
+[node name="BattleFieldTurnButton" type="Node2D"]
+script = ExtResource("1_undsf")
 
 [node name="Area2D" type="Area2D" parent="."]
-script = ExtResource("2_hg2e8")
+script = ExtResource("2_roo8m")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 
@@ -30,6 +31,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
 text = "End Turn
 "
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_du07q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_rgp80")

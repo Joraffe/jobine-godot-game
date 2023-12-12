@@ -120,6 +120,9 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 	)
 
 func _input(event):
+	if not battle_field_card.is_player_turn:
+		return
+	
 	if is_another_card_selected:
 		return
 

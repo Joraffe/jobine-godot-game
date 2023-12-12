@@ -4,6 +4,7 @@ extends Area2D
 @onready var battle_field_swap_member = get_parent()
 var is_mouse_over_swap_member : bool = false
 var can_swap : bool
+var is_player_turn : bool
 var sprite_original_global_position : Vector2
 
 
@@ -13,18 +14,29 @@ var sprite_original_global_position : Vector2
 func _ready():
 	self.connect("mouse_entered", _on_mouse_entered)
 	self.connect("mouse_exited", _on_mouse_exited)
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
 	BattleRadio.connect(BattleRadio.CURRENT_SWAPS_UPDATED, _on_current_swaps_updated)
+
 
 #========================
 # Signal Handlers
 #========================
 func _on_mouse_entered() -> void:
 	is_mouse_over_swap_member = true
-	show_swap_icon()
+	if battle_field_swap_member.is_player_turn:
+		show_swap_icon()
 
 func _on_mouse_exited() -> void:
 	is_mouse_over_swap_member = false
-	hide_swap_icon()
+	if battle_field_swap_member.is_player_turn:
+		hide_swap_icon()
+
+func _on_player_turn_started() -> void:
+	is_player_turn = true
+
+func _on_player_turn_ended() -> void:
+	is_player_turn = false
 
 func _on_current_swaps_updated(current_swaps : int) -> void:
 	if current_swaps > 0:
@@ -36,6 +48,9 @@ func _on_current_swaps_updated(current_swaps : int) -> void:
 		return
 
 func _input(event) -> void:
+	if not battle_field_swap_member.is_player_turn:
+		return
+
 	if not is_mouse_over_swap_member:
 		return
 

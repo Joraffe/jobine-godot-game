@@ -9,6 +9,8 @@ var available_energy : int :
 	set = set_available_energy
 var lead_character : Character : 
 	set = set_lead_character
+var is_player_turn : bool :
+	set = set_is_player_turn
 
 var image_data : ImageData = ImageData.new(
 	"battle_field_hand",
@@ -16,11 +18,17 @@ var image_data : ImageData = ImageData.new(
 	"hand.png"
 )
 
+const AVAILABLE_ENERGY : String = "available_energy"
+const LEAD_CHARACTER : String = "lead_character"
+const IS_PLAYER_TURN : String = "is_player_turn"
+
 
 #=======================
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
@@ -49,6 +57,8 @@ func set_available_energy(new_available_energy : int) -> void:
 func set_lead_character(new_lead_character : Character) -> void:
 	lead_character = new_lead_character
 
+func set_is_player_turn(new_is_player_turn : bool) -> void:
+	is_player_turn = new_is_player_turn
 
 #========================
 # Signal Handlers
@@ -57,6 +67,13 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	max_hand_size = battle_data.max_hand_size
 	lead_character = battle_data.lead_character
 	hand = battle_data.hand
+
+
+func _on_player_turn_started() -> void:
+	is_player_turn = true
+
+func _on_player_turn_ended() -> void:
+	is_player_turn = false
 
 
 func _on_card_drawn(drawn_card : Card) -> void:

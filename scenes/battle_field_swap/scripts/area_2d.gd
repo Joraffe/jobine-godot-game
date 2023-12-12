@@ -24,20 +24,22 @@ func empty_party_swap_members() -> void:
 			child.queue_free()
 
 func render_party_swap_members() -> void:
+	var is_player_turn : bool = battle_field_swap.is_player_turn
 	var top_swap_character = battle_field_swap.top_swap_character
 	var top_position = battle_field_swap.TOP_SWAP_CHARACTER
-	var top_instance = instantiate_member(top_swap_character, top_position)
+	var top_instance = instantiate_member(top_swap_character, top_position, is_player_turn)
 	position_swap_member(top_instance, top_position)
 
 	var bottom_swap_character = battle_field_swap.bottom_swap_character
 	var bottom_position = battle_field_swap.BOTTOM_SWAP_CHARACTER
-	var bottom_instance = instantiate_member(bottom_swap_character, bottom_position)
+	var bottom_instance = instantiate_member(bottom_swap_character, bottom_position, is_player_turn)
 	position_swap_member(bottom_instance, bottom_position)
 
-func instantiate_member(character : Character, swap_position : String) -> Node2D:
+func instantiate_member(character : Character, swap_position : String, is_player_turn : bool) -> Node2D:
 	var instance = battle_field_swap_member_scene.instantiate()
 	instance.set("swap_character", character)
 	instance.set("swap_position", swap_position)
+	instance.set("is_player_turn", is_player_turn)
 	add_child(instance)
 	return instance
 

@@ -34,19 +34,22 @@ func get_num_rendered_cards() -> int:
 func render_hand() -> void:
 	var num_already_rendered : int = get_num_rendered_cards()
 	var hand : Array[Card] = battle_field_hand.hand
-	var energy : int = battle_field_hand.available_energy
-	var lead : Character = battle_field_hand.lead_character
-
+	var hand_data : Dictionary = {
+		"available_energy" : battle_field_hand.available_energy,
+		"lead_character": battle_field_hand.lead_character,
+		"is_player_turn" : battle_field_hand.is_player_turn 
+	}
 	for i in range(num_already_rendered, battle_field_hand.get_current_hand_size()):
 		var card = hand[i]
-		var card_instance = instantiate_card(card, energy, lead)
+		var card_instance = instantiate_card(card, hand_data)
 		move_drawn_card_from_deck_to_hand(i, card_instance)
 
-func instantiate_card(card : Card, available_energy : int, lead : Character) -> Node2D:
+func instantiate_card(card : Card, hand_data : Dictionary) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
 	instance.set("card", card)
-	instance.set("available_energy", available_energy)
-	instance.set("lead_character", lead)
+	instance.set("available_energy", hand_data["available_energy"])
+	instance.set("lead_character", hand_data["lead_character"])
+	instance.set("is_player_turn", hand_data["is_player_turn"])
 	add_child(instance)
 	return instance
 

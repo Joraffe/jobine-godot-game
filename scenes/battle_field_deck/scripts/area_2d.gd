@@ -24,6 +24,9 @@ func _on_mouse_exited():
 	is_mouse_over_deck = false
 
 func _input(event):
+	if not battle_field_deck.is_player_turn:
+		return
+
 	if not is_mouse_over_deck:
 		return
 
@@ -35,7 +38,7 @@ func _input(event):
 
 	if not battle_field_deck.data.has_cards():
 		return
-		
+
 	if not battle_field_deck.data.can_draw_cards:
 		return
 

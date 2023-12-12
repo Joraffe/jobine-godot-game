@@ -23,10 +23,10 @@ func _on_mouse_exited() -> void:
 	is_mouse_over = false
 
 func _input(event) -> void:
-	if not is_mouse_over:
+	if not battle_field_end_turn.is_player_turn:
 		return
 
-	if not battle_field_end_turn.enabled:
+	if not is_mouse_over:
 		return
 
 	if not (event is InputEventMouseButton):

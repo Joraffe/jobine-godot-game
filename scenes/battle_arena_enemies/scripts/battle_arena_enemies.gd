@@ -35,14 +35,14 @@ func _on_battle_started(battle_data : BattleData) -> void:
 
 func _on_card_played(card : Card, targeting : Targeting) -> void:
 	if targeting.is_single_targeting():
-		var enemy_name : String = targeting.primary_target_name
-		var target_enemy : Enemy = self.get_enemy_by_name(enemy_name)
+		var enemy_instance_id : int = targeting.primary_target_instance_id
+		var target_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
 		self.handle_card_played_on_enemy(card, target_enemy)
 		return
 
 	if targeting.is_blast_targeting():
-		var enemy_name : String = targeting.primary_target_name
-		var primary_enemy : Enemy = self.get_enemy_by_name(enemy_name)
+		var enemy_instance_id : int = targeting.primary_target_instance_id
+		var primary_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
 		var blast_enemies : Array[Enemy] = self.get_blast_enemies(primary_enemy)
 		for enemy in blast_enemies:
 			self.handle_card_played_on_enemy(card, enemy)
@@ -56,7 +56,7 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 	var combo : Combo = combo_data[Combo.COMBO]
 	var targeting : Targeting = Targeting.by_machine_name(
 		combo.targeting_name,
-		combo_data[Combo.ENTITY].machine_name
+		combo_data[Combo.ENTITY].get_instance_id()
 	)
 
 	if targeting.is_single_targeting():
@@ -78,14 +78,14 @@ func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
 
 	var targeting = combo_bonus_data[ComboBonus.TARGETING]
 	if targeting.is_single_targeting():
-		var enemy_name : String = targeting.primary_target_name
-		var target_enemy : Enemy = self.get_enemy_by_name(enemy_name)
+		var enemy_instance_id : int = targeting.primary_target_instance_id
+		var target_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
 		self.apply_combo_bonus_to_enemy(combo_bonus, target_enemy)
 		return
 
 	if targeting.is_blast_targeting():
-		var enemy_name : String = targeting.primary_target_name
-		var primary_enemy : Enemy = self.get_enemy_by_name(enemy_name)
+		var enemy_instance_id : int = targeting.primary_target_instance_id
+		var primary_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
 		var blast_enemies : Array[Enemy] = self.get_blast_enemies(primary_enemy)
 		for enemy in blast_enemies:
 			self.apply_combo_bonus_to_enemy(combo_bonus, enemy)
@@ -212,12 +212,12 @@ func get_blast_enemies(target : Enemy) -> Array[Enemy]:
 
 	return blast_enemies
 
-func get_enemy_by_name(enemy_name : String) -> Enemy:
-	var named_enemy : Enemy
+func get_enemy_by_instance_id(instance_id : int) -> Enemy:
+	var found_enemy : Enemy
 
 	for enemy in self.enemies:
-		if enemy.machine_name == enemy_name:
-			named_enemy = enemy
+		if enemy.get_instance_id() == instance_id:
+			found_enemy = enemy
 			break
 
-	return named_enemy
+	return found_enemy

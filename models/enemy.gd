@@ -1,7 +1,6 @@
 extends Resource
 class_name Enemy
 
-
 var human_name : String
 var machine_name : String
 var element_name : String

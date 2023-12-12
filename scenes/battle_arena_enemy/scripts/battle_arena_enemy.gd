@@ -3,8 +3,8 @@ extends Node2D
 
 var enemy : Enemy:
 	set = set_enemy
-var enemy_image_data : ImageData:
-	set = set_enemy_image_data
+var image_data : ImageData:
+	set = set_image_data
 
 
 #=======================
@@ -23,7 +23,7 @@ func set_enemy(new_enemy : Enemy) -> void:
 
 	# Also set the image data
 	self.set(
-		"enemy_image_data",
+		"image_data",
 		ImageData.new(
 			"battle_arena_enemy",  # scene
 			enemy.machine_name,  # instance
@@ -31,13 +31,13 @@ func set_enemy(new_enemy : Enemy) -> void:
 		)
 	)
 
-func set_enemy_image_data(new_enemy_image_data : ImageData) -> void:
-	enemy_image_data = new_enemy_image_data
+func set_image_data(new_image_data : ImageData) -> void:
+	image_data = new_image_data
 
 	# Also update the Sprite2D with this new image data
-	$Area2D/Sprite2D.set_texture(enemy_image_data.get_img_texture())
+	$Area2D/Sprite2D.set_texture(image_data.get_img_texture())
 
-	$Aura.set("aura_width", enemy_image_data.get_img_width())
+	$Aura.set("aura_width", image_data.get_img_width())
 	# Also update child nodes with the enetity
 	$HealthBar.set("entity", enemy)
 	$Aura.set("entity", enemy)

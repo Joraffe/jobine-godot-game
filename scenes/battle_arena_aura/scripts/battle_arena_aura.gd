@@ -95,7 +95,7 @@ func check_for_combo() -> void:
 
 func check_index_for_combo(element_index : int) -> Dictionary:
 	var combo_data : Dictionary = {
-		Combo.ENTITY: null,
+		Combo.ENTITY_ID: null,
 		Combo.FIRST_ELEMENT: null,
 		Combo.SECOND_ELEMENT: null,
 		Combo.COMBO: null
@@ -129,7 +129,7 @@ func check_index_for_combo(element_index : int) -> Dictionary:
 	# if we make it here, the element at the index
 	# we are checking cannot combine with any others
 	return {
-		Combo.ENTITY : null,
+		Combo.ENTITY_ID : null,
 		Combo.FIRST_ELEMENT: null,
 		Combo.SECOND_ELEMENT: null,
 		Combo.COMBO: null

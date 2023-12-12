@@ -47,10 +47,9 @@ static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
 	var battle_enemies : Array[Enemy] = []
 	var enemy_seed_data : Dictionary = seed_data[SeedData.ENEMIES]
 
-	# For now just 1 enemy, but will change in the future 
-	# with actual playtesting against multiple enemies! :3
-	var rand_enemy_name = Enemy.get_random_enemy_machine_name()
-	battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
+	for i in range(4):
+		var rand_enemy_name = Enemy.get_random_enemy_machine_name()
+		battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
 
 	return battle_enemies
 

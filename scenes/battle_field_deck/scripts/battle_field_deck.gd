@@ -72,7 +72,6 @@ func _on_current_hand_size_updated(current_hand_size : int) -> void:
 		can_draw = false
 
 func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	print('draw cards combo_bonus_applied')
 	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
 	if not combo_bonus.is_extra_cards():
 		return

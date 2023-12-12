@@ -14,7 +14,7 @@ var is_targeting_enabled : bool = false
 var sprite_original_global_position : Vector2
 var card_targeting_position : Vector2
 var card_played : bool = false
-var card_primary_target_name : String
+var card_primary_target_instance_id : int
 var lead_character : Character
 
 
@@ -76,12 +76,12 @@ func _on_enemy_target_selected(enemy : Enemy) -> void:
 	clean_up_card_targeting()
 	move_card_to_discard_pile()
 	set_card_played()
-	set_card_primary_target_name(enemy.machine_name)
+	set_card_primary_target_instance_id(enemy.get_instance_id())
 
 	var targeting_name : String = battle_field_card.card.targeting_name
 	var targeting : Targeting = Targeting.by_machine_name(
 		targeting_name,
-		card_primary_target_name
+		card_primary_target_instance_id
 	)
 
 	# Stuff related to actually playing the card effects
@@ -105,10 +105,10 @@ func _on_combo_applied(combo_data : Dictionary) -> void:
 
 	var combo_bonus_targeting : Targeting = Targeting.by_machine_name(
 		battle_field_card.card.combo_bonus_targeting_name,
-		card_primary_target_name
+		card_primary_target_instance_id
 	)
 	var combo_bonus_data : Dictionary = {
-		ComboBonus.ENTITY_NAME : card_primary_target_name,
+		ComboBonus.ENTITY_INSTANCE_ID : card_primary_target_instance_id,
 		ComboBonus.COMBO_TRIGGER : battle_field_card.card.combo_trigger,
 		ComboBonus.COMBO_BONUS : battle_field_card.card.combo_bonus,
 		ComboBonus.TARGETING : combo_bonus_targeting
@@ -298,12 +298,12 @@ func hide_card_after_played() -> void:
 func set_card_played() -> void:
 	card_played = true
 
-func set_card_primary_target_name(target_name : String) -> void:
-	card_primary_target_name = target_name
+func set_card_primary_target_instance_id(instance_id : int) -> void:
+	card_primary_target_instance_id = instance_id
 
 func targeting_arrow_look_at_mouse(event) -> void:
 	var far_left = Vector2(350, 350)
-	var far_right = Vector2(1450, 350)
+	var far_right = Vector2(1850, 350)
 	var viewport = get_viewport()
 	var viewport_width = viewport.size.x
 	var look_at_position : Vector2

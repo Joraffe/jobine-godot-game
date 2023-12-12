@@ -9,9 +9,7 @@ var character_scene = preload("res://scenes/battle_arena_character/BattleArenaCh
 # Godot Lifecycle Hooks
 #=======================
 func _ready() -> void:
-	$Sprite2D.set_texture(
-		battle_arena_lead.image_data.get_img_texture()
-	)
+	pass
 
 
 #=======================

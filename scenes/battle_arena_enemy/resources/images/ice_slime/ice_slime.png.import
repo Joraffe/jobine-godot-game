@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://di16w07he53qd"
-path="res://.godot/imported/fire_slime_enemy.png-03ad70b5421bfa2d89e990eafada6ec1.ctex"
+uid="uid://cp8f57of5mpeg"
+path="res://.godot/imported/ice_slime.png-0924bbefc0dd654b24598ec15905f0c0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_enemy/resources/images/fire_slime_enemy/fire_slime_enemy.png"
-dest_files=["res://.godot/imported/fire_slime_enemy.png-03ad70b5421bfa2d89e990eafada6ec1.ctex"]
+source_file="res://scenes/battle_arena_enemy/resources/images/ice_slime/ice_slime.png"
+dest_files=["res://.godot/imported/ice_slime.png-0924bbefc0dd654b24598ec15905f0c0.ctex"]
 
 [params]
 

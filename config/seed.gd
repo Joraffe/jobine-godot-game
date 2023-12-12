@@ -64,21 +64,39 @@ static func seed_character_data(config_file : ConfigFile) -> void:
 const ENEMIES : String = "enemies"
 static func seed_enemy_data(config_file : ConfigFile) -> void:
 	config_file.set_value(
-		ENEMIES,
-		EnemyArchive.FIRE_SLIME_ENEMY,
-		SeedData._get_fire_slime_enemy_data()
+		SeedData.ENEMIES,
+		Enemy.FIRE_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.FIRE)
 	)
 
 	config_file.set_value(
-		ENEMIES,
-		EnemyArchive.WATER_SLIME_ENEMY,
-		SeedData._get_water_slime_enemy_data(),
+		SeedData.ENEMIES,
+		Enemy.WATER_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.WATER),
 	)
 
 	config_file.set_value(
-		ENEMIES,
-		EnemyArchive.NATURE_SLIME_ENEMY,
-		SeedData._get_nature_slime_enemy_data()
+		SeedData.ENEMIES,
+		Enemy.NATURE_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.NATURE)
+	)
+
+	config_file.set_value(
+		SeedData.ENEMIES,
+		Enemy.VOLT_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.VOLT)
+	)
+
+	config_file.set_value(
+		SeedData.ENEMIES,
+		Enemy.ICE_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.ICE)
+	)
+
+	config_file.set_value(
+		SeedData.ENEMIES,
+		Enemy.AERO_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.AERO)
 	)
 
 	config_file.save(SEED_DATA_CFG_PATH)
@@ -167,32 +185,14 @@ static func _get_axo_card_names() -> Array[String]:
 	cards.append(Card.SWIFT_SWIM)
 	return cards
 
-static func _get_fire_slime_enemy_data() -> Dictionary:
+static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary:
 	return {
-		Enemy.HUMAN_NAME : "Fire Slime",
-		Enemy.MACHINE_NAME : EnemyArchive.FIRE_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : Element.FIRE,
+		Enemy.HUMAN_NAME : "{element} Slime".format({
+			"elemnet" : element_name.capitalize()
+		}),
+		Enemy.MACHINE_NAME : Enemy.slime_enemy_name_by_element(element_name),
+		Enemy.ELEMENT_NAME : element_name,
 		Enemy.MAX_HP : 10,
 		Enemy.CURRENT_HP : 10,
-		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
-	}
-
-static func _get_water_slime_enemy_data() -> Dictionary:
-	return {
-		Enemy.HUMAN_NAME : "Water Slime",
-		Enemy.MACHINE_NAME : EnemyArchive.WATER_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : Element.WATER,
-		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10,
-		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
-	}
-
-static func _get_nature_slime_enemy_data() -> Dictionary:
-	return {
-		Enemy.HUMAN_NAME : "Nature Slime",
-		Enemy.MACHINE_NAME : EnemyArchive.NATURE_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : Element.NATURE,
-		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10,
-		Enemy.ENTITY_TYPE : EnemyArchive.ENTITY_TYPE_ENEMY
+		Enemy.ENTITY_TYPE : Enemy.ENTITY_TYPE_ENEMY
 	}

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djep53qg2eqid"
-path="res://.godot/imported/water_slime_enemy.png-1d545f25478dc2ccfbaa46d5c1830505.ctex"
+uid="uid://bw4y7xuhui67t"
+path="res://.godot/imported/nature_slime.png-6586b1c18d67b06b4da6f8c43a516817.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_enemy/resources/images/water_slime_enemy/water_slime_enemy.png"
-dest_files=["res://.godot/imported/water_slime_enemy.png-1d545f25478dc2ccfbaa46d5c1830505.ctex"]
+source_file="res://scenes/battle_arena_enemy/resources/images/nature_slime/nature_slime.png"
+dest_files=["res://.godot/imported/nature_slime.png-6586b1c18d67b06b4da6f8c43a516817.ctex"]
 
 [params]
 

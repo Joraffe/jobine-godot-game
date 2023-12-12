@@ -54,6 +54,7 @@ static func create_multi(enemies_data : Array[Dictionary]) -> Array[Enemy]:
 	return enemies
 
 
+
 #========================
 # Init Param kwarg names
 #========================
@@ -63,3 +64,51 @@ const ELEMENT_NAME : String = "element_name"
 const MAX_HP : String = "max_hp"
 const CURRENT_HP : String = "current_hp"
 const ENTITY_TYPE : String = "entity_type"
+
+
+#============================
+# Enemy machine_name list
+#============================
+static func get_random_enemy_machine_name() -> String:
+	var rng = RandomNumberGenerator.new()
+	var rand_i = rng.randi_range(0, Enemy.ALL_ENEMIES.size() - 1)
+	return Enemy.ALL_ENEMIES[rand_i]
+
+static func slime_enemy_name_by_element(slime_element : String) -> String:
+	match slime_element:
+		Element.FIRE:
+			return Enemy.FIRE_SLIME
+		Element.WATER:
+			return Enemy.WATER_SLIME
+		Element.NATURE:
+			return Enemy.NATURE_SLIME
+		Element.VOLT:
+			return Enemy.VOLT_SLIME
+		Element.ICE:
+			return Enemy.ICE_SLIME
+		Element.AERO:
+			return Enemy.AERO_SLIME
+		_:
+			return ""
+
+const ALL_ENEMIES : Array[String] = [
+	Enemy.FIRE_SLIME,
+	Enemy.WATER_SLIME,
+	Enemy.NATURE_SLIME,
+	Enemy.VOLT_SLIME,
+	Enemy.ICE_SLIME,
+	Enemy.AERO_SLIME
+]
+const FIRE_SLIME : String = "fire_slime"
+const WATER_SLIME : String = "water_slime"
+const NATURE_SLIME : String = "nature_slime"
+const VOLT_SLIME : String = "volt_slime"
+const ICE_SLIME : String = "ice_slime"
+const AERO_SLIME : String = "aero_slime"
+
+
+#============================
+# Other constants
+#============================
+const ENTITY_TYPE_ENEMY : String = "enemy"
+const ENTITY_TYPE_BOSS : String = "boss"

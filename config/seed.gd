@@ -37,21 +37,21 @@ static func seed_character_data(config_file : ConfigFile) -> void:
 	# Juno Character Data
 	config_file.set_value(
 		CHARACTERS,
-		CharacterArchive.JUNO_CHARACTER,
+		Character.JUNO,
 		SeedData._get_juno_character_data()
 	)
 
 	# Pettol Character Data
 	config_file.set_value(
 		CHARACTERS,
-		CharacterArchive.PETTOL_CHARACTER,
+		Character.PETTOL,
 		SeedData._get_pettol_character_data()
 	)
 
 	# Axo Character Data
 	config_file.set_value(
 		CHARACTERS,
-		CharacterArchive.AXO_CHARACTER,
+		Character.AXO,
 		SeedData._get_axo_character_data()
 	)
 
@@ -64,21 +64,39 @@ static func seed_character_data(config_file : ConfigFile) -> void:
 const ENEMIES : String = "enemies"
 static func seed_enemy_data(config_file : ConfigFile) -> void:
 	config_file.set_value(
-		ENEMIES,
-		EnemyArchive.FIRE_SLIME_ENEMY,
-		SeedData._get_fire_slime_enemy_data()
+		SeedData.ENEMIES,
+		Enemy.FIRE_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.FIRE)
 	)
 
 	config_file.set_value(
-		ENEMIES,
-		EnemyArchive.WATER_SLIME_ENEMY,
-		SeedData._get_water_slime_enemy_data(),
+		SeedData.ENEMIES,
+		Enemy.WATER_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.WATER),
 	)
 
 	config_file.set_value(
-		ENEMIES,
-		EnemyArchive.NATURE_SLIME_ENEMY,
-		SeedData._get_nature_slime_enemy_data()
+		SeedData.ENEMIES,
+		Enemy.NATURE_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.NATURE)
+	)
+
+	config_file.set_value(
+		SeedData.ENEMIES,
+		Enemy.VOLT_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.VOLT)
+	)
+
+	config_file.set_value(
+		SeedData.ENEMIES,
+		Enemy.ICE_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.ICE)
+	)
+
+	config_file.set_value(
+		SeedData.ENEMIES,
+		Enemy.AERO_SLIME,
+		SeedData._get_elemental_slime_enemy_data(Element.AERO)
 	)
 
 	config_file.save(SEED_DATA_CFG_PATH)
@@ -92,22 +110,22 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 	# Juno Card Data
 	config_file.set_value(
 		CARDS,
-		CharacterArchive.JUNO_CHARACTER,
-		SeedData._get_juno_card_data()
+		Character.JUNO,
+		SeedData._get_juno_card_names()
 	)
 
 	# Pettol Card Data
 	config_file.set_value(
 		CARDS,
-		CharacterArchive.PETTOL_CHARACTER,
-		SeedData._get_pettol_card_data()
+		Character.PETTOL,
+		SeedData._get_pettol_card_names()
 	)
 
 	# Axo Card Data
 	config_file.set_value(
 		CARDS,
-		CharacterArchive.AXO_CHARACTER,
-		SeedData._get_axo_card_data()
+		Character.AXO,
+		SeedData._get_axo_card_names()
 	)
 
 	config_file.save(SEED_DATA_CFG_PATH)
@@ -119,107 +137,62 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 static func _get_juno_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Juno",
-		Character.MACHINE_NAME : CharacterArchive.JUNO_CHARACTER,
-		Character.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
+		Character.MACHINE_NAME : Character.JUNO,
+		Character.ELEMENT_NAME : Element.NATURE,
 		Character.MAX_HP : 10,
-		Character.CURRENT_HP : 10
+		Character.CURRENT_HP : 10,
+		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
 	}
 
-static func _get_juno_card_data() -> Array[Dictionary]:	
-	var cards : Array[Dictionary] = []
-
-	for i in range(3):
-		var tokens : Array[String] = [TokenArchive.NATURE_TOKEN]
-		
-		cards.append({
-			Card.HUMAN_NAME : CardArchive.NATURE_SINGLE_CARD,
-			Card.MACHINE_NAME : CardArchive.NATURE_SINGLE_CARD,
-			Card.COST : 1,
-			Card.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
-			Card.CHARACTER_NAME : CharacterArchive.JUNO_CHARACTER,
-			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
-			Card.TOKEN_NAMES : tokens,
-		})
-
+static func _get_juno_card_names() -> Array[String]:
+	var cards : Array[String] = []
+	cards.append(Card.FLORAL_DART)
+	cards.append(Card.FLORAL_DART)
+	cards.append(Card.BLOOM)
 	return cards
 
 static func _get_pettol_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Pettol",
-		Character.MACHINE_NAME : CharacterArchive.PETTOL_CHARACTER,
-		Character.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
+		Character.MACHINE_NAME : Character.PETTOL,
+		Character.ELEMENT_NAME : Element.VOLT,
 		Character.MAX_HP : 15,
-		Character.CURRENT_HP : 15
+		Character.CURRENT_HP : 15,
+		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
 	}
 
-static func _get_pettol_card_data() -> Array[Dictionary]:
-	var cards : Array[Dictionary] = []
-
-	for i in range(3):
-		var tokens : Array[String] = [TokenArchive.WATER_TOKEN]
-
-		cards.append({
-			Card.HUMAN_NAME : CardArchive.WATER_SINGLE_CARD,
-			Card.MACHINE_NAME : CardArchive.WATER_SINGLE_CARD,
-			Card.COST : 1,
-			Card.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
-			Card.CHARACTER_NAME : CharacterArchive.PETTOL_CHARACTER,
-			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
-			Card.TOKEN_NAMES : tokens,
-		})
-
+static func _get_pettol_card_names() -> Array[String]:
+	var cards : Array[String] = []
+	cards.append(Card.CHOMP)
+	cards.append(Card.CHOMP)
+	cards.append(Card.PETTOL_BEAM)
 	return cards
 
 static func _get_axo_character_data() -> Dictionary:
 	return {
 		Character.HUMAN_NAME : "Axo",
-		Character.MACHINE_NAME : CharacterArchive.AXO_CHARACTER,
-		Character.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
+		Character.MACHINE_NAME : Character.AXO,
+		Character.ELEMENT_NAME : Element.FIRE,
 		Character.MAX_HP : 7,
-		Character.CURRENT_HP : 7
+		Character.CURRENT_HP : 7,
+		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
 	}
 
-static func _get_axo_card_data() -> Array[Dictionary]:
-	var cards : Array[Dictionary] = []
-
-	for i in range(3):
-		var tokens : Array[String] = [TokenArchive.FIRE_TOKEN]
-		
-		cards.append({
-			Card.HUMAN_NAME : CardArchive.FIRE_SINGLE_CARD,
-			Card.MACHINE_NAME : CardArchive.FIRE_SINGLE_CARD,
-			Card.COST : 1,
-			Card.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
-			Card.CHARACTER_NAME : CharacterArchive.AXO_CHARACTER,
-			Card.TARGETING_NAME : TargetingArchive.ENEMIES_SINGLE_TARGETING,
-			Card.TOKEN_NAMES : tokens,
-		})
-
+static func _get_axo_card_names() -> Array[String]:
+	var cards : Array[String] = []
+	cards.append(Card.AQUA_SHOT)
+	cards.append(Card.AQUA_SHOT)
+	cards.append(Card.SWIFT_SWIM)
 	return cards
 
-static func _get_fire_slime_enemy_data() -> Dictionary:
+static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary:
 	return {
-		Enemy.HUMAN_NAME : "Fire Slime",
-		Enemy.MACHINE_NAME : EnemyArchive.FIRE_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : ElementArchive.FIRE_ELEMENT,
+		Enemy.HUMAN_NAME : "{element} Slime".format({
+			"elemnet" : element_name.capitalize()
+		}),
+		Enemy.MACHINE_NAME : Enemy.slime_enemy_name_by_element(element_name),
+		Enemy.ELEMENT_NAME : element_name,
 		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10
-	}
-
-static func _get_water_slime_enemy_data() -> Dictionary:
-	return {
-		Enemy.HUMAN_NAME : "Water Slime",
-		Enemy.MACHINE_NAME : EnemyArchive.WATER_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : ElementArchive.WATER_ELEMENT,
-		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10
-	}
-
-static func _get_nature_slime_enemy_data() -> Dictionary:
-	return {
-		Enemy.HUMAN_NAME : "Nature Slime",
-		Enemy.MACHINE_NAME : EnemyArchive.NATURE_SLIME_ENEMY,
-		Enemy.ELEMENT_NAME : ElementArchive.NATURE_ELEMENT,
-		Enemy.MAX_HP : 10,
-		Enemy.CURRENT_HP : 10
+		Enemy.CURRENT_HP : 10,
+		Enemy.ENTITY_TYPE : Enemy.ENTITY_TYPE_ENEMY
 	}

@@ -2,8 +2,6 @@ extends Area2D
 
 
 @onready var battle_field_hand = get_parent()
-
-
 var battle_field_card_scene = preload("res://scenes/battle_field_card/BattleFieldCard.tscn")
 
 
@@ -21,40 +19,37 @@ func _ready() -> void:
 #=======================
 func empty_hand() -> void:
 	for child in self.get_children():
-		if child.get("data") is BattleFieldCardData:
+		if child.get("card") is Card:
 			child.queue_free()
 
 func get_num_rendered_cards() -> int:
 	var num_rendered : int = 0
 
 	for child in self.get_children():
-		if child.get("data") is BattleFieldCardData:
+		if child.get("card") is Card:
 			num_rendered += 1
 
 	return num_rendered
 
 func render_hand() -> void:
 	var num_already_rendered : int = get_num_rendered_cards()
-
-	var hand_data : BattleFieldHandData = battle_field_hand.data
-	var energy_data : Dictionary = {
-		BattleFieldHandData.AVAILABLE_ENERGY : hand_data.available_energy
+	var hand : Array[Card] = battle_field_hand.hand
+	var hand_data : Dictionary = {
+		"available_energy" : battle_field_hand.available_energy,
+		"lead_character": battle_field_hand.lead_character,
+		"is_player_turn" : battle_field_hand.is_player_turn 
 	}
-
-	for i in range(num_already_rendered, hand_data.get_current_hand_size()):
-		var card_data = hand_data.hand[i].as_dict()
-		var card_instance = instantiate_card(
-			card_data,
-			energy_data,
-		)
+	for i in range(num_already_rendered, battle_field_hand.get_current_hand_size()):
+		var card = hand[i]
+		var card_instance = instantiate_card(card, hand_data)
 		move_drawn_card_from_deck_to_hand(i, card_instance)
 
-func instantiate_card(card_data : Dictionary, energy_data : Dictionary) -> Node2D:
+func instantiate_card(card : Card, hand_data : Dictionary) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
-	instance.set(
-		"data",
-		BattleFieldCardData.new(card_data, energy_data)
-	)
+	instance.set("card", card)
+	instance.set("available_energy", hand_data["available_energy"])
+	instance.set("lead_character", hand_data["lead_character"])
+	instance.set("is_player_turn", hand_data["is_player_turn"])
 	add_child(instance)
 	return instance
 

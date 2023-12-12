@@ -18,23 +18,19 @@ func _ready() -> void:
 # Signal Handlers
 #========================
 func _on_mouse_entered() -> void:
-	if not battle_arena.data.is_card_selected:
+	if not battle_arena.is_card_selected:
 		return
 
 	BattleRadio.emit_signal(BattleRadio.CARD_TARGETING_ENABLED)
 
 func _on_mouse_exited() -> void:
-	if not battle_arena.data.is_card_selected:
+	if not battle_arena.is_card_selected:
 		return
 
 	BattleRadio.emit_signal(BattleRadio.CARD_TARGETING_DISABLED)
 
 func _on_card_selected(_card : Card) -> void:
-	battle_arena.data = BattleArenaData.new({
-		BattleArenaData.IS_CARD_SELECTED: true 
-	})
+	battle_arena.is_card_selected = true
 
 func _on_card_deselected(_card : Card) -> void:
-	battle_arena.data = BattleArenaData.new({
-		BattleArenaData.IS_CARD_SELECTED: false 
-	})
+	battle_arena.is_card_selected = false

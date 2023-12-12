@@ -1,8 +1,8 @@
 extends Node2D
 
 
-var data : BattleArenaData:
-	set = set_battle_arena_data
+var is_card_selected : bool:
+	set = set_is_card_selected
 
 
 #=======================
@@ -15,16 +15,12 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_battle_arena_data(new_data : BattleArenaData) -> void:
-	data = new_data
-
-	# Maybe do additional stuff w/ Arena2D in the future
+func set_is_card_selected(new_selected : bool) -> void:
+	is_card_selected = new_selected
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(_battle_data : BattleData) -> void:
-	data = BattleArenaData.new({
-		BattleArenaData.IS_CARD_SELECTED : false
-	})
+	is_card_selected = false

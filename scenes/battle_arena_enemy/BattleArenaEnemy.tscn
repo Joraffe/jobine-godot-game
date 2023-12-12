@@ -1,6 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dybur2v7evw1s"]
+[gd_scene load_steps=7 format=3 uid="uid://dybur2v7evw1s"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/battle_arena_enemy.gd" id="1_mcro6"]
+[ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/area_2d.gd" id="2_2isn1"]
+[ext_resource type="PackedScene" uid="uid://gyul4bm0j3du" path="res://scenes/battle_arena_health_bar/BattleArenaHealthBar.tscn" id="3_8eg3g"]
+[ext_resource type="PackedScene" uid="uid://b0qdv2d2scwdo" path="res://scenes/battle_arena_aura/BattleArenaAura.tscn" id="4_65erj"]
+[ext_resource type="PackedScene" uid="uid://6rcnlausmknb" path="res://scenes/battle_arena_combo/BattleArenaCombo.tscn" id="5_c5x3i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xwil"]
 size = Vector2(201, 202)
@@ -9,9 +13,19 @@ size = Vector2(201, 202)
 script = ExtResource("1_mcro6")
 
 [node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_2isn1")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
 shape = SubResource("RectangleShape2D_3xwil")
+
+[node name="HealthBar" parent="." instance=ExtResource("3_8eg3g")]
+position = Vector2(2.08165e-12, 130)
+
+[node name="Aura" parent="." instance=ExtResource("4_65erj")]
+position = Vector2(2.08165e-12, -130)
+
+[node name="Combo" parent="." instance=ExtResource("5_c5x3i")]
+position = Vector2(2.08165e-12, -180)

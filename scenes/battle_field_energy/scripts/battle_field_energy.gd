@@ -1,9 +1,15 @@
 extends Node2D
 
-var data : BattleFieldEnergyData:
-	set = set_battle_field_energy_data
+
+var max_energy : int:
+	set = set_max_energy
+var current_energy : int:
+	set = set_current_energy
 var image_data : ImageData:
 	set = set_image_data
+
+const SOME_ENERGY : String = "some_energy"
+const NO_ENERGY : String = "no_energy"
 
 
 #=======================
@@ -12,19 +18,24 @@ var image_data : ImageData:
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
 
 #=======================
 # Setters
 #=======================
-func set_battle_field_energy_data(new_data : BattleFieldEnergyData) -> void:
-	data = new_data
+func set_max_energy(new_max_energy : int) -> void:
+	max_energy = new_max_energy
+
+func set_current_energy(new_current_energy : int) -> void:
+	current_energy = new_current_energy
 
 	# Also set the image_data
 	var instance_name : String
-	if data.current_energy > 0:
-		instance_name = BattleFieldEnergyData.SOME_ENERGY
-	elif data.current_energy == 0:
-		instance_name = BattleFieldEnergyData.NO_ENERGY
+	if current_energy > 0:
+		instance_name = SOME_ENERGY
+	elif current_energy == 0:
+		instance_name = NO_ENERGY
 
 	self.set(
 		"image_data",
@@ -35,11 +46,12 @@ func set_battle_field_energy_data(new_data : BattleFieldEnergyData) -> void:
 		)
 	)
 
+
 func set_image_data(new_image_data : ImageData) -> void:
 	image_data = new_image_data
 	# Also update the Sprite2D with this new image
 	$Area2D/Sprite2D.set_texture(image_data.get_img_texture())
-	$Area2D.update_energy_label(data.current_energy, data.max_energy)
+	$Area2D.update_energy_label(current_energy, max_energy)
 
 
 #========================
@@ -47,16 +59,33 @@ func set_image_data(new_image_data : ImageData) -> void:
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
 	# This also involves setting up initial max_energy
-	data = battle_data.energy_data
-
+	max_energy = battle_data.max_energy
+	current_energy = battle_data.current_energy
 
 func _on_player_turn_started() -> void:
-	var max_energy = data.max_energy
-
 	# This effectively replenishes energy at the start of turn
-	data = BattleFieldEnergyData.new({
-		BattleFieldEnergyData.MAX_ENERGY: max_energy,
-		BattleFieldEnergyData.CURRENT_ENERGY: 3
-	})
+	current_energy = self.max_energy
 
-	BattleRadio.emit_signal(BattleRadio.ENERGY_GAINED, data.current_energy)
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		current_energy
+	)
+
+func _on_card_played(card : Card, _targeting : Targeting) -> void:
+	current_energy = self.current_energy - card.cost
+
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		current_energy
+	)
+
+func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
+	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+	if not combo_bonus.is_extra_energy():
+		return
+
+	current_energy = self.current_energy + combo_bonus.energy_amount
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		current_energy
+	)

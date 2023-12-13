@@ -70,3 +70,22 @@ func _on_character_swapped(character : Character, swap_position : String) -> voi
 
 	$Area2D.empty_party_swap_members()
 	$Area2D.render_party_swap_members()
+
+
+#=======================
+# Node Helpers
+#=======================
+func get_child_node_by_entity_instance_id(entity_instance_id : int) -> Node2D:
+	var child_node : Node2D
+
+	var area_2d_children = $Area2D.get_children()
+	for child in area_2d_children:
+		var swap_character = child.get("swap_character")
+		if not swap_character is Character:
+			continue
+
+		if entity_instance_id == swap_character.get_instance_id():
+			child_node = child
+			break
+
+	return child_node

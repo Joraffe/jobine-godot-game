@@ -36,11 +36,11 @@ func _input(event):
 	if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
 		return
 
-	if not battle_field_deck.data.has_cards():
+	if not battle_field_deck.has_cards():
 		return
 
-	if not battle_field_deck.data.can_draw_cards:
+	if not battle_field_deck.can_draw:
 		return
 
-	var card = battle_field_deck.data.draw_card()
-	BattleRadio.emit_signal(BattleRadio.CARD_DRAWN, card)
+	# var card = battle_field_deck.deck.draw_card()
+	# BattleRadio.emit_signal(BattleRadio.CARD_DRAWN, card)

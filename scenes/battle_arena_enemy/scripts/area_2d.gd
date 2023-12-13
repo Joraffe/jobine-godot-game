@@ -67,3 +67,29 @@ func _is_left_mouse_click(event) -> bool:
 		and event.button_index == MOUSE_BUTTON_LEFT
 		and event.pressed
 	)
+
+
+#========================
+# Area2D Functionality
+#========================
+func animate_attack(_attack : EnemyAttack, attack_callback : Callable) -> void:
+	var tween = create_tween()
+	var sprite_2d : Sprite2D = $Sprite2D
+	var original_pos : Vector2 = sprite_2d.position
+	var left_nudge_pos = Vector2(
+		sprite_2d.position.x - 50,
+		sprite_2d.position.y
+	)
+	tween.tween_property(
+		$Sprite2D,
+		"position",
+		left_nudge_pos,
+		0.1,
+	)
+	tween.tween_property(
+		$Sprite2D,
+		"position",
+		original_pos,
+		0.1,
+	)
+	tween.tween_callback(attack_callback)

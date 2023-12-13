@@ -81,8 +81,11 @@ func _on_current_hand_size_updated(current_hand_size : int) -> void:
 	if current_hand_size == self.max_hand_size:
 		can_draw = false
 
-func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+func _on_combo_bonus_applied(
+	_instance_id : int,
+	combo_bonus : ComboBonus,
+	_targeting : Targeting
+) -> void:
 	if not combo_bonus.is_extra_cards():
 		return
 

@@ -335,6 +335,5 @@ const EXTRA_STATUS : String = "extra_status"
 #=============================
 const ENTITY_NAME : String = "entity_name"
 const ENTITY_INSTANCE_ID : String = "entity_instance_id"
-const COMBO_TRIGGER : String = "combo_trigger"
 const COMBO_BONUS : String = "combo_bonus"
 const TARGETING : String = "targeting"

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://py2slwlsalew"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_combiner/scripts/battle_arena_combiner.gd" id="1_1tvdj"]
+
+[node name="BattleArenaCombiner" type="Node"]
+script = ExtResource("1_1tvdj")

@@ -1,12 +1,14 @@
 extends Resource
 class_name Enemy
 
+
 var human_name : String
 var machine_name : String
 var element_name : String
 var max_hp : int
 var current_hp : int
 var entity_type : String
+var attack_names : Array[String]
 
 
 func _init(
@@ -15,7 +17,8 @@ func _init(
 	_element_name : String,
 	_max_hp : int,
 	_current_hp : int,
-	_entity_type : String
+	_entity_type : String,
+	_attack_names : Array[String]
 ):
 	human_name = _human_name
 	machine_name = _machine_name
@@ -23,16 +26,12 @@ func _init(
 	max_hp = _max_hp
 	current_hp = _current_hp
 	entity_type = _entity_type
+	attack_names = _attack_names
 
-func as_dict() -> Dictionary:
-	return {
-		HUMAN_NAME : human_name,
-		MACHINE_NAME : machine_name,
-		ELEMENT_NAME : element_name,
-		MAX_HP : max_hp,
-		CURRENT_HP : current_hp,
-		ENTITY_TYPE: entity_type
-	}
+func get_random_attack_name() -> String:
+	var rng = RandomNumberGenerator.new()
+	var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
+	return attack_names[rand_i]
 
 static func create(enemy_data : Dictionary) -> Enemy:
 	return Enemy.new(
@@ -41,7 +40,8 @@ static func create(enemy_data : Dictionary) -> Enemy:
 		enemy_data[Enemy.ELEMENT_NAME],
 		enemy_data[Enemy.MAX_HP],
 		enemy_data[Enemy.CURRENT_HP],
-		enemy_data[Enemy.ENTITY_TYPE]
+		enemy_data[Enemy.ENTITY_TYPE],
+		enemy_data[Enemy.ATTACK_NAMES]
 	)
 
 static func create_multi(enemies_data : Array[Dictionary]) -> Array[Enemy]:
@@ -53,7 +53,6 @@ static func create_multi(enemies_data : Array[Dictionary]) -> Array[Enemy]:
 	return enemies
 
 
-
 #========================
 # Init Param kwarg names
 #========================
@@ -63,6 +62,7 @@ const ELEMENT_NAME : String = "element_name"
 const MAX_HP : String = "max_hp"
 const CURRENT_HP : String = "current_hp"
 const ENTITY_TYPE : String = "entity_type"
+const ATTACK_NAMES : String = "attack_names"
 
 
 #============================

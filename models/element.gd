@@ -79,6 +79,12 @@ static func Aero() -> Element:
 		Element.MACHINE_NAME : Element.AERO
 	})
 
+static func Empty() -> Element:
+	return Element.create({
+		Element.HUMAN_NAME : "",
+		Element.MACHINE_NAME : ""
+	})
+
 static func by_machine_name(_machine_name : String) -> Element:
 	match _machine_name:
 		Element.FIRE:
@@ -94,7 +100,7 @@ static func by_machine_name(_machine_name : String) -> Element:
 		Element.AERO:
 			return Aero()
 		_:
-			return
+			return Empty()
 
 #========================
 # Init Param kwarg names

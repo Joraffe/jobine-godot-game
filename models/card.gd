@@ -173,7 +173,7 @@ static func FloralDart() -> Card:
 		Card.ELEMENT_NAME : Element.NATURE,
 		Card.CHARACTER_NAME : Character.JUNO,
 		Card.TARGETING_NAME : Targeting.SINGLE,
-		Card.BASE_DAMAGE : 1,
+		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
 		Card.COMBO_ELEMENT_NAME : "",
 		Card.COMBO_BONUS_NAME : "",
@@ -208,15 +208,15 @@ static func PettolBeam() -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Pettol Beam",
 		Card.MACHINE_NAME : Card.PETTOL_BEAM,
-		Card.COST : 1,
+		Card.COST : 2,
 		Card.ELEMENT_NAME : Element.VOLT,
 		Card.CHARACTER_NAME : Character.PETTOL,
 		Card.TARGETING_NAME : Targeting.SINGLE,
-		Card.BASE_DAMAGE : 2,
+		Card.BASE_DAMAGE : 3,
 		Card.ELEMENT_AMOUNT : 1,
 		Card.COMBO_ELEMENT_NAME : Element.WATER,
 		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_DAMAGE,
-		Card.COMBO_BONUS_DATA : {ComboBonus.DAMAGE : 1},
+		Card.COMBO_BONUS_DATA : {ComboBonus.DAMAGE : 2},
 		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
@@ -228,7 +228,7 @@ static func Chomp() -> Card:
 		Card.ELEMENT_NAME : Element.VOLT,
 		Card.CHARACTER_NAME : Character.PETTOL,
 		Card.TARGETING_NAME : Targeting.SINGLE,
-		Card.BASE_DAMAGE : 1,
+		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
 		Card.COMBO_ELEMENT_NAME : "",
 		Card.COMBO_BONUS_NAME : "",

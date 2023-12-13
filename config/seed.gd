@@ -186,6 +186,10 @@ static func _get_axo_card_names() -> Array[String]:
 	return cards
 
 static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary:
+	var attack_names : Array[String] = [
+		EnemyAttack.SLIME_STRIKE,
+		EnemyAttack.OOZE
+	]
 	return {
 		Enemy.HUMAN_NAME : "{element} Slime".format({
 			"elemnet" : element_name.capitalize()
@@ -194,5 +198,6 @@ static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary
 		Enemy.ELEMENT_NAME : element_name,
 		Enemy.MAX_HP : 10,
 		Enemy.CURRENT_HP : 10,
-		Enemy.ENTITY_TYPE : Enemy.ENTITY_TYPE_ENEMY
+		Enemy.ENTITY_TYPE : Enemy.ENTITY_TYPE_ENEMY,
+		Enemy.ATTACK_NAMES : attack_names
 	}

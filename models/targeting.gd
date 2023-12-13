@@ -22,6 +22,9 @@ func is_single_targeting() -> bool:
 func is_blast_targeting() -> bool:
 	return self.machine_name == Targeting.BLAST
 
+func is_splash_targeting() -> bool:
+	return self.machine_name == Targeting.SPLASH
+
 func is_all_targeting() -> bool:
 	return self.machine_name == Targeting.ALL
 
@@ -46,11 +49,18 @@ static func Blast(instance_id : int) -> Targeting:
 		Targeting.PRIMARY_TARGET_INSTANCE_ID : instance_id
 	})
 
-static func All() -> Targeting:
+static func Splash(instance_id : int) -> Targeting:
+	return Targeting.create({
+		Targeting.HUMAN_NAME : "Splash",
+		Targeting.MACHINE_NAME : Targeting.SPLASH,
+		Targeting.PRIMARY_TARGET_INSTANCE_ID : instance_id
+	})
+
+static func All(instance_id : int) -> Targeting:
 	return Targeting.create({
 		HUMAN_NAME : "All",
 		MACHINE_NAME : Targeting.ALL,
-		Targeting.PRIMARY_TARGET_INSTANCE_ID : null
+		Targeting.PRIMARY_TARGET_INSTANCE_ID : instance_id
 	})
 
 static func by_machine_name(targeting_machine_name : String, instance_id : int) -> Targeting:
@@ -59,8 +69,10 @@ static func by_machine_name(targeting_machine_name : String, instance_id : int) 
 			return Targeting.Single(instance_id)
 		Targeting.BLAST:
 			return Targeting.Blast(instance_id)
+		Targeting.SPLASH:
+			return Targeting.Splash(instance_id)
 		Targeting.ALL:
-			return Targeting.All()
+			return Targeting.All(instance_id)
 		_:
 			return null
 
@@ -76,6 +88,7 @@ const PRIMARY_TARGET_INSTANCE_ID : String = "primary_target_instance_id"
 #=============================
 # Targeting machine_name list
 #=============================
-const SINGLE : String = "single_targeting"
-const BLAST : String = "blast_targeting"
-const ALL : String = "all_targeting"
+const SINGLE : String = "single"
+const BLAST : String = "blast"
+const SPLASH : String = "splash"
+const ALL : String = "all"

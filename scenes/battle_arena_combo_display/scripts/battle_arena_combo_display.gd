@@ -26,11 +26,11 @@ func set_combo(new_combo : Combo) -> void:
 #=======================
 # Signal Handlers
 #=======================
-func _on_combo_applied(combo_data : Dictionary) -> void:
-	if combo_data[Combo.ENTITY] != entity:
+func _on_combo_applied(instance_id : int, applied_combo : Combo) -> void:
+	if instance_id != entity.get_instance_id():
 		return
 
-	combo = combo_data[Combo.COMBO]
+	combo = applied_combo
 
 
 #=======================

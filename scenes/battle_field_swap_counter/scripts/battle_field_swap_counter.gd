@@ -35,8 +35,11 @@ func _on_player_turn_started() -> void:
 func _on_character_swapped(_character : Character, _swap_position : String) -> void:
 	num_available_swaps = self.num_available_swaps - 1
 
-func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+func _on_combo_bonus_applied(
+	_instance_id : int,
+	combo_bonus : ComboBonus,
+	_targeting : Targeting
+) -> void:
 	if not combo_bonus.is_extra_swap():
 		return
 

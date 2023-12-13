@@ -29,11 +29,18 @@ signal current_swaps_updated(current_swaps : int)
 # Enemy Related
 signal enemy_target_selected(enemy : Enemy)
 signal enemy_damaged(enemy : Enemy, damage : int)
-signal enemy_element_applied(
-	enemy : Enemy,
-	applied_element_name : String,
-	num_applied_element : int
-)
+signal enemy_element_applied(enemy : Enemy, element_name : String, num_applied : int)
+signal enemy_attack_queued(enemy : Enemy, attack : EnemyAttack)
+
+
+# Lead Related
+signal lead_damaged(damage : int)
+signal lead_element_applied(element_name : String, num_applied : int)
+
+
+# Character Related
+signal character_damaged(character : Character, damage : int)
+signal character_element_applied(character : Character, element_name : String, num_applied : int)
 
 
 # Card Related
@@ -45,6 +52,8 @@ signal card_played(card : Card, targeting : Targeting)
 # Turn Related
 signal player_turn_started
 signal player_turn_ended
+signal enemy_turn_started
+signal enemy_turn_ended
 
 
 # Energy Related
@@ -54,12 +63,28 @@ signal current_energy_updated(current_energy : int)
 
 
 # Elements Related
-signal elements_combined(combo_data : Dictionary)
+signal elements_combined(
+	instance_id : int,
+	first_element_index : int,
+	second_element_index : int
+)
 
+
+# Entity Related
+signal entity_damaged(instance_id : int, damage : int)
+signal element_applied_to_entity(
+	instance_id : int,
+	element_name : String,
+	amount_applied : int
+)
 
 # Combo Related
-signal combo_applied(combo_data : Dictionary)
-signal combo_bonus_applied(combo_bonus_data : Dictionary)
+signal combo_applied(instance_id : int, combo : Combo)
+signal combo_bonus_applied(
+	instance_id : int,
+	combo_bonus : ComboBonus,
+	targeting : Targeting
+)
 
 
 #=====================
@@ -88,6 +113,19 @@ const CURRENT_LEAD_UPDATED : String = "current_lead_updated"
 const ENEMY_TARGET_SELECTED : String = "enemy_target_selected"
 const ENEMY_DAMAGED : String = "enemy_damaged"
 const ENEMY_ELEMENT_APPLIED : String = "enemy_element_applied"
+const ENEMY_ATTACK_QUEUED : String = "enemy_attack_queued"
+
+
+const ENTITY_DAMAGED : String = "entity_damaged"
+const ELEMENT_APPLIED_TO_ENTITY : String = "element_applied_to_entity"
+
+
+const LEAD_DAMAGED : String = "lead_damaged"
+const LEAD_ELEMENT_APPLIED : String = "lead_element_applied"
+
+
+const CHARACTER_DAMAGED : String = "character_damaged"
+const CHARACTER_ELEMENT_APPLIED : String = "character_element_applied"
 
 
 const CARD_SELECTED : String = "card_selected"
@@ -97,6 +135,8 @@ const CARD_PLAYED : String = "card_played"
 
 const PLAYER_TURN_STARTED : String = "player_turn_started"
 const PLAYER_TURN_ENDED : String = "player_turn_ended"
+const ENEMY_TURN_STARTED : String = "enemy_turn_started"
+const ENEMY_TURN_ENDED : String = "enemy_turn_ended"
 
 
 const ENERGY_GAINED : String = "energy_gained"

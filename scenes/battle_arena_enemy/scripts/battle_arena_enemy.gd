@@ -3,6 +3,8 @@ extends Node2D
 
 var enemy : Enemy:
 	set = set_enemy
+var current_attack : EnemyAttack :
+	set = set_current_attack
 var image_data : ImageData:
 	set = set_image_data
 
@@ -11,8 +13,9 @@ var image_data : ImageData:
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.ENEMY_DAMAGED, _on_enemy_damaged)
-	BattleRadio.connect(BattleRadio.ENEMY_ELEMENT_APPLIED, _on_enemy_element_applied)
+	BattleRadio.connect(BattleRadio.ENTITY_DAMAGED, _on_damaged)
+	BattleRadio.connect(BattleRadio.ELEMENT_APPLIED_TO_ENTITY, _on_element_applied)
+	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_QUEUED, _on_enemy_attack_queued)
 
 
 #=======================
@@ -31,6 +34,10 @@ func set_enemy(new_enemy : Enemy) -> void:
 		)
 	)
 
+func set_current_attack(new_attack : EnemyAttack) -> void:
+	current_attack = new_attack
+	$AttackDisplay.set("enemy_attack", self.current_attack)
+
 func set_image_data(new_image_data : ImageData) -> void:
 	image_data = new_image_data
 
@@ -41,45 +48,52 @@ func set_image_data(new_image_data : ImageData) -> void:
 	# Also update child nodes with the enetity
 	$HealthBar.set("entity", enemy)
 	$Aura.set("entity", enemy)
-	$Combo.set("entity", enemy)
+	$ComboDisplay.set("entity", enemy)
 
 
 #========================
 # Signal Handlers
 #========================
-func _on_enemy_damaged(damaged_enemy : Enemy, damage : int) -> void:
-	if self.enemy != damaged_enemy:
+func _on_damaged(instance_id : int, damage : int) -> void:
+	if self.enemy.get_instance_id() != instance_id:
 		return
 
 	$HealthBar.take_damage(damage)
 
-func _on_enemy_element_applied(
-	applied_enemy : Enemy,
+func _on_element_applied(
+	instance_id : int,
 	applied_element_name : String,
 	num_applied_element : int
 ) -> void:
-	if self.enemy != applied_enemy:
+	if self.enemy.get_instance_id() != instance_id:
 		return
 
 	for i in range(num_applied_element):
 		$Aura.apply_element(Element.by_machine_name(applied_element_name))
 
+func _on_enemy_attack_queued(attacking_enemy : Enemy, attack : EnemyAttack):
+	if attacking_enemy != self.enemy:
+		return
+
+	current_attack = attack
+	$Area2D.animate_attack(attack, emit_attack_effects)
+	$AttackDisplay.show_then_hide_after_delay()
+
 
 #=======================
 # Enemy Functionality
 #=======================
-func play_card_on_enemy(card : Card, targeting : Targeting) -> void:
-	if self.enemy.machine_name != targeting.primary_target_name:
-		return
+func emit_attack_effects():
+	BattleRadio.emit_signal(
+		BattleRadio.LEAD_ELEMENT_APPLIED,
+		self.current_attack.element_name,
+		self.current_attack.num_applied_element
+	)
 
-	var element_data : Dictionary = {
-		Element.HUMAN_NAME : card.element_name.capitalize(),
-		Element.MACHINE_NAME : card.element_name
-	}
+	if self.current_attack.deals_damage():
+		BattleRadio.emit_signal(
+			BattleRadio.LEAD_DAMAGED,
+			self.current_attack.base_damage
+		)
 
-	var times_to_apply : int = card.element_amount
-	for i in range(times_to_apply):
-		$Aura.apply_element(Element.create(element_data))
-
-	if card.base_damage != 0:
-		$HealthBar.take_damage(card.base_damage)
+	# Implement other attack effects later!

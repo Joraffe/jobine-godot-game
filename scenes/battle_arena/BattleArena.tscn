@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bgbti82hg83nq" path="res://scenes/battle_arena_enemies/BattleArenaEnemies.tscn" id="3_ua2l3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8dtb0"]
-size = Vector2(1500.5, 600)
+size = Vector2(1500.5, 677)
 
 [node name="BattleArena" type="Node2D"]
 script = ExtResource("1_isylk")
@@ -15,11 +15,11 @@ script = ExtResource("1_isylk")
 script = ExtResource("2_i73dh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(150.75, 2.08165e-12)
+position = Vector2(150.75, 38.5)
 shape = SubResource("RectangleShape2D_8dtb0")
 
-[node name="Party" parent="." instance=ExtResource("2_1xhxh")]
-position = Vector2(-300, 2.08165e-12)
+[node name="Lead" parent="." instance=ExtResource("2_1xhxh")]
+position = Vector2(-300, 80)
 
 [node name="Enemies" parent="." instance=ExtResource("3_ua2l3")]
 position = Vector2(450, 2.08165e-12)

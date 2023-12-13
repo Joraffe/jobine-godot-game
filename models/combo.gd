@@ -23,8 +23,19 @@ func _init(
 	# based off of first_element + second_element
 	set_combo_derived_data()
 
-func has_mono_elements() -> bool:
-	return first_element.machine_name == second_element.machine_name
+func has_reaction() -> bool:
+	return (
+		self.is_evaporate()
+		or self.is_burn()
+		or self.is_charge()
+		or self.is_chill()
+		or self.is_melt()
+		or self.is_blaze()
+		or self.is_grow()
+		or self.is_freeze()
+		or self.is_surge()
+		or self.is_tempest()
+	)
 
 func is_evaporate() -> bool:
 	return (
@@ -110,7 +121,7 @@ func set_combo_derived_data() -> void:
 		base_damage = 1
 		applied_element_name = ""
 		num_applied_element = 0
-		targeting_name = Targeting.BLAST
+		targeting_name = Targeting.SPLASH
 	elif is_charge():
 		human_name = "Charge"
 		machine_name = Combo.CHARGE
@@ -159,7 +170,7 @@ func set_combo_derived_data() -> void:
 		base_damage = 1
 		applied_element_name = ""
 		num_applied_element = 0
-		targeting_name = Targeting.BLAST
+		targeting_name = Targeting.SPLASH
 	elif is_tempest():
 		human_name = "Tempest"
 		machine_name = Combo.TEMPEST
@@ -211,6 +222,8 @@ const TEMPEST : String = "tempest"  # wind + volt
 #========================
 # Combo Signal constants
 #========================
+const FIRST_ELEMENT_INDEX : String = "first_element_index"
+const SECOND_ELEMENT_INDEX : String = "second_element_index"
 const FIRST_ELEMENT : String = "first_element"
 const SECOND_ELEMENT : String = "second_element"
 const COMBO : String = "combo"

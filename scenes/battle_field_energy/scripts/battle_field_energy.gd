@@ -79,8 +79,11 @@ func _on_card_played(card : Card, _targeting : Targeting) -> void:
 		current_energy
 	)
 
-func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
+func _on_combo_bonus_applied(
+	_instance_id : int,
+	combo_bonus : ComboBonus,
+	_targeting : Targeting
+) -> void:
 	if not combo_bonus.is_extra_energy():
 		return
 

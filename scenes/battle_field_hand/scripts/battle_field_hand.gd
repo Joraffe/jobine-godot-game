@@ -48,7 +48,6 @@ func set_hand(new_hand : Array[Card]) -> void:
 		self.hand.size()
 	)
 
-
 func set_max_hand_size(new_max_hand_size : int) -> void:
 	max_hand_size = new_max_hand_size
 
@@ -60,6 +59,7 @@ func set_lead_character(new_lead_character : Character) -> void:
 
 func set_is_player_turn(new_is_player_turn : bool) -> void:
 	is_player_turn = new_is_player_turn
+
 
 #========================
 # Signal Handlers
@@ -109,6 +109,7 @@ func _on_current_lead_updated(current_lead : Character) -> void:
 
 func _on_card_played(card : Card, _targeting : Targeting) -> void:
 	$Area2D.free_played_card_instance(card)
+
 
 #=======================
 # Data Helpers

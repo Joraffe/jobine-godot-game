@@ -70,7 +70,6 @@ func _on_current_element_names_updated(instance_id : int, new_current_element_na
 	self.set("element_names", new_current_element_names)
 
 func _on_element_animation_timer_finished() -> void:
-
 	var combo_data = self.element_remove_queue.dequeue()
 	var first_element_index = combo_data[Combo.FIRST_ELEMENT_INDEX]
 	var second_element_index = combo_data[Combo.SECOND_ELEMENT_INDEX]
@@ -236,7 +235,6 @@ func render_elements(new_elements : Array[Element], old_elements : Array[Element
 		old_elements,
 		old_removed_element_names,
 	)
-
 	# Remove the old removed elements
 	if old_removed_element_names.size() > 0:
 		self.tween_up_and_free_element_names(old_removed_element_names)
@@ -367,7 +365,7 @@ func tween_reposition_element_names(element_name_dicts : Array[Dictionary]) -> v
 				child,
 				"position",
 				Vector2(position_x, child.position.y),
-				0.75
+				0.5
 			)
 
 func tween_up_and_free_element_names(element_names_to_tween : Array[String]) -> void:

@@ -182,7 +182,6 @@ func remove_elements(
 	removed_element_indexes : Array[int]
 ) -> Array:
 	var new_element_names : Array = []
-
 	for i in current_element_names.size():
 		if not i in removed_element_indexes:
 			new_element_names.append(current_element_names[i])

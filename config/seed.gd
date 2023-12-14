@@ -192,7 +192,7 @@ static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary
 	]
 	return {
 		Enemy.HUMAN_NAME : "{element} Slime".format({
-			"elemnet" : element_name.capitalize()
+			"element" : element_name.capitalize()
 		}),
 		Enemy.MACHINE_NAME : Enemy.slime_enemy_name_by_element(element_name),
 		Enemy.ELEMENT_NAME : element_name,

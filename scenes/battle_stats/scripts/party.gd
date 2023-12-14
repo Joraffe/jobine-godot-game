@@ -31,6 +31,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ENTITY_DAMAGED, _on_entity_damaged)
 	BattleRadio.connect(BattleRadio.ELEMENT_APPLIED_TO_ENTITY, _on_element_applied_to_entity)
 	BattleRadio.connect(BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY, _on_elements_removed_from_entity)
+	BattleRadio.connect(BattleRadio.CHARACTER_SWAPPED, _on_character_swapped)
 
 
 #=======================
@@ -111,10 +112,33 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	swap_top_instance_id = battle_data.top_swap_character.get_instance_id()
 	swap_top_current_hp = battle_data.top_swap_character.current_hp
 	swap_top_current_element_names = []
-	
+
 	swap_bottom_instance_id = battle_data.bottom_swap_character.get_instance_id()
 	swap_bottom_current_hp = battle_data.bottom_swap_character.current_hp
 	swap_bottom_current_element_names = []
+
+func _on_character_swapped(_character : Character, swap_position : String) -> void:
+	var old_lead_instance_id = self.lead_instance_id
+	var old_lead_elements = self.lead_current_element_names
+	var old_lead_current_hp = self.lead_current_hp
+	if swap_position == "top_swap_character":
+		# top_swap becomes lead
+		self.set("lead_instance_id", self.swap_top_instance_id)
+		self.set("lead_current_element_names", self.swap_top_current_element_names)
+		self.set("lead_current_hp", self.swap_top_current_hp)
+		# old lead becomes top_swap
+		self.set("swap_top_instance_id", old_lead_instance_id)
+		self.set("swap_top_current_element_names", old_lead_elements)
+		self.set("swap_top_current_hp", old_lead_current_hp)
+	elif swap_position == "bottom_swap_character":
+		# bottom_swap becomes lead
+		self.set("lead_instance_id", self.swap_bottom_instance_id)
+		self.set("lead_current_element_names", self.swap_bottom_current_element_names)
+		self.set("lead_current_hp", self.swap_bottom_current_hp)
+		# old lead becomes bottom_swap
+		self.set("swap_bottom_instance_id", old_lead_instance_id)
+		self.set("swap_bottom_current_element_names", old_lead_elements)
+		self.set("swap_bottom_current_hp", old_lead_current_hp)
 
 func _on_entity_damaged(entity_instance_id : int, damage : int) -> void:
 	if entity_instance_id == self.lead_instance_id:
@@ -168,7 +192,7 @@ func _on_elements_removed_from_entity(entity_instance_id : int, removed_element_
 
 	if entity_instance_id == self.swap_top_instance_id:
 		swap_top_current_element_names = self.remove_elements(
-			self.swap_bottom_current_element_names,
+			self.swap_top_current_element_names,
 			removed_element_indexes
 		)
 		return

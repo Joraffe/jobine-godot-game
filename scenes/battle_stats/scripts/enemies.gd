@@ -76,11 +76,14 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	enemies_current_element_names = current_elements
 
 func _on_entity_damaged(instance_id : int, damage : int) -> void:
-	var entity_index : int
+	var entity_index
 
 	for i in self.enemies_instance_ids.size():
 		if instance_id == self.enemies_instance_ids[i]:
 			entity_index = i
+
+	if entity_index == null:
+		return
 
 	var entity_current_hp : int = self.enemies_current_hp[entity_index]
 	var new_current_hp : int = self.take_damage(entity_current_hp, damage)
@@ -99,10 +102,13 @@ func _on_element_applied_to_entity(
 	element_name : String,
 	amount_applied : int
 ) -> void:
-	var entity_index : int
+	var entity_index
 	for i in self.enemies_instance_ids.size():
 		if instance_id == self.enemies_instance_ids[i]:
 			entity_index = i
+
+	if entity_index == null:
+		return
 
 	var current_elements : Array = self.enemies_current_element_names[entity_index]
 	var new_entity_current_elements : Array = self.add_elements(
@@ -110,6 +116,7 @@ func _on_element_applied_to_entity(
 		element_name,
 		amount_applied
 	)
+
 
 	var new_current_elements : Array[Array] = []
 	for i in self.enemies_current_element_names.size():
@@ -121,11 +128,14 @@ func _on_element_applied_to_entity(
 	enemies_current_element_names = new_current_elements
 
 func _on_elements_removed_from_entity(instance_id : int, removed_element_indexes : Array[int]):
-	var entity_index : int
+	var entity_index
 
 	for i in self.enemies_instance_ids.size():
 		if instance_id == self.enemies_instance_ids[i]:
 			entity_index = i
+
+	if entity_index == null:
+		return
 
 	var current_elements : Array = self.enemies_current_element_names[entity_index]
 	var new_entity_current_elements : Array = self.remove_elements(

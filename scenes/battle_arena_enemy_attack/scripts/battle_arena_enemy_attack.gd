@@ -32,6 +32,6 @@ func _on_enemy_attack_timeout() -> void:
 #=======================
 # Node Helpers
 #=======================
-func show_then_hide_after_delay() -> void:
+func animate() -> void:
 	self.show()
 	$Timer.start()

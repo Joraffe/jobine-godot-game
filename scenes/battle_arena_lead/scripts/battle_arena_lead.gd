@@ -54,12 +54,11 @@ func _on_lead_damaged(damage : int) -> void:
 
 func _on_lead_element_applied(element_name : String, num_applied : int) -> void:
 	BattleRadio.emit_signal(
-		BattleRadio.CHARACTER_ELEMENT_APPLIED,
-		self.lead_character,
+		BattleRadio.ELEMENT_APPLIED_TO_ENTITY,
+		self.lead_character.get_instance_id(),
 		element_name,
 		num_applied
 	)
-
 
 #=======================
 # Node Helpers

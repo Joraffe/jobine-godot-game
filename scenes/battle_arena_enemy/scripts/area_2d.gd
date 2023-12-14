@@ -72,7 +72,7 @@ func _is_left_mouse_click(event) -> bool:
 #========================
 # Area2D Functionality
 #========================
-func animate_attack(_attack : EnemyAttack, attack_callback : Callable) -> void:
+func animate_attack(_attack : EnemyAttack) -> void:
 	var tween = create_tween()
 	var sprite_2d : Sprite2D = $Sprite2D
 	var original_pos : Vector2 = sprite_2d.position
@@ -92,4 +92,3 @@ func animate_attack(_attack : EnemyAttack, attack_callback : Callable) -> void:
 		original_pos,
 		0.1,
 	)
-	tween.tween_callback(attack_callback)

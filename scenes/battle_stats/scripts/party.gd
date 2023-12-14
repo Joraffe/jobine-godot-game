@@ -220,7 +220,7 @@ func remove_elements(
 	var new_element_names : Array[String] = []
 
 	for i in current_element_names.size():
-		if not i in [removed_element_indexes]:
+		if not i in removed_element_indexes:
 			new_element_names.append(current_element_names[i])
 
 	return new_element_names

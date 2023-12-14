@@ -34,3 +34,6 @@ position = Vector2(2.08165e-12, -180)
 [node name="AttackDisplay" parent="." instance=ExtResource("6_h8aao")]
 visible = false
 position = Vector2(2.08165e-12, -180)
+
+[node name="AttackEffectTimer" type="Timer" parent="."]
+one_shot = true

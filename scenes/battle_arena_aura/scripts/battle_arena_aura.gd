@@ -53,7 +53,7 @@ func set_elements(new_elements : Array[Element]) -> void:
 		self.element_registry
 	)
 	if not combo_data.is_empty():
-		element_remove_queue.enqueue(combo_data)
+		self.element_remove_queue.enqueue(combo_data)
 		$ElementTimer.start()
 
 func set_element_registry(new_element_registry : Dictionary) -> void:
@@ -70,6 +70,7 @@ func _on_current_element_names_updated(instance_id : int, new_current_element_na
 	self.set("element_names", new_current_element_names)
 
 func _on_element_animation_timer_finished() -> void:
+
 	var combo_data = self.element_remove_queue.dequeue()
 	var first_element_index = combo_data[Combo.FIRST_ELEMENT_INDEX]
 	var second_element_index = combo_data[Combo.SECOND_ELEMENT_INDEX]

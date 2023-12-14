@@ -11,6 +11,8 @@ func reset_combo_text() -> void:
 func set_combo_text_color(combo : Combo) -> void:
 	if combo.is_evaporate():
 		set_evaporate_text_color()
+	elif combo.is_burn():
+		set_burn_text_color()
 	elif combo.is_grow():
 		set_grow_text_color()
 	elif combo.is_charge():

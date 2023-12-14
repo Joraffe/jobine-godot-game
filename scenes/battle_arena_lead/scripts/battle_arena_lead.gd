@@ -18,7 +18,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CHARACTER_SWAPPED, _on_character_swapped)
 	BattleRadio.connect(BattleRadio.LEAD_DAMAGED, _on_lead_damaged)
-	BattleRadio.connect(BattleRadio.LEAD_ELEMENT_APPLIED,_on_lead_element_applied)
+	BattleRadio.connect(BattleRadio.LEAD_ELEMENT_APPLIED, _on_lead_element_applied)
 
 
 #=======================
@@ -47,8 +47,8 @@ func _on_character_swapped(character : Character, _swap_position : String) -> vo
 
 func _on_lead_damaged(damage : int) -> void:
 	BattleRadio.emit_signal(
-		BattleRadio.CHARACTER_DAMAGED,
-		self.lead_character,
+		BattleRadio.ENTITY_DAMAGED,
+		self.lead_character.get_instance_id(),
 		damage
 	)
 

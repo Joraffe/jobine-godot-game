@@ -32,11 +32,8 @@ func set_entities(new_entities : Array) -> void:
 # Signal Handlers
 #=======================
 func _on_combo_applied(instance_id : int, combo : Combo) -> void:
-
 	if not is_applicable(instance_id):
 		return
-	print('Combiner._on_combo_applied')
-	print('combo ', combo.machine_name)
 
 	var targeting : Targeting = Targeting.by_machine_name(
 		combo.targeting_name,
@@ -63,8 +60,6 @@ func _on_combo_bonus_applied(
 ) -> void:
 	if not self.is_applicable(instance_id):
 		return
-	print('Combiner._on_combo_bonus_applied called')
-	print('combo_bonus ', combo_bonus.machine_name)
 
 	if not combo_bonus.is_extra_damage():
 		return

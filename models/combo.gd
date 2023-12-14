@@ -223,7 +223,9 @@ const TEMPEST : String = "tempest"  # wind + volt
 # Combo Signal constants
 #========================
 const FIRST_ELEMENT_INDEX : String = "first_element_index"
+const FIRST_ELEMENT_NAME : String = "first_element_name"
 const SECOND_ELEMENT_INDEX : String = "second_element_index"
+const SECOND_ELEMENT_NAME : String = "second_element_name"
 const FIRST_ELEMENT : String = "first_element"
 const SECOND_ELEMENT : String = "second_element"
 const COMBO : String = "combo"

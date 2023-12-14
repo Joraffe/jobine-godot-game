@@ -12,8 +12,7 @@ var image_data : ImageData:
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.CHARACTER_DAMAGED, _on_damaged)
-	BattleRadio.connect(BattleRadio.CHARACTER_ELEMENT_APPLIED, _on_element_applied)
+	BattleRadio.connect(BattleRadio.ENTITY_CURRENT_HP_UPDATED, _on_current_hp_updated)
 
 
 #=======================
@@ -44,19 +43,8 @@ func set_image_data(new_image_data : ImageData):
 #=======================
 # Signal Handlers
 #=======================
-func _on_damaged(damaged_character : Character, damage : int) -> void:
-	if damaged_character != self.character:
+func _on_current_hp_updated(instance_id : int, new_current_hp : int) -> void:
+	if instance_id != self.character.get_instance_id():
 		return
 
-	$HealthBar.take_damage(damage)
-
-func _on_element_applied(
-	applied_character : Character,
-	applied_element_name : String,
-	num_applied_element : int
-) -> void:
-	if applied_character != self.character:
-		return
-
-	for i in range(num_applied_element):
-		$Aura.apply_element(Element.by_machine_name(applied_element_name))
+	$HealthBar.set("current_hp", new_current_hp)

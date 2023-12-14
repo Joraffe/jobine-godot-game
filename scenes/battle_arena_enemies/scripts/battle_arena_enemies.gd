@@ -71,7 +71,6 @@ func handle_card_played_on_enemy(card : Card, enemy : Enemy) -> void:
 		)
 
 
-
 #======================
 # Enemy Helpers
 #======================

@@ -13,8 +13,7 @@ var image_data : ImageData:
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.ENTITY_DAMAGED, _on_damaged)
-	BattleRadio.connect(BattleRadio.ELEMENT_APPLIED_TO_ENTITY, _on_element_applied)
+	BattleRadio.connect(BattleRadio.ENTITY_CURRENT_HP_UPDATED, _on_current_hp_updated)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_QUEUED, _on_enemy_attack_queued)
 
 
@@ -54,22 +53,11 @@ func set_image_data(new_image_data : ImageData) -> void:
 #========================
 # Signal Handlers
 #========================
-func _on_damaged(instance_id : int, damage : int) -> void:
+func _on_current_hp_updated(instance_id : int, new_current_hp) -> void:
 	if self.enemy.get_instance_id() != instance_id:
 		return
 
-	$HealthBar.take_damage(damage)
-
-func _on_element_applied(
-	instance_id : int,
-	applied_element_name : String,
-	num_applied_element : int
-) -> void:
-	if self.enemy.get_instance_id() != instance_id:
-		return
-
-	for i in range(num_applied_element):
-		$Aura.apply_element(Element.by_machine_name(applied_element_name))
+	$HealthBar.set("current_hp", new_current_hp)
 
 func _on_enemy_attack_queued(attacking_enemy : Enemy, attack : EnemyAttack):
 	if attacking_enemy != self.enemy:

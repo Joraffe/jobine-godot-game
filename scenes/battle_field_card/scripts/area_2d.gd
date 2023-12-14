@@ -102,9 +102,6 @@ func _on_combo_applied(instance_id : int, combo : Combo) -> void:
 	if combo_name != combo_trigger_name:
 		return
 
-	print('Card._on_combo_applied')
-	print('instance_id ', instance_id)
-	print('combo ', combo.machine_name)
 	var combo_bonus_targeting : Targeting = Targeting.by_machine_name(
 		battle_field_card.card.combo_bonus_targeting_name,
 		instance_id

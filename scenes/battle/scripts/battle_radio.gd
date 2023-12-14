@@ -77,6 +77,15 @@ signal element_applied_to_entity(
 	element_name : String,
 	amount_applied : int
 )
+signal elements_removed_from_entity(
+	instance_id : int,
+	removed_element_indexes : Array[int]
+)
+signal entity_current_hp_updated(instance_id : int, new_current_hp : int)
+signal entity_current_element_names_updated(
+	instance_id : int,
+	new_current_element_names
+)
 
 # Combo Related
 signal combo_applied(instance_id : int, combo : Combo)
@@ -118,6 +127,9 @@ const ENEMY_ATTACK_QUEUED : String = "enemy_attack_queued"
 
 const ENTITY_DAMAGED : String = "entity_damaged"
 const ELEMENT_APPLIED_TO_ENTITY : String = "element_applied_to_entity"
+const ELEMENTS_REMOVED_FROM_ENTITY : String = "elements_removed_from_entity"
+const ENTITY_CURRENT_HP_UPDATED : String = "entity_current_hp_updated"
+const ENTITY_CURRENT_ELEMENT_NAMES_UPDATED : String = "entity_current_element_names_updated"
 
 
 const LEAD_DAMAGED : String = "lead_damaged"

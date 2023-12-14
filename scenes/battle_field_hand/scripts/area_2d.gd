@@ -4,6 +4,8 @@ extends Area2D
 @onready var battle_field_hand = get_parent()
 var battle_field_card_scene = preload("res://scenes/battle_field_card/BattleFieldCard.tscn")
 
+var discard_queue : Queue = Queue.new()
+
 
 #=======================
 # Godot Lifecycle Hooks
@@ -88,3 +90,39 @@ func get_card_position_in_hand(index, card_instance) -> Vector2:
 		card_pos.y
 	)
 	return new_card_pos
+
+func discard_hand() -> void:
+	var cards_to_tween = []
+	for child in self.get_children():
+		if child.get("card") is Card:
+			cards_to_tween.append(child)
+
+	var discard_position : Vector2 = Vector2(650, -50)
+	if cards_to_tween:
+		var tween = self.create_tween()
+		for card_instance in cards_to_tween:
+			self.discard_queue.enqueue(card_instance)
+			tween.parallel().tween_property(
+				card_instance,
+				"position",
+				discard_position,
+				0.2
+			)
+			tween.parallel().tween_property(
+				card_instance,
+				"scale",
+				Vector2(),
+				0.2
+			)
+			tween.tween_callback(self.free_and_emit_discarded_card)
+
+func emit_card_discarded(card : Card) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.CARD_DISCARDED,
+		card
+	)
+
+func free_and_emit_discarded_card() -> void:
+	var discarded_card_instance = self.discard_queue.dequeue()
+	emit_card_discarded(discarded_card_instance.get("card"))
+	discarded_card_instance.queue_free()

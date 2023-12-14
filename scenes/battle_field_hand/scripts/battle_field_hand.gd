@@ -74,7 +74,7 @@ func _on_player_turn_started() -> void:
 
 func _on_player_turn_ended() -> void:
 	is_player_turn = false
-
+	$Area2D.discard_hand()
 
 func _on_card_drawn(drawn_card : Card) -> void:
 	var new_hand : Array[Card] = []

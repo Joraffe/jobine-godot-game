@@ -47,6 +47,7 @@ signal character_element_applied(character : Character, element_name : String, n
 signal card_selected(card : Card)
 signal card_deselected(card : Card)
 signal card_played(card : Card, targeting : Targeting)
+signal card_discarded(card : Card)
 
 
 # Turn Related
@@ -143,6 +144,7 @@ const CHARACTER_ELEMENT_APPLIED : String = "character_element_applied"
 const CARD_SELECTED : String = "card_selected"
 const CARD_DESELECTED : String = "card_deselected"
 const CARD_PLAYED : String = "card_played"
+const CARD_DISCARDED : String = "card_discarded"
 
 
 const PLAYER_TURN_STARTED : String = "player_turn_started"

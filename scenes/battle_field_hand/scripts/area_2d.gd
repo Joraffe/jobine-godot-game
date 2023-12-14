@@ -126,3 +126,10 @@ func free_and_emit_discarded_card() -> void:
 	var discarded_card_instance = self.discard_queue.dequeue()
 	emit_card_discarded(discarded_card_instance.get("card"))
 	discarded_card_instance.queue_free()
+
+
+func free_played_card_instance(card : Card) -> void:
+	for child in self.get_children():
+		var child_card = child.get("card")
+		if child_card is Card and child_card == card:
+			child.queue_free()

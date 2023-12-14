@@ -33,6 +33,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
 	BattleRadio.connect(BattleRadio.CARDS_DRAWN, _on_cards_drawn)
+	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
 
 
 #=======================
@@ -106,6 +107,8 @@ func _on_current_energy_updated(current_energy : int) -> void:
 func _on_current_lead_updated(current_lead : Character) -> void:
 	lead_character = current_lead
 
+func _on_card_played(card : Card, _targeting : Targeting) -> void:
+	$Area2D.free_played_card_instance(card)
 
 #=======================
 # Data Helpers

@@ -76,6 +76,8 @@ func _on_player_turn_started() -> void:
 func _on_player_turn_ended() -> void:
 	is_player_turn = false
 	$Area2D.discard_hand()
+	var empty_hand : Array[Card] = []
+	self.set("hand", empty_hand)
 
 func _on_card_drawn(drawn_card : Card) -> void:
 	var new_hand : Array[Card] = []
@@ -99,7 +101,8 @@ func _on_cards_drawn(drawn_cards : Array[Card]) -> void:
 	for drawn_card in drawn_cards:
 		new_hand.append(drawn_card)
 
-	hand = new_hand
+	self.set("hand", new_hand)
+
 
 func _on_current_energy_updated(current_energy : int) -> void:
 	available_energy = current_energy

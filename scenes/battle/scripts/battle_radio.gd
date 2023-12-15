@@ -13,6 +13,11 @@ signal card_targeting_disabled
 # Deck Related
 signal card_drawn(card : Card)
 signal cards_drawn(cards : Array[Card])
+signal deck_emptied
+
+
+# Discard Related
+signal discard_pile_shuffled_into_deck
 
 
 # Hand Related
@@ -31,6 +36,7 @@ signal enemy_target_selected(enemy : Enemy)
 signal enemy_damaged(enemy : Enemy, damage : int)
 signal enemy_element_applied(enemy : Enemy, element_name : String, num_applied : int)
 signal enemy_attack_queued(enemy : Enemy, attack : EnemyAttack)
+signal enemy_attack_finished
 
 
 # Lead Related
@@ -109,6 +115,10 @@ const CARD_TARGETING_DISABLED : String = "card_targeting_disabled"
 
 const CARD_DRAWN : String = "card_drawn"
 const CARDS_DRAWN : String = "cards_drawn"
+const DECK_EMPTIED : String = "deck_emptied"
+
+
+const DISCARD_PILE_SHUFFLED_INTO_DECK : String = "discard_pile_shuffled_into_deck"
 
 
 const HAND_FILLED : String = "hand_filled"
@@ -124,6 +134,7 @@ const ENEMY_TARGET_SELECTED : String = "enemy_target_selected"
 const ENEMY_DAMAGED : String = "enemy_damaged"
 const ENEMY_ELEMENT_APPLIED : String = "enemy_element_applied"
 const ENEMY_ATTACK_QUEUED : String = "enemy_attack_queued"
+const ENEMY_ATTACK_FINISHED : String = "enemy_attack_finished"
 
 
 const ENTITY_DAMAGED : String = "entity_damaged"

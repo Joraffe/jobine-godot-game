@@ -10,6 +10,8 @@ var max_hand_size : int :
 var is_player_turn : bool :
 	set = set_is_player_turn
 
+var remaining_cards_to_draw : int
+
 var shuffled_cards : Dictionary
 var rng = RandomNumberGenerator.new()
 var image_data : ImageData = ImageData.new(
@@ -28,7 +30,10 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
-
+	BattleRadio.connect(
+		BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK,
+		_on_discard_pile_shuffled_into_deck
+	)
 
 #=======================
 # Setters
@@ -36,7 +41,6 @@ func _init() -> void:
 func set_cards(new_cards : Array[Card]) -> void:
 	cards = new_cards
 
-	self.shuffled_cards = {}
 	self.shuffle_cards()
 
 func set_can_draw(new_can_draw : bool) -> void:
@@ -48,38 +52,26 @@ func set_max_hand_size(new_max_hand_size : int) -> void:
 func set_is_player_turn(new_is_player_turn : bool) -> void:
 	is_player_turn = new_is_player_turn
 
+	if self.is_player_turn:
+		self.draw_and_emit_cards(self.max_hand_size)
+
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	cards = battle_data.cards
-	max_hand_size = battle_data.max_hand_size
+	self.set("cards", battle_data.cards)
+	self.set("max_hand_size", battle_data.max_hand_size)
 
 func _on_player_turn_started() -> void:
-	is_player_turn = true
-
-	# If there's enough cards to draw a full hand
-	if self.num_remaining_cards() >= self.max_hand_size:
-		BattleRadio.emit_signal(
-			BattleRadio.CARDS_DRAWN,
-			self.draw_cards(self.max_hand_size)
-		)
-		$Area2D/Sprite2D/Panel/Label.update_deck_number(
-			self.shuffled_cards.size()
-		)
-	# If there's not enough cards in deck
-	# shuffle the discard pile into deck
-	# and then draw cards
-	else:
-		pass
+	self.set("is_player_turn", true)
 
 func _on_player_turn_ended() -> void:
-	is_player_turn = false
+	self.set("is_player_turn", false)
 
 func _on_current_hand_size_updated(current_hand_size : int) -> void:
 	if current_hand_size == self.max_hand_size:
-		can_draw = false
+		self.set("can_dra", false)
 
 func _on_combo_bonus_applied(
 	_instance_id : int,
@@ -93,24 +85,20 @@ func _on_combo_bonus_applied(
 		return
 
 	var num_bonus_cards : int = combo_bonus.card_draw_amount
+	self.draw_and_emit_cards(num_bonus_cards)
 
-	# if there's enough cards in deck to draw cards
-	if self.num_remaining_cards() >= num_bonus_cards:
-		BattleRadio.emit_signal(
-			BattleRadio.CARDS_DRAWN,
-			self.draw_cards(num_bonus_cards)
-		)
-	else:
-	# If there's not enough cards in deck
-	# shuffle the discard pile into deck
-	# and then draw cards
-		pass
+func _on_discard_pile_shuffled_into_deck() -> void:
+	self.shuffle_cards()
+	if self.remaining_cards_to_draw > 0:
+		self.draw_and_emit_cards(self.remaining_cards_to_draw)
 
 
 #=======================
 # Data Helpers
 #=======================
 func shuffle_cards() -> void:
+	self.set("shuffled_cards", {})
+
 	var indexes : Dictionary = {}
 	for i in self.cards.size():
 		indexes[i] = i
@@ -143,3 +131,30 @@ func draw_cards(num_cards : int):
 		cards_to_draw.append(draw_card())
 
 	return cards_to_draw
+
+
+#=======================
+# Signal Helpers
+#=======================
+func draw_and_emit_cards(num_cards : int) -> void:
+	# If there's enough cards to draw a full hand
+	if self.num_remaining_cards() >= num_cards:
+		self.set("remaining_cards_to_draw", 0)
+		BattleRadio.emit_signal(
+			BattleRadio.CARDS_DRAWN,
+			self.draw_cards(num_cards)
+		)
+	# If there's not enough cards in deck
+	# shuffle the discard pile into deck
+	# and then draw cards
+	else:
+		self.set("remaining_cards_to_draw", num_cards - self.num_remaining_cards())
+		BattleRadio.emit_signal(
+			BattleRadio.CARDS_DRAWN,
+			self.draw_cards(self.num_remaining_cards())
+		)
+		BattleRadio.emit_signal(BattleRadio.DECK_EMPTIED)
+
+	$Area2D/Sprite2D/Panel/Label.update_deck_number(
+			self.shuffled_cards.size()
+		)

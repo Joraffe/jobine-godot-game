@@ -5,5 +5,8 @@
 [node name="BattleArenaEnemyAI" type="Node"]
 script = ExtResource("1_68cpp")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 1.5
+[node name="AttackDelayTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="EndTurnTimer" type="Timer" parent="."]
+one_shot = true

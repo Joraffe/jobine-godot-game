@@ -71,6 +71,8 @@ func _on_enemy_attack_queued(attacking_enemy : Enemy, attack : EnemyAttack):
 
 func _on_attack_animation_delay_finished() -> void:
 	emit_attack_effects(self.attack_queue.dequeue())
+	BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_FINISHED)
+
 
 #=======================
 # Enemy Functionality

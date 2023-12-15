@@ -23,12 +23,15 @@ var combo_queue : Queue = Queue.new()
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.ENTITY_CURRENT_ELEMENT_NAMES_UPDATED, _on_current_element_names_updated)
+	BattleRadio.connect(
+		BattleRadio.ENTITY_CURRENT_ELEMENT_NAMES_UPDATED,
+		_on_current_element_names_updated
+	)
 
 func _ready() -> void:
 	$ElementTimer.connect("timeout", _on_element_animation_timer_finished)
 	$ComboTimer.connect("timeout", _on_combo_delay_finished)
-
+	$FinishTimer.connect("timeout", _on_check_for_finished)
 
 #=======================
 # Setters
@@ -48,13 +51,15 @@ func set_elements(new_elements : Array[Element]) -> void:
 
 	self.set("element_registry", self.get_element_registry(self.elements))
 	self.render_elements(new_elements, old_elements)
-	var combo_data : Dictionary = self.check_elements_for_combo(
-		self.elements, 
-		self.element_registry
-	)
-	if not combo_data.is_empty():
-		self.element_remove_queue.enqueue(combo_data)
+	var combos = self.get_all_combos(self.elements, self.element_registry)
+	for combo in combos:
+		self.element_remove_queue.enqueue(combo)
+	if combos.size() > 0:
 		$ElementTimer.start()
+
+	if self.elements.size() > 0:
+		$FinishTimer.start()
+
 
 func set_element_registry(new_element_registry : Dictionary) -> void:
 	element_registry = new_element_registry
@@ -70,32 +75,47 @@ func _on_current_element_names_updated(instance_id : int, new_current_element_na
 	self.set("element_names", new_current_element_names)
 
 func _on_element_animation_timer_finished() -> void:
-	var combo_data = self.element_remove_queue.dequeue()
-	var first_element_index = combo_data[Combo.FIRST_ELEMENT_INDEX]
-	var second_element_index = combo_data[Combo.SECOND_ELEMENT_INDEX]
-	var element_indexes_to_remove : Array[int] = [
-		first_element_index,
-		second_element_index
-	]
-	BattleRadio.emit_signal(
-		BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
-		self.entity.get_instance_id(),
-		element_indexes_to_remove
-	)
-	self.combo_queue.enqueue(combo_data)
-	$ComboTimer.start()
+	var combos = []
+	while self.element_remove_queue.size() > 0:
+		combos.append(self.element_remove_queue.dequeue())
+
+	if combos.size() > 0:
+		var indexes_to_remove : Array[int] = []
+		for combo_data in combos:
+			indexes_to_remove.append(combo_data[Combo.FIRST_ELEMENT_INDEX])
+			indexes_to_remove.append(combo_data[Combo.SECOND_ELEMENT_INDEX])
+			self.combo_queue.enqueue(combo_data)
+		BattleRadio.emit_signal(
+			BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
+			self.entity.get_instance_id(),
+			indexes_to_remove
+		)
+		$ComboTimer.start()
 
 func _on_combo_delay_finished() -> void:
-	var combo_data = self.combo_queue.dequeue()
-	var combo : Combo = Combo.create({
-		Combo.FIRST_ELEMENT : combo_data[Combo.FIRST_ELEMENT],
-		Combo.SECOND_ELEMENT : combo_data[Combo.SECOND_ELEMENT]
-	})
-	BattleRadio.emit_signal(
-		BattleRadio.COMBO_APPLIED,
-		self.entity.get_instance_id(),
-		combo
-	)
+	var queued_combos = []
+	while self.combo_queue.size() > 0:
+		queued_combos.append(self.combo_queue.dequeue())
+
+	if queued_combos.size() > 0:
+		var combos : Array[Combo] = []
+		for combo_data in queued_combos:
+			var combo : Combo = Combo.create({
+				Combo.FIRST_ELEMENT : combo_data[Combo.FIRST_ELEMENT],
+				Combo.SECOND_ELEMENT : combo_data[Combo.SECOND_ELEMENT]
+			})
+			combos.append(combo)
+		BattleRadio.emit_signal(
+			BattleRadio.COMBOS_APPLIED,
+			self.entity.get_instance_id(),
+			combos
+		)
+
+func _on_check_for_finished() -> void:
+	if self.element_remove_queue.is_empty() and self.combo_queue.is_empty():
+		BattleRadio.emit_signal(BattleRadio.ELEMENTS_SETTLED)
+	else:
+		$FinishTimer.start()
 
 
 #========================
@@ -250,7 +270,44 @@ func render_elements(new_elements : Array[Element], old_elements : Array[Element
 func registry_has_multiple_distinct_elements(registry : Dictionary) -> bool:
 	return registry.keys().size() >= 2
 
+func get_all_combos(possible_elements : Array[Element], registry : Dictionary) -> Array[Dictionary]:
+	var combos : Array[Dictionary] = []
+	var claimed_indexes : Array[int] = []
+
+	if not self.registry_has_multiple_distinct_elements(registry):
+		return combos
+
+	for i in possible_elements.size():
+		if i in claimed_indexes:
+			continue
+
+		var current_element = possible_elements[i]
+		for j in range(i + 1, possible_elements.size()):
+			if j in claimed_indexes:
+				continue
+
+			var compared_element = possible_elements[j]
+			var potential_combo : Combo = Combo.create({
+				Combo.FIRST_ELEMENT : current_element,
+				Combo.SECOND_ELEMENT : compared_element
+			})
+			if potential_combo.has_reaction():
+				claimed_indexes.append(i)
+				claimed_indexes.append(j)
+				combos.append({
+					Combo.FIRST_ELEMENT_INDEX : i,
+					Combo.FIRST_ELEMENT : current_element,
+					Combo.FIRST_ELEMENT_NAME : current_element.machine_name,
+					Combo.SECOND_ELEMENT_INDEX : j,
+					Combo.SECOND_ELEMENT : compared_element,
+					Combo.SECOND_ELEMENT_NAME : compared_element.machine_name
+				})
+				break
+
+	return combos
+
 func check_elements_for_combo(possible_elements : Array[Element], registry : Dictionary) -> Dictionary:
+	# TODO get all combos if there are multiple
 	var combo_data : Dictionary
 
 	# Need at least 2 diff elements to combine

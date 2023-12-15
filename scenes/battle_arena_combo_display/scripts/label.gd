@@ -5,8 +5,36 @@ func update_combo_text(combo: Combo) -> void:
 	text = "{name}".format({"name": combo.human_name})
 	set_combo_text_color(combo)
 
+func update_combos_text(combos : Array[Combo]) -> void:
+	if combos.size() == 1:
+		text = "{name}".format({"name": combos[0].human_name})
+		set_combo_text_color(combos[0])
+	elif self.is_multiple_of_same_combo(combos):
+		text = "{name} x{num}".format({
+			"name": combos[0].human_name,
+			"num": combos.size()
+		})
+		set_combo_text_color(combos[0])
+	else:
+		#later -- will possibly need to make this a rich text label instead
+		# to support showing multiple colors of text for each distinct combo
+		var combo_text = ""
+		combo_text += "{name}".format({"name": combos[0].human_name})
+		for i in range(1, combos.size()):
+			combo_text += " | {name}".format({"name": combos[i].human_name})
+		text = combo_text
+
 func reset_combo_text() -> void:
 	text = ""
+
+func is_multiple_of_same_combo(combos : Array[Combo]) -> bool:
+	var first_combo = combos[0]
+	for i in range(1, combos.size()):
+		var next_combo = combos[i]
+		if first_combo.machine_name != next_combo.machine_name:
+			return false
+
+	return true
 
 func set_combo_text_color(combo : Combo) -> void:
 	if combo.is_evaporate():

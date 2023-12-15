@@ -97,4 +97,5 @@ func belongs_to_lead() -> bool:
 	return self.lead_character.machine_name == self.card.character_name
 
 func can_play_card() -> bool:
-	return has_enough_energy() and belongs_to_lead()
+	# TODO: Fix this because it doesn't work on the next turn
+	return self.has_enough_energy() and self.belongs_to_lead()

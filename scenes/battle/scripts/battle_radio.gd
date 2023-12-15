@@ -75,6 +75,7 @@ signal elements_combined(
 	first_element_index : int,
 	second_element_index : int
 )
+signal elements_settled
 
 
 # Entity Related
@@ -96,6 +97,7 @@ signal entity_current_element_names_updated(
 
 # Combo Related
 signal combo_applied(instance_id : int, combo : Combo)
+signal combos_applied(instance_id : int, combos : Array[Combo])
 signal combo_bonus_applied(
 	instance_id : int,
 	combo_bonus : ComboBonus,
@@ -170,7 +172,9 @@ const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"
 
 
 const ELEMENTS_COMBINED : String = "elements_combined"
+const ELEMENTS_SETTLED : String = "elements_settled"
 
 
 const COMBO_APPLIED : String = "combo_applied"
+const COMBOS_APPLIED : String = "combos_applied"
 const COMBO_BONUS_APPLIED : String = "combo_bonus_applied"

@@ -2,8 +2,10 @@ extends Node2D
 
 
 var entity
-var combo : Combo:
+var combo : Combo :
 	set = set_combo
+var combos : Array[Combo] :
+	set = set_combos
 var original_label_position : Vector2
 
 
@@ -12,6 +14,7 @@ var original_label_position : Vector2
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
+	BattleRadio.connect(BattleRadio.COMBOS_APPLIED, _on_combos_applied)
 
 
 #=======================
@@ -22,15 +25,23 @@ func set_combo(new_combo : Combo) -> void:
 	$Label.update_combo_text(combo)
 	animate_combo_text()
 
+func set_combos(new_combos : Array[Combo]) -> void:
+	combos = new_combos
+	$Label.update_combos_text(combos)
+	animate_combo_text()
 
 #=======================
 # Signal Handlers
 #=======================
 func _on_combo_applied(instance_id : int, applied_combo : Combo) -> void:
-	if instance_id != entity.get_instance_id():
+	if instance_id != self.entity.get_instance_id():
 		return
+	self.set("combo", applied_combo)
 
-	combo = applied_combo
+func _on_combos_applied(instance_id : int, applied_combos : Array[Combo]) -> void:
+	if instance_id != self.entity.get_instance_id():
+		return
+	self.set("combos", applied_combos)
 
 
 #=======================

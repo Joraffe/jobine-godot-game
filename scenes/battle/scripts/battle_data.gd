@@ -50,6 +50,8 @@ static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
 	for i in range(2):
 		var rand_enemy_name = Enemy.get_random_enemy_machine_name()
 		battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
+#	battle_enemies.append(Enemy.create(enemy_seed_data["ice_slime"]))
+#	battle_enemies.append(Enemy.create(enemy_seed_data["aero_slime"]))
 
 	return battle_enemies
 

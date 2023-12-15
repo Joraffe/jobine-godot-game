@@ -18,6 +18,7 @@ var combo_targeting_instance_id : int
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
+	BattleRadio.connect(BattleRadio.COMBOS_APPLIED, _on_combos_applied)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
 
 
@@ -52,6 +53,29 @@ func _on_combo_applied(instance_id : int, combo : Combo) -> void:
 		for entity in self.entities:
 			self.apply_combo_to_entity(entity.get_instance_id(), combo)
 		return
+
+func _on_combos_applied(instance_id : int, combos : Array[Combo]) -> void:
+	if not self.is_applicable(instance_id):
+		return
+
+	for combo in combos:
+		var targeting : Targeting = Targeting.by_machine_name(
+			combo.targeting_name,
+			instance_id
+		)
+		if targeting.is_single_targeting():
+			self.apply_combo_to_entity(instance_id, combo)
+			continue
+
+		if targeting.is_splash_targeting():
+			for entity_instance_id in self.get_splash_entity_ids(instance_id):
+				self.apply_combo_to_entity(entity_instance_id, combo)
+			continue
+
+		if targeting.is_all_targeting():
+			for entity in self.entities:
+				self.apply_combo_to_entity(entity.get_instance_id(), combo)
+			continue
 
 func _on_combo_bonus_applied(
 	instance_id : int,

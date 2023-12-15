@@ -31,6 +31,7 @@ func _ready():
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_DISABLED, _on_card_targeting_disabled)
 	BattleRadio.connect(BattleRadio.ENEMY_TARGET_SELECTED, _on_enemy_target_selected)
 	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
+	BattleRadio.connect(BattleRadio.COMBOS_APPLIED, _on_combos_applied)
 
 
 #========================
@@ -90,7 +91,6 @@ func _on_enemy_target_selected(enemy : Enemy) -> void:
 	)
 
 func _on_combo_applied(instance_id : int, combo : Combo) -> void:
-
 	if not self.card_played:
 		return
 
@@ -113,6 +113,31 @@ func _on_combo_applied(instance_id : int, combo : Combo) -> void:
 		battle_field_card.card.combo_bonus,
 		combo_bonus_targeting
 	)
+
+func _on_combos_applied(instance_id : int, combos : Array[Combo]) -> void:
+	if not self.card_played:
+		return
+
+	if not battle_field_card.card.combo_trigger:
+		return
+
+	for combo in combos:
+		var combo_name : String = combo.machine_name
+		var combo_trigger_name = battle_field_card.card.combo_trigger.machine_name
+		if combo_name != combo_trigger_name:
+			return
+
+		var combo_bonus_targeting : Targeting = Targeting.by_machine_name(
+			battle_field_card.card.combo_bonus_targeting_name,
+			instance_id
+		)
+
+		BattleRadio.emit_signal(
+			BattleRadio.COMBO_BONUS_APPLIED,
+			instance_id,
+			battle_field_card.card.combo_bonus,
+			combo_bonus_targeting
+		)
 
 func _input(event):
 	if not battle_field_card.is_player_turn:

@@ -75,16 +75,16 @@ func set_card_image_data(new_card_image_data : ImageData):
 # Signal Handlers
 #========================
 func _on_current_lead_updated(updated_leader : Character) -> void:
-	lead_character = updated_leader
+	self.set("lead_character", updated_leader)
 
 func _on_current_energy_updated(current_energy : int) -> void:
-	available_energy = current_energy
+	self.set('available_energy', current_energy)
 
 func _on_player_turn_started() -> void:
-	is_player_turn = true
+	self.set("is_player_turn", true)
 
 func _on_player_turn_ended() -> void:
-	is_player_turn = false
+	self.set("is_player_turn" , false)
 
 
 #========================
@@ -97,5 +97,4 @@ func belongs_to_lead() -> bool:
 	return self.lead_character.machine_name == self.card.character_name
 
 func can_play_card() -> bool:
-	# TODO: Fix this because it doesn't work on the next turn
 	return self.has_enough_energy() and self.belongs_to_lead()

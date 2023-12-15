@@ -32,6 +32,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
+	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
 	BattleRadio.connect(BattleRadio.CARDS_DRAWN, _on_cards_drawn)
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
 
@@ -105,10 +106,10 @@ func _on_cards_drawn(drawn_cards : Array[Card]) -> void:
 
 
 func _on_current_energy_updated(current_energy : int) -> void:
-	available_energy = current_energy
+	self.set("available_energy", current_energy)
 
 func _on_current_lead_updated(current_lead : Character) -> void:
-	lead_character = current_lead
+	self.set("lead_character", current_lead)
 
 func _on_card_played(card : Card, _targeting : Targeting) -> void:
 	$Area2D.free_played_card_instance(card)

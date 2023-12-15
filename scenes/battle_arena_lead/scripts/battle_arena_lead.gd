@@ -40,10 +40,10 @@ func set_lead_character(new_character : Character) -> void:
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	lead_character = battle_data.lead_character
+	self.set("lead_character", battle_data.lead_character)
 
 func _on_character_swapped(character : Character, _swap_position : String) -> void:
-	lead_character = character
+	self.set("lead_character", character)
 
 func _on_lead_damaged(damage : int) -> void:
 	BattleRadio.emit_signal(

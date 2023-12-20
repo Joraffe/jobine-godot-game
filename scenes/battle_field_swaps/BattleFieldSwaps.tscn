@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://nrt0ehh68yje"]
+
+[ext_resource type="Script" path="res://scenes/battle_field_swaps/scripts/battle_field_swaps.gd" id="1_l7hcn"]
+[ext_resource type="Texture2D" uid="uid://cljvd8xtqp1kh" path="res://scenes/battle_field_swaps/resources/images/swap_icon/swap_icon.png" id="2_c50mu"]
+[ext_resource type="Script" path="res://scenes/battle_field_swaps/scripts/label.gd" id="2_oxd8r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pei8o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_muwwr"]
+radius = 63.0
+
+[node name="BattleFieldSwaps" type="Node2D"]
+script = ExtResource("1_l7hcn")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("2_c50mu")
+
+[node name="Panel" type="Panel" parent="Area2D/Sprite2D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pei8o")
+
+[node name="MarginContainer" type="MarginContainer" parent="Area2D/Sprite2D/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="Area2D/Sprite2D/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "1
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_oxd8r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_muwwr")

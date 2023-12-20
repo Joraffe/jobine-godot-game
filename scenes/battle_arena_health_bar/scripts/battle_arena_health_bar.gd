@@ -1,6 +1,8 @@
 extends Node2D
 
 
+var health_bar_type : String
+var entity_image_height : int
 var entity:
 	set = set_entity
 var max_hp : int:
@@ -22,13 +24,13 @@ func set_entity(new_entity) -> void:
 		"image_data",
 		ImageData.new(
 			"battle_arena_health_bar", # scene
-			entity.entity_type,  # instance
+			self.health_bar_type,  # instance
 			"{name}.png".format({"name": "health_bar"})  # filename
 		)
 	)
 	self.set("max_hp", entity.max_hp)
 	self.set("current_hp", entity.current_hp)
-	update_health_bar()
+	self.update_health_bar()
 
 func set_max_hp(new_max_hp : int) -> void:
 	max_hp = new_max_hp
@@ -47,6 +49,7 @@ func set_image_data(new_image_data : ImageData) -> void:
 # Health Bar Functionality
 #========================
 func update_health_bar() -> void:
+	self.position_healthbar()
 	$Sprite2D/Line2D.fill_health_bar(
 		max_hp,
 		current_hp,
@@ -63,3 +66,6 @@ func take_damage(damage : int) -> void:
 		current_hp = new_hp
 	elif new_hp <= 0:
 		current_hp = 0
+
+func position_healthbar() -> void:
+	self.position.y = (int(self.entity_image_height / 2.0) + 30)

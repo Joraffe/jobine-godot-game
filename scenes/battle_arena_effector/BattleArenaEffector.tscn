@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcapogvtgofc1"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_effector/scripts/battle_arena_effector.gd" id="1_q5txk"]
+
+[node name="BattleArenaEffector" type="Node"]
+script = ExtResource("1_q5txk")

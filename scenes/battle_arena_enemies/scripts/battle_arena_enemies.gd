@@ -1,20 +1,27 @@
 extends Node2D
 
 
-var enemies : Array[Enemy]:
+var enemies : Array[Enemy] :
 	set = set_enemies
+var lead_instance_id : int :
+	set = set_lead_instance_id
+
+
 var image_data : ImageData = ImageData.new(
 	"battle_arena_enemies",
 	"empty",
 	"enemies.png"
 )
 
+
 #=======================
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
+	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
+
 
 #=======================
 # Setters
@@ -22,15 +29,27 @@ func _init() -> void:
 func set_enemies(new_enemies : Array[Enemy]) -> void:
 	enemies = new_enemies
 
-	$Combiner.set("entities", self.enemies)
+	var enemy_instance_ids : Array[int] = []
+	for enemy in self.enemies:
+		enemy_instance_ids.append(enemy.get_instance_id())
+	$Combiner.set("entity_ids", enemy_instance_ids)
+	$Effector.set("entity_instance_ids", enemy_instance_ids)
 	$Area2D.render_enemies()
+
+func set_lead_instance_id(new_lead_instance_id : int) -> void:
+	lead_instance_id = new_lead_instance_id
+	$AI.set("lead_instance_id" , self.lead_instance_id)
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	enemies = battle_data.enemies
+	self.set("enemies", battle_data.enemies)
+	self.set("lead_instance_id", battle_data.lead_character.get_instance_id())
+
+func _on_current_lead_updated(new_lead_character : Character) -> void:
+	self.set("lead_instance_id", new_lead_character.get_instance_id())
 
 func _on_card_played(card : Card, targeting : Targeting) -> void:
 	if targeting.is_single_targeting():

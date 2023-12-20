@@ -38,7 +38,7 @@ func render_hand() -> void:
 	var hand : Array[Card] = battle_field_hand.hand
 	var hand_data : Dictionary = {
 		"available_energy" : battle_field_hand.available_energy,
-		"lead_character": battle_field_hand.lead_character,
+		"lead_instance_id": battle_field_hand.lead_instance_id,
 		"is_player_turn" : battle_field_hand.is_player_turn 
 	}
 	for i in range(num_already_rendered, battle_field_hand.get_current_hand_size()):
@@ -50,7 +50,7 @@ func instantiate_card(card : Card, hand_data : Dictionary) -> Node2D:
 	var instance = battle_field_card_scene.instantiate()
 	instance.set("card", card)
 	instance.set("available_energy", hand_data["available_energy"])
-	instance.set("lead_character", hand_data["lead_character"])
+	instance.set("lead_instance_id", hand_data["lead_instance_id"])
 	instance.set("is_player_turn", hand_data["is_player_turn"])
 	add_child(instance)
 	return instance

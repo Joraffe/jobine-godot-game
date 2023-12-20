@@ -23,6 +23,49 @@ func _init(
 	# based off of first_element + second_element
 	set_combo_derived_data()
 
+func get_sequential_effects() -> Array[Dictionary]:
+	var effects : Array[Dictionary] = []
+
+	if self.is_evaporate():
+		effects.append(self.get_damage_effect()) # 2 dmg single
+	elif self.is_burn():
+		effects.append(self.get_damage_effect()) # 1 dmg splash
+	elif self.is_charge():
+		effects.append(self.get_element_effect()) # 2 ele single
+	elif self.is_chill():
+		effects.append(self.get_element_effect()) # 1 ele aoe
+	elif self.is_melt():
+		effects.append(self.get_damage_effect()) # 2 dmg single
+	elif self.is_blaze():
+		effects.append(self.get_element_effect()) # 1 ele aoe
+	elif self.is_grow():
+		effects.append(self.get_damage_effect()) # 1 dmg single
+		effects.append(self.get_element_effect()) # 1 ele single
+	elif self.is_freeze():
+		effects.append(self.get_element_effect()) # 2 ele single
+	elif self.is_surge():
+		effects.append(self.get_damage_effect()) # 1 dmg single
+		effects.append(self.get_element_effect()) # 1 ele single
+	elif self.is_tempest():
+		effects.append(self.get_element_effect()) # 1 ele aoe
+
+	return effects
+
+func get_damage_effect() -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.EFFECT_TYPE : BattleConstants.DAMAGE_EFFECT,
+		BattleConstants.EFFECT_AMOUNT : self.base_damage,
+	}
+
+func get_element_effect() -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.EFFECT_TYPE : BattleConstants.ELEMENT_EFFECT,
+		BattleConstants.EFFECT_NAME : self.applied_element_name,
+		BattleConstants.EFFECT_AMOUNT : self.num_applied_element
+	}
+
 func has_reaction() -> bool:
 	return (
 		self.is_evaporate()
@@ -192,6 +235,8 @@ static func create(combo_data : Dictionary) -> Combo:
 		combo_data[Combo.SECOND_ELEMENT],
 	)
 
+static func Empty() -> Combo:
+	return Combo.new(Element.Empty(), Element.Empty())
 
 #========================
 # Init Param kwarg names

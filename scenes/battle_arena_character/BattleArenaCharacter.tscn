@@ -21,10 +21,10 @@ texture = ExtResource("2_tfovw")
 shape = SubResource("RectangleShape2D_sisx5")
 
 [node name="HealthBar" parent="." instance=ExtResource("2_gb08q")]
-position = Vector2(2.08165e-12, 230)
+position = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="Aura" parent="." instance=ExtResource("3_6xr3q")]
-position = Vector2(2.08165e-12, -230)
+position = Vector2(2.08165e-12, 2.08165e-12)
 
-[node name="Combo" parent="." instance=ExtResource("5_1mibe")]
+[node name="ComboDisplay" parent="." instance=ExtResource("5_1mibe")]
 position = Vector2(2.08165e-12, -280)

@@ -72,7 +72,7 @@ func _is_left_mouse_click(event) -> bool:
 #========================
 # Area2D Functionality
 #========================
-func animate_attack(_attack : EnemyAttack) -> void:
+func animate(_attack : EnemyAttack) -> void:
 	var tween = create_tween()
 	var sprite_2d : Sprite2D = $Sprite2D
 	var original_pos : Vector2 = sprite_2d.position
@@ -92,3 +92,8 @@ func animate_attack(_attack : EnemyAttack) -> void:
 		original_pos,
 		0.1,
 	)
+	tween.tween_callback(self.emit_enemy_attack_animation_finished)
+
+func emit_enemy_attack_animation_finished() -> void:
+	print('emit_enemy_attack_animation_finished called')
+	BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED)

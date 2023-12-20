@@ -7,6 +7,7 @@ var machine_name : String
 var element_name : String
 var max_hp : int
 var current_hp : int
+var current_element_names : Array[String]
 var entity_type : String
 var attack_names : Array[String]
 
@@ -17,6 +18,7 @@ func _init(
 	_element_name : String,
 	_max_hp : int,
 	_current_hp : int,
+	_current_element_names : Array[String],
 	_entity_type : String,
 	_attack_names : Array[String]
 ):
@@ -25,13 +27,21 @@ func _init(
 	element_name = _element_name
 	max_hp = _max_hp
 	current_hp = _current_hp
+	current_element_names = _current_element_names
 	entity_type = _entity_type
 	attack_names = _attack_names
 
+func take_damage(damage : int) -> void:
+	var old_current_hp : int = self.current_hp
+	var remaining_hp : int = old_current_hp - damage
+	if remaining_hp < 0:
+		remaining_hp = 0
+	self.set("current_hp", remaining_hp)
+
 func get_random_attack_name() -> String:
-	var rng = RandomNumberGenerator.new()
-	var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
-	return attack_names[rand_i]
+	#var rng = RandomNumberGenerator.new()
+	# var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
+	return attack_names[0]
 
 static func create(enemy_data : Dictionary) -> Enemy:
 	return Enemy.new(
@@ -40,6 +50,7 @@ static func create(enemy_data : Dictionary) -> Enemy:
 		enemy_data[Enemy.ELEMENT_NAME],
 		enemy_data[Enemy.MAX_HP],
 		enemy_data[Enemy.CURRENT_HP],
+		enemy_data[Enemy.CURRENT_ELEMENT_NAMES],
 		enemy_data[Enemy.ENTITY_TYPE],
 		enemy_data[Enemy.ATTACK_NAMES]
 	)
@@ -61,6 +72,7 @@ const MACHINE_NAME : String = "machine_name"
 const ELEMENT_NAME : String = "element_name"
 const MAX_HP : String = "max_hp"
 const CURRENT_HP : String = "current_hp"
+const CURRENT_ELEMENT_NAMES : String = "current_element_names"
 const ENTITY_TYPE : String = "entity_type"
 const ATTACK_NAMES : String = "attack_names"
 

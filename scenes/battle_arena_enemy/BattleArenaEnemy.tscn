@@ -23,10 +23,10 @@ position = Vector2(2.08165e-12, 2.08165e-12)
 shape = SubResource("RectangleShape2D_3xwil")
 
 [node name="HealthBar" parent="." instance=ExtResource("3_8eg3g")]
-position = Vector2(2.08165e-12, 130)
+position = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="Aura" parent="." instance=ExtResource("4_65erj")]
-position = Vector2(2.08165e-12, -130)
+position = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="ComboDisplay" parent="." instance=ExtResource("5_c5x3i")]
 position = Vector2(2.08165e-12, -180)
@@ -34,6 +34,3 @@ position = Vector2(2.08165e-12, -180)
 [node name="AttackDisplay" parent="." instance=ExtResource("6_h8aao")]
 visible = false
 position = Vector2(2.08165e-12, -180)
-
-[node name="AttackEffectTimer" type="Timer" parent="."]
-one_shot = true

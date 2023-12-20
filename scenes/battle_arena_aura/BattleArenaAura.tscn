@@ -1,9 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0qdv2d2scwdo"]
+[gd_scene load_steps=5 format=3 uid="uid://b0qdv2d2scwdo"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_aura/scripts/battle_arena_aura.gd" id="1_76so8"]
+[ext_resource type="Script" path="res://scenes/battle_arena_aura/scripts/area_2d.gd" id="2_de6yf"]
+[ext_resource type="Script" path="res://scenes/battle_arena_aura/scripts/ai.gd" id="2_wndkc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ikf3j"]
 
 [node name="BattleArenaAura" type="Node2D"]
 script = ExtResource("1_76so8")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_de6yf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ikf3j")
+
+[node name="AI" type="Node" parent="."]
+script = ExtResource("2_wndkc")
 
 [node name="ComboTimer" type="Timer" parent="."]
 wait_time = 0.9

@@ -6,7 +6,7 @@ var human_name : String
 var machine_name : String
 var cost : int  # how much it cost to play this card
 var element_name : String
-var character_name : String
+var character_instance_id : int
 var targeting_name : String
 var base_damage : int
 var element_amount : int
@@ -25,7 +25,7 @@ func _init(
 	_machine_name : String,
 	_cost : int,
 	_element_name : String,
-	_character_name : String,
+	_character_instance_id : int,
 	_targeting_name : String,
 	_base_damage : int,
 	_element_amount : int,
@@ -38,7 +38,7 @@ func _init(
 	machine_name = _machine_name
 	cost = _cost
 	element_name = _element_name
-	character_name = _character_name
+	character_instance_id = _character_instance_id
 	targeting_name = _targeting_name
 	base_damage = _base_damage
 	element_amount = _element_amount
@@ -92,7 +92,7 @@ static func create(card_data : Dictionary) -> Card:
 		card_data[Card.MACHINE_NAME],
 		card_data[Card.COST],
 		card_data[Card.ELEMENT_NAME],
-		card_data[Card.CHARACTER_NAME],
+		card_data[Card.CHARACTER_INSTANCE_ID],
 		card_data[Card.TARGETING_NAME],
 		card_data[Card.BASE_DAMAGE],
 		card_data[Card.ELEMENT_AMOUNT],
@@ -110,28 +110,33 @@ static func create_multi(cards_data : Array[Dictionary]) -> Array[Card]:
 	
 	return cards
 
-static func by_machine_name(card_machine_name : String) -> Card:
+static func by_name_and_instance_id(card_machine_name : String, instance_id : int) -> Card:
 	match card_machine_name:
 		Card.FLORAL_DART:
-			return FloralDart()
+			return FloralDart(instance_id)
 		Card.BLOOM:
-			return Bloom()
+			return Bloom(instance_id)
 		Card.PETTOL_BEAM:
-			return PettolBeam()
+			return PettolBeam(instance_id)
 		Card.CHOMP:
-			return Chomp()
+			return Chomp(instance_id)
 		Card.AQUA_SHOT:
-			return AquaShot()
+			return AquaShot(instance_id)
 		Card.SWIFT_SWIM:
-			return SwiftSwim()
+			return SwiftSwim(instance_id)
 		_:
 			return
 
-static func by_machine_names(card_machine_names : Array[String]) -> Array[Card]:
+static func by_names_and_instance_ids(cards_data : Array[Dictionary]) -> Array[Card]:
 	var cards : Array[Card] = []
 
-	for card_machine_name in card_machine_names:
-		cards.append(Card.by_machine_name(card_machine_name))
+	for card_data in cards_data:
+		cards.append(
+			Card.by_name_and_instance_id(
+				card_data[Card.MACHINE_NAME],
+				card_data[Card.CHARACTER_INSTANCE_ID]
+			)
+		)
 
 	return cards
 
@@ -143,7 +148,7 @@ const HUMAN_NAME : String = "human_name"
 const MACHINE_NAME : String = "machine_name"
 const COST : String = "cost"
 const ELEMENT_NAME : String = "element_name"
-const CHARACTER_NAME : String = "character_name"
+const CHARACTER_INSTANCE_ID : String = "character_instance_id"
 const TARGETING_NAME : String = "targeting_name"
 const BASE_DAMAGE : String = "base_damage"
 const ELEMENT_AMOUNT : String = "element_amount"
@@ -165,13 +170,13 @@ const COMBO_BONUS : String = "combo_bonus"
 const FLORAL_DART : String = "floral_dart"
 const BLOOM : String = "bloom"
 
-static func FloralDart() -> Card:
+static func FloralDart(instance_id : int) -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Floral Dart",
 		Card.MACHINE_NAME : Card.FLORAL_DART,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.NATURE,
-		Card.CHARACTER_NAME : Character.JUNO,
+		Card.CHARACTER_INSTANCE_ID : instance_id,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
@@ -181,13 +186,13 @@ static func FloralDart() -> Card:
 		Card.COMBO_BONUS_TARGETING_NAME : ""
 	})
 
-static func Bloom() -> Card:
+static func Bloom(instance_id : int) -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Bloom",
 		Card.MACHINE_NAME : Card.BLOOM,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.NATURE,
-		Card.CHARACTER_NAME : Character.JUNO,
+		Card.CHARACTER_INSTANCE_ID : instance_id,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
@@ -204,13 +209,13 @@ static func Bloom() -> Card:
 const PETTOL_BEAM : String = "pettol_beam"
 const CHOMP : String = "chomp"
 
-static func PettolBeam() -> Card:
+static func PettolBeam(instance_id : int) -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Pettol Beam",
 		Card.MACHINE_NAME : Card.PETTOL_BEAM,
 		Card.COST : 2,
 		Card.ELEMENT_NAME : Element.VOLT,
-		Card.CHARACTER_NAME : Character.PETTOL,
+		Card.CHARACTER_INSTANCE_ID : instance_id,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 3,
 		Card.ELEMENT_AMOUNT : 1,
@@ -220,13 +225,13 @@ static func PettolBeam() -> Card:
 		Card.COMBO_BONUS_TARGETING_NAME : Targeting.SINGLE
 	})
 
-static func Chomp() -> Card:
+static func Chomp(instance_id : int) -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Chomp",
 		Card.MACHINE_NAME : Card.CHOMP,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.VOLT,
-		Card.CHARACTER_NAME : Character.PETTOL,
+		Card.CHARACTER_INSTANCE_ID : instance_id,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,
@@ -244,13 +249,13 @@ const SWIFT_SWIM : String = "swift_swim"
 const AQUA_SHOT : String = "aqua_shot"
 
 
-static func SwiftSwim() -> Card:
+static func SwiftSwim(instance_id : int) -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Swift Swim",
 		Card.MACHINE_NAME : Card.SWIFT_SWIM,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.WATER,
-		Card.CHARACTER_NAME : Character.AXO,
+		Card.CHARACTER_INSTANCE_ID : instance_id,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 1,
 		Card.ELEMENT_AMOUNT : 1,
@@ -260,13 +265,13 @@ static func SwiftSwim() -> Card:
 		Card.COMBO_BONUS_TARGETING_NAME : ""
 	})
 
-static func AquaShot() -> Card:
+static func AquaShot(instance_id : int) -> Card:
 	return Card.create({
 		Card.HUMAN_NAME : "Aqua Shot",
 		Card.MACHINE_NAME : Card.AQUA_SHOT,
 		Card.COST : 1,
 		Card.ELEMENT_NAME : Element.WATER,
-		Card.CHARACTER_NAME : Character.AXO,
+		Card.CHARACTER_INSTANCE_ID : instance_id,
 		Card.TARGETING_NAME : Targeting.SINGLE,
 		Card.BASE_DAMAGE : 2,
 		Card.ELEMENT_AMOUNT : 1,

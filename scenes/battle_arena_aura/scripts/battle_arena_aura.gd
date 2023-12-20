@@ -5,15 +5,15 @@ var aura_element_scene : PackedScene = preload(
 	"res://scenes/battle_arena_aura_element/BattleArenaAuraElement.tscn"
 )
 
-var entity  # used to associate this with an character/enemy
-var aura_width : int  # used to position the aura element
+var entity : Variant :  # used to associate this with an character/enemy
+	set = set_entity
+var aura_width : int  # used to position individual aura elements
+var entity_image_height : int  # used to position the combined aura elements
 
-var element_names :
+var element_names : Array[String] :
 	set = set_element_names
-var elements : Array[Element] :
-	set = set_elements
-var element_registry : Dictionary :
-	set = set_element_registry
+var elements : Array[Element]
+var element_registry : Dictionary
 
 var element_remove_queue : Queue = Queue.new()
 var combo_queue : Queue = Queue.new()
@@ -22,29 +22,53 @@ var combo_queue : Queue = Queue.new()
 #=======================
 # Godot Lifecycle Hooks
 #=======================
-func _init() -> void:
-	BattleRadio.connect(
-		BattleRadio.ENTITY_CURRENT_ELEMENT_NAMES_UPDATED,
-		_on_current_element_names_updated
-	)
-
 func _ready() -> void:
 	$ElementTimer.connect("timeout", _on_element_animation_timer_finished)
 	$ComboTimer.connect("timeout", _on_combo_delay_finished)
 	$FinishTimer.connect("timeout", _on_check_for_finished)
 
+
 #=======================
 # Setters
 #=======================
-func set_element_names(new_element_names) -> void:
+func set_entity(new_entity : Variant) -> void:
+	entity = new_entity
+	self.position_aura()
+	$Area2D.set("entity_instance_id", self.entity.get_instance_id())
+	$AI.set("entity_instance_id" , self.entity.get_instance_id())
+	$AI.set("entity_type", self.entity.entity_type)
+
+func set_element_names(new_element_names : Array[String]) -> void:
+	print('battle_arena_aura.set_element_names called')
+	var old_element_names = self.element_names
 	element_names = new_element_names
+	$Area2D.set("element_names", new_element_names)
+	$AI.set("element_names", new_element_names)
 
-	var new_elements : Array[Element] = []
-	for i in self.element_names.size():
-		new_elements.append(Element.by_machine_name(self.element_names[i]))
+	if new_element_names.size() > old_element_names.size():
+		print('new > old')
+		BattleRadio.emit_signal(
+			BattleRadio.ADD_ELEMENTS_ANIMATION_QUEUED,
+			self.entity.get_instance_id(),
+			self.get_added_element_names(new_element_names, old_element_names)
+		)
+#	elif new_element_names.size() < old_element_names.size():
+#		print('new < old')
+#		var remove_indexes = self.get_remove_indexes(new_element_names, old_element_names)
+#		var remain_indexes = self.get_remain_indexes(old_element_names, remove_indexes)
+#		BattleRadio.emit_signal(
+#			BattleRadio.REMOVE_ELEMENTS_ANIMATION_QUEUED,
+#			self.entity.get_instance_id(),
+#			remove_indexes
+#		)
+#		BattleRadio.emit_signal(
+#			BattleRadio.REPOSITION_ELEMENTS_ANIMATION_QUEUED,
+#			self.entity.get_instance_id(),
+#			remove_indexes,
+#			remain_indexes
+#		)
 
-	self.set("elements", new_elements)
-
+# ignore this
 func set_elements(new_elements : Array[Element]) -> void:
 	var old_elements : Array[Element] = self.elements
 	elements = new_elements
@@ -61,19 +85,9 @@ func set_elements(new_elements : Array[Element]) -> void:
 		$FinishTimer.start()
 
 
-func set_element_registry(new_element_registry : Dictionary) -> void:
-	element_registry = new_element_registry
-
-
 #========================
 # Signal Handlers
 #========================
-func _on_current_element_names_updated(instance_id : int, new_current_element_names) -> void:
-	if instance_id != self.entity.get_instance_id():
-		return
-
-	self.set("element_names", new_current_element_names)
-
 func _on_element_animation_timer_finished() -> void:
 	var combos = []
 	while self.element_remove_queue.size() > 0:
@@ -121,6 +135,67 @@ func _on_check_for_finished() -> void:
 #========================
 # Aura Functionality
 #========================
+func get_added_element_names(
+	new_element_names : Array[String],
+	old_element_names : Array[String],
+) -> Array[String]:
+	var added_element_names : Array[String] = []
+
+	var new_element_counter : Dictionary = {}
+	for new_element_name in new_element_names:
+		if not new_element_counter.has(new_element_name):
+			new_element_counter[new_element_name] = 1
+		else:
+			new_element_counter[new_element_name] += 1
+
+	var old_element_counter : Dictionary = {}
+	for old_element_name in old_element_names:
+		if not old_element_counter.has(old_element_name):
+			old_element_counter[old_element_name] = 1
+		else:
+			old_element_counter[old_element_name] += 1
+
+	for new_element_name in new_element_counter.keys():
+		var new_element_count : int = new_element_counter.get(new_element_name)
+		var old_element_count : int = old_element_counter.get(new_element_name, 0)
+		var added_element_count : int = new_element_count - old_element_count
+		for i in added_element_count:
+			added_element_names.append(new_element_name)
+
+	return added_element_names
+
+func get_remove_indexes(
+	new_element_names : Array[String],
+	old_element_names : Array[String]
+) -> Array[int]:
+	var removed_element_names : Array[String] = ArrayUtils.difference(
+		old_element_names,
+		new_element_names
+	)
+	var remove_indexes : Array[int] = []
+
+	var claimed_indexes : Array[int] = []
+	for removed_element_name in removed_element_names:
+		for i in old_element_names.size():
+			if i in claimed_indexes:
+				continue
+			if removed_element_name == old_element_names[i]:
+				remove_indexes.append(i)
+
+	return remove_indexes
+
+func get_remain_indexes(
+	old_element_names : Array[String],
+	remove_indexes : Array[int]
+) -> Array[int]:
+	var remain_indexes : Array[int] = []
+
+	for i in old_element_names.size():
+		if i not in remove_indexes:
+			remain_indexes.append(i)
+
+	return remain_indexes
+
 func get_element_registry(new_elements : Array[Element]) -> Dictionary:
 	var new_element_registry : Dictionary = {}
 
@@ -461,3 +536,6 @@ func render_new_element_names(element_names_to_render : Array[String]) -> void:
 		var instance = instantiate_aura_element(new_unrendered_element)
 		position_aura_element(instance, index_to_render)
 		index_to_render += 1
+
+func position_aura() -> void:
+	self.position.y = ((-1) * int(self.entity_image_height / 2.0) - 30)

@@ -4,8 +4,8 @@ extends Node
 @onready var entity_group_node : Node2D = get_parent()
 
 
-var entities : Array :  # either of Character or Enemy
-	set = set_entities
+var entity_ids : Array[int] :
+	set = set_entity_ids
 
 # Related to combining elements
 var first_element : Element
@@ -25,8 +25,8 @@ func _init() -> void:
 #=======================
 # Setters
 #=======================
-func set_entities(new_entities : Array) -> void:
-	entities = new_entities
+func set_entity_ids(new_entity_ids : Array[int]) -> void:
+	entity_ids = new_entity_ids
 
 
 #=======================
@@ -50,8 +50,8 @@ func _on_combo_applied(instance_id : int, combo : Combo) -> void:
 		return
 
 	if targeting.is_all_targeting():
-		for entity in self.entities:
-			self.apply_combo_to_entity(entity.get_instance_id(), combo)
+		for entity_id in self.entity_ids:
+			self.apply_combo_to_entity(entity_id, combo)
 		return
 
 func _on_combos_applied(instance_id : int, combos : Array[Combo]) -> void:
@@ -73,8 +73,8 @@ func _on_combos_applied(instance_id : int, combos : Array[Combo]) -> void:
 			continue
 
 		if targeting.is_all_targeting():
-			for entity in self.entities:
-				self.apply_combo_to_entity(entity.get_instance_id(), combo)
+			for entity_id in self.entity_ids:
+				self.apply_combo_to_entity(entity_id, combo)
 			continue
 
 func _on_combo_bonus_applied(
@@ -98,17 +98,17 @@ func _on_combo_bonus_applied(
 		return
 
 	if targeting.is_all_targeting():
-		for entity in self.entities:
-			self.apply_combo_bonus_to_entity(entity.get_instance_id(), combo_bonus)
+		for entity_id in self.entity_ids:
+			self.apply_combo_bonus_to_entity(entity_id, combo_bonus)
 		return
 
 
 #=======================
 # Node Helpers
 #=======================
-func is_applicable(entity_instance_id : int) -> bool:
-	for entity in self.entities:
-		if entity.get_instance_id() == entity_instance_id:
+func is_applicable(applicable_instance_id : int) -> bool:
+	for entity_id in self.entity_ids:
+		if entity_id == applicable_instance_id:
 			return true
 
 	return false
@@ -165,15 +165,15 @@ func get_blast_entity_ids(target_instance_id : int) -> Array[int]:
 
 	var left_i : int
 	var right_i : int
-	for i in range(0, self.entities.size() - 1):
-		if self.entities[i].get_instance_id() == target_instance_id:
+	for i in range(0, self.entity_ids.size() - 1):
+		if self.entity_ids[i] == target_instance_id:
 			left_i = i - 1
 			right_i = i + 1
 
 	if left_i >= 0:
-		blast_entity_ids.append(self.entities[left_i].get_instance_id())
-	if right_i <= self.entities.size() - 1:
-		blast_entity_ids.append(self.entities[right_i].get_instance_id())
+		blast_entity_ids.append(self.entity_ids[left_i])
+	if right_i <= self.entity_ids.size() - 1:
+		blast_entity_ids.append(self.entity_ids[right_i])
 
 	return blast_entity_ids
 
@@ -183,19 +183,19 @@ func get_splash_entity_ids(target_instance_id : int) -> Array[int]:
 
 	var left_i : int
 	var right_i : int
-	for i in range(0, self.entities.size() - 1):
-		if self.entities[i].get_instance_id() == target_instance_id:
+	for i in range(0, self.entity_ids.size() - 1):
+		if self.entity_ids[i] == target_instance_id:
 			left_i = i - 1
 			right_i = i + 1
 
 	var possible_indexes : Array[int] = []
 	if left_i >= 0:
 		possible_indexes.append(left_i)
-	if right_i <= self.entities.size() - 1:
+	if right_i <= self.entity_ids.size() - 1:
 		possible_indexes.append(right_i)
 
 	var rand_i = randi_range(0, possible_indexes.size() - 1)
 	var splash_i = possible_indexes[rand_i]
-	splash_entity_ids.append(self.entities[splash_i].get_instance_id())
+	splash_entity_ids.append(self.entity_ids[splash_i])
 
 	return splash_entity_ids

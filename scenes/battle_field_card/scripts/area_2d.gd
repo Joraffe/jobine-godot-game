@@ -77,17 +77,22 @@ func _on_enemy_target_selected(enemy : Enemy) -> void:
 	move_card_to_discard_pile()
 	set_card_played()
 
-	var targeting_name : String = battle_field_card.card.targeting_name
-	var targeting : Targeting = Targeting.by_machine_name(
-		targeting_name,
-		enemy.get_instance_id()
-	)
+#	var targeting_name : String = battle_field_card.card.targeting_name
+#	var targeting : Targeting = Targeting.by_machine_name(
+#		targeting_name,
+#		enemy.get_instance_id()
+#	)
 
 	# Stuff related to actually playing the card effects
 	BattleRadio.emit_signal(
 		BattleRadio.CARD_PLAYED,
-		battle_field_card.card,
-		targeting
+		self.battle_field_card.card
+	)
+	BattleRadio.emit_signal(
+		BattleRadio.CARD_EFFECTS_DEFERRED_TO_GROUP,
+		BattleConstants.GROUP_ENEMIES,
+		self.battle_field_card.card,
+		enemy.get_instance_id()
 	)
 
 func _on_combo_applied(instance_id : int, combo : Combo) -> void:

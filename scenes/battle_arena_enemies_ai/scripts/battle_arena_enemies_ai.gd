@@ -67,6 +67,9 @@ func _on_current_lead_updated(_instance_id : int) -> void:
 	$EndTurnDelayTimer.start()
 
 func _on_effects_finished(effector_instance_id : int) -> void:
+	if not self.is_enemy_turn:
+		return
+
 	if not self.current_attacking_enemy.get_instance_id() == effector_instance_id:
 		return
 

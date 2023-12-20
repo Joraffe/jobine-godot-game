@@ -22,7 +22,6 @@ var targeter : Targeter
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.LEAD_DAMAGED_BY_ENEMY, _on_lead_damaged_by_enemy)
 	BattleRadio.connect(BattleRadio.ELEMENTS_ADDED_TO_LEAD_BY_ENEMY, _on_elements_added_to_lead_by_enemy)
-#	BattleRadio.connect(BattleRadio.COMBO_QUEUED, _on_combo_queued)
 	BattleRadio.connect(BattleRadio.NEXT_LEAD_STATS_RESPONDED, _on_next_lead_stats_responded)
 
 
@@ -30,17 +29,19 @@ func _init() -> void:
 # Setters
 #=======================
 func set_lead_character(new_character : Character) -> void:
+	print('party_lead.set_lead_instance_id called')
 	lead_character = new_character
-	self.set("set_lead_instance_id", self.lead_character.get_instance_id())
+	self.set("lead_instance_id", self.lead_character.get_instance_id())
 	$Area2D.empty_lead()
 	$Area2D.render_lead()
 
 
 func set_lead_instance_id(new_instance_id : int) -> void:
+	print('party_lead.set_lead_instance_id called')
 	lead_instance_id = new_instance_id
-
-	$Combiner.set("entity_ids", [self.lead_instance_id])
-
+	
+	var new_combiner_entity_ids : Array[int] = [self.lead_instance_id]
+	$Combiner.set("entity_ids", new_combiner_entity_ids)
 	BattleRadio.emit_signal(
 		BattleRadio.CURRENT_LEAD_UPDATED,
 		self.lead_instance_id
@@ -76,19 +77,6 @@ func _on_elements_added_to_lead_by_enemy(element_name : String, num_applied : in
 	self.lead_character.add_element_names(elements_to_add)
 	self.emit_current_element_names_updated()
 
-func _on_combo_queued(instance_id : int, combo : Combo) -> void:
-	if not self.is_applicable_to_lead_character(instance_id):
-		return
-
-	targeter = Targeter.new(
-		combo.targeting_name,
-		self.get_possible_target_instance_ids(),
-		self.get_primary_target_instance_id(),
-	)
-	var combo_target_instance_ids : Array[int] = targeter.applicable_instance_ids()
-	for combo_target_instance_id in combo_target_instance_ids:
-		self.apply_combo_to_target(combo_target_instance_id)
-
 func _on_next_lead_stats_responded(
 	requester_instance_id : int,
 	stats : Dictionary
@@ -118,21 +106,6 @@ func is_applicable_to_lead_character(instance_id : int) -> bool:
 
 func is_applicable_to_lead(instance_id : int) -> bool:
 	return instance_id == self.get_instance_id()
-
-func get_possible_target_instance_ids() -> Array[int]:
-	var instance_ids : Array[int] = []
-
-	instance_ids.append(self.top_swap_character.get_instance_id())
-	instance_ids.append(self.lead_character.get_instance_id())
-	instance_ids.append(self.bottom_swap_character.get_instance_id())
-
-	return instance_ids
-
-func get_primary_target_instance_id() -> int:
-	return self.lead_character.get_instance_id()
-
-func apply_combo_to_target(target_instance_id : int) -> void:
-	pass
 
 func emit_current_hp_updated() -> void:
 	BattleRadio.emit_signal(

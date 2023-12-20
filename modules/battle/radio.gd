@@ -78,7 +78,7 @@ const CARD_PLAYED : String = "card_played"
 const CARD_DISCARDED : String = "card_discarded"
 signal card_selected(card : Card)
 signal card_deselected(card : Card)
-signal card_played(card : Card, targeting : Targeting)
+signal card_played(card : Card)
 signal card_discarded(card : Card)
 
 
@@ -251,3 +251,9 @@ signal add_elements_to_entity_by_effect(
 
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
 signal combo_effects_deferred_to_group(group_name : String, combo : Combo)
+const CARD_EFFECTS_DEFERRED_TO_GROUP : String = "card_effects_deferred_to_group"
+signal card_effects_deferred_to_group(
+	group_name : String,
+	card : Card,
+	card_target_instance_id : int
+)

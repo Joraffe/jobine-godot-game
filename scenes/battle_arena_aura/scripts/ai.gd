@@ -231,6 +231,7 @@ func is_entity_enemy() -> bool:
 
 func emit_combo_effects_deferred_to_group(group_name : String, combiner_to_defer : Combiner) -> void:
 	print('emit_combo_effects_deferred_to_group called')
+	print('group_name ', group_name)
 	BattleRadio.emit_signal(
 		BattleRadio.COMBO_EFFECTS_DEFERRED_TO_GROUP,
 		group_name,

@@ -110,7 +110,7 @@ func _on_current_energy_updated(current_energy : int) -> void:
 func _on_current_lead_updated(current_lead_instance_id : int) -> void:
 	self.set("lead_instance_id", current_lead_instance_id)
 
-func _on_card_played(card : Card, _targeting : Targeting) -> void:
+func _on_card_played(card : Card) -> void:
 	$Area2D.free_played_card_instance(card)
 
 

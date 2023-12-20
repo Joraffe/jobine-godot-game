@@ -62,7 +62,7 @@ func set_num_freed(new_num_freed : int) -> void:
 func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("discard_pile", battle_data.discard_pile)
 
-func _on_card_played(played_card : Card, _targeting : Targeting) -> void:
+func _on_card_played(played_card : Card) -> void:
 	self.add_card_to_discard_pile(played_card)
 
 func _on_card_discarded(discarded_card : Card) -> void:

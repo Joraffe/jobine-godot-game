@@ -46,6 +46,7 @@ func set_character(new_character : Character) -> void:
 
 func set_image_data(new_image_data : ImageData):
 	image_data = new_image_data
+
 	$Area2D/Sprite2D.set_texture(self.image_data.get_img_texture())
 	$Aura.set("entity_image_height", self.image_data.get_img_height())
 	$Aura/Area2D.set("aura_width", self.image_data.get_img_width())
@@ -56,7 +57,7 @@ func set_image_data(new_image_data : ImageData):
 # Signal Handlers
 #=======================
 func _on_entity_damaged_by_effect(
-	effector_instance_id : int,
+	_effector_instance_id : int,
 	entity_instance_id : int,
 	damage : int
 ) -> void:
@@ -79,7 +80,7 @@ func _on_entity_damaged_by_effect(
 		)
 
 func _on_add_elements_to_entity_by_effect(
-	effector_instance_id : int,
+	_effector_instance_id : int,
 	target_instance_id : int,
 	element_name : String,
 	num_elements : int
@@ -93,11 +94,6 @@ func _on_add_elements_to_entity_by_effect(
 		added_element_names.append(element_name)	
 	self.character.add_element_names(added_element_names)
 	$Aura.set("element_names", self.character.current_element_names)
-#	self.emit_effect_resolved(
-#		effector_instance_id,
-#		BattleConstants.ELEMENT_EFFECT,
-#		BattleConstants.ADDED_ELEMENTS
-#	)
 
 func _on_elements_removed_from_entity(
 	instance_id : int,

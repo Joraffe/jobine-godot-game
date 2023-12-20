@@ -59,6 +59,40 @@ func set_combo_derived_data() -> void:
 			self.combo_bonus_data
 		)
 
+func get_sequential_effects(target_instance_id : int) -> Array[Dictionary]:
+	var effects : Array[Dictionary] = []
+
+	if self.has_damage_effect():
+		effects.append(self.get_damage_effect(target_instance_id))
+
+	if self.has_element_effect():
+		effects.append(self.get_element_effect(target_instance_id))
+
+	return effects
+
+func has_damage_effect() -> bool:
+	return self.base_damage > 0
+
+func has_element_effect() -> bool:
+	return self.element_amount > 0
+
+func get_damage_effect(target_instance_id : int) -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
+		BattleConstants.EFFECT_TYPE : BattleConstants.DAMAGE_EFFECT,
+		BattleConstants.EFFECT_AMOUNT : self.base_damage,
+	}
+
+func get_element_effect(target_instance_id : int) -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
+		BattleConstants.EFFECT_TYPE : BattleConstants.ELEMENT_EFFECT,
+		BattleConstants.EFFECT_NAME : self.element_name,
+		BattleConstants.EFFECT_AMOUNT : self.element_amount
+	}
+
 func card_text() -> String:
 	var text : String = ""
 

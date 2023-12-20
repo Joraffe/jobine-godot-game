@@ -80,11 +80,9 @@ func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combine
 		primary_target_instance_id
 	)
 	var all_combo_effects : Array[Dictionary] = []
-	var target_instance_ids : Array[int] = party_targeter.applicable_instance_ids()
+	var target_instance_ids : Array[int] = party_targeter.instance_ids()
 	for target_instance_id in target_instance_ids:
-		var target_combo_effects : Array[Dictionary] = combo.get_sequential_effects()
-		for effect in target_combo_effects:
-			effect[BattleConstants.TARGET_INSTANCE_ID] = target_instance_id
+		var target_combo_effects : Array[Dictionary] = combo.get_sequential_effects(target_instance_id)
 		all_combo_effects += target_combo_effects
 	print('all_combo_effects ', all_combo_effects)
 	self.emit_effects_enqueued(

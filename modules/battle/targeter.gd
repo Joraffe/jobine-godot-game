@@ -34,9 +34,9 @@ func is_all_targeting() -> bool:
 	return self.current_targeting_name == Targeting.ALL
 
 func get_single_targeting_instance_ids() -> Array[int]:
-	var instance_ids : Array[int] = []
-	instance_ids.append(self.primary_target_instance_id)
-	return instance_ids
+	var target_instance_ids : Array[int] = []
+	target_instance_ids.append(self.primary_target_instance_id)
+	return target_instance_ids
 
 func get_splash_targeting_instance_ids() -> Array[int]:	
 	var splash_entity_ids : Array[int] = [self.primary_target_instance_id]
@@ -51,12 +51,12 @@ func get_splash_targeting_instance_ids() -> Array[int]:
 	var possible_indexes : Array[int] = []
 	if left_i >= 0:
 		possible_indexes.append(left_i)
-	if right_i <= self.entity_ids.size() - 1:
+	if right_i <= self.possible_target_instance_ids.size() - 1:
 		possible_indexes.append(right_i)
 
 	var rand_i = randi_range(0, possible_indexes.size() - 1)
 	var splash_i = possible_indexes[rand_i]
-	splash_entity_ids.append(self.entity_ids[splash_i])
+	splash_entity_ids.append(self.possible_target_instance_ids[splash_i])
 
 	return splash_entity_ids
 
@@ -67,14 +67,14 @@ func get_all_targeting_instance_ids() -> Array[int]:
 #=======================
 # Public Interface
 #=======================
-func applicable_instance_ids() -> Array[int]:
-	var instance_ids : Array[int]
+func instance_ids() -> Array[int]:
+	var target_instance_ids : Array[int]
 
 	if self.is_single_targeting():
-		instance_ids = self.get_single_targeting_instance_ids()
+		target_instance_ids = self.get_single_targeting_instance_ids()
 	elif self.is_splash_targeting():
-		instance_ids = self.get_splash_targeting_instance_ids()
+		target_instance_ids = self.get_splash_targeting_instance_ids()
 	elif self.is_all_targeting():
-		instance_ids = self.get_all_targeting_instance_ids()
+		target_instance_ids = self.get_all_targeting_instance_ids()
 
-	return instance_ids
+	return target_instance_ids

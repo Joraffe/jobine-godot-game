@@ -62,6 +62,7 @@ func _on_effect_resolved(instance_id : int, resolve_data : Dictionary) -> void:
 	if self.is_damage_effect(effect_type) and self.is_result_fainted(result):
 		print('damage effect + fainted')
 		var effector_instance_id : int = self.effector_stack.pop()
+		self.effect_queue.empty()
 		self.emit_effect_finished(effector_instance_id)
 		return
 

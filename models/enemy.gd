@@ -38,10 +38,30 @@ func take_damage(damage : int) -> void:
 		remaining_hp = 0
 	self.set("current_hp", remaining_hp)
 
+func has_fainted() -> bool:
+	return self.current_hp == 0
+
 func get_random_attack_name() -> String:
 	#var rng = RandomNumberGenerator.new()
 	# var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
 	return attack_names[0]
+
+func add_element_names(element_names_to_add : Array[String]) -> void:
+	print('enemy.add_element_names')
+	print('old current_element_names ', self.current_element_names)
+	print('element_names_to_add ', element_names_to_add)
+	print('self.current_element_names + element_names_to_add ', self.current_element_names + element_names_to_add)
+	self.set(
+		"current_element_names",
+		self.current_element_names + element_names_to_add
+	)
+
+func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
+	var new_elements : Array[String] = []
+	for i in self.current_element_names.size():
+		if not i in indexes_to_remove:
+			new_elements.append(self.current_element_names[i])
+	self.set("current_element_names", new_elements)
 
 static func create(enemy_data : Dictionary) -> Enemy:
 	return Enemy.new(

@@ -71,7 +71,7 @@ func _on_player_turn_started() -> void:
 		current_energy
 	)
 
-func _on_card_played(card : Card, _targeting : Targeting) -> void:
+func _on_card_played(card : Card) -> void:
 	current_energy = self.current_energy - card.cost
 
 	BattleRadio.emit_signal(

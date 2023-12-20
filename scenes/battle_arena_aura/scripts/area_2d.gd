@@ -222,7 +222,6 @@ func queue_element_aura_nodes_to_reposition(element_reposition_dicts : Array[Dic
 	var num_children = self.get_child_count()
 	print('num_children ', num_children)
 	for element_reposition_dict in element_reposition_dicts:
-		var desired_element_position : int = element_reposition_dict["new_index_position"]
 		var reposition_element_name : String = element_reposition_dict["element_name"]
 		var num_removed_before : int = element_reposition_dict["num_removed_before_remain_index"]
 		var num_same_element_visited : int = 0
@@ -242,7 +241,6 @@ func queue_element_aura_nodes_to_reposition(element_reposition_dicts : Array[Dic
 
 func animate_reposition_element_aura_from_queue() -> void:
 	print('animate_reposition_element_aura_from_queue called')
-	var desired_index : int = self.element_names.size() - self.reposition_queue.size()
 	var element_reposition_dict : Dictionary = self.reposition_queue.dequeue()
 	var element_aura_node : Node2D = element_reposition_dict["node"]
 	var new_index_position : int = element_reposition_dict["new_index_position"]

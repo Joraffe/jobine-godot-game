@@ -11,7 +11,7 @@ var num_available_swaps : int :
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
 	BattleRadio.connect(BattleRadio.STANDBY_SWAP_TO_LEAD_FINISHED, _on_standby_swap_to_lead_finished)
-	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_SWAPS_GAINED, _on_combo_bonus_swaps_gained)
 
 
 #=======================
@@ -37,12 +37,5 @@ func _on_player_turn_started() -> void:
 func _on_standby_swap_to_lead_finished() -> void:
 	self.set("num_available_swaps", self.num_available_swaps - 1)
 
-func _on_combo_bonus_applied(
-	_instance_id : int,
-	combo_bonus : ComboBonus,
-	_targeting : Targeting
-) -> void:
-	if not combo_bonus.is_extra_swap():
-		return
-
-	num_available_swaps = self.num_available_swaps + combo_bonus.swap_amount
+func _on_combo_bonus_swaps_gained(swaps_gained : int) -> void:
+	self.set("num_available_swaps", self.num_available_swaps + swaps_gained)

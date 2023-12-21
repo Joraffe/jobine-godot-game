@@ -132,3 +132,9 @@ func free_played_card_instance(card : Card) -> void:
 		var child_card = child.get("card")
 		if child_card is Card and child_card == card:
 			child.queue_free()
+
+func hide_played_card_instance(card : Card) -> void:
+	for child in self.get_children():
+		var child_card = child.get("card")
+		if child_card is Card and child_card == card:
+			child.hide()

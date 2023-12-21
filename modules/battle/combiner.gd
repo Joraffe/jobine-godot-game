@@ -53,13 +53,12 @@ func register_elements() -> void:
 	self.set("registry", new_element_registry)
 
 func calc_remaining(indexes_to_remove : Array[int]) -> Array[int]:
-	print('indexes_to_remove ', indexes_to_remove)
 	var indexes_to_remain : Array[int] = []
 
 	for i in self.element_names.size():
 		if not i in indexes_to_remove:
 			indexes_to_remain.append(i)
-	print('calc_remaining.indexes_to_remain ', indexes_to_remain)
+
 	return indexes_to_remain
 
 
@@ -67,9 +66,7 @@ func calc_remaining(indexes_to_remove : Array[int]) -> Array[int]:
 # Public Interface
 #=======================
 func calculate() -> void:
-	print('Combiner.calculate called')
 	if not self.has_multiple_distince_elements():
-		print('Combiner does not have multiple distinct elements')
 		var blank_indexes : Array[int] = []
 		self.set("remove_indexes", blank_indexes)
 		self.set("remaining_indexes", self.calc_remaining(blank_indexes))

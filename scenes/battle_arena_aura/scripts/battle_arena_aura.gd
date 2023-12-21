@@ -30,14 +30,12 @@ func set_entity(new_entity : Variant) -> void:
 	$AI.set("entity_type", self.entity.entity_type)
 
 func set_element_names(new_element_names : Array[String]) -> void:
-	print('battle_arena_aura.set_element_names called')
 	var old_element_names = self.element_names
 	element_names = new_element_names
 	$Area2D.set("element_names", new_element_names)
 	$AI.set("element_names", new_element_names)
 
 	if new_element_names.size() > old_element_names.size():
-		print('new > old')
 		BattleRadio.emit_signal(
 			BattleRadio.ADD_ELEMENTS_ANIMATION_QUEUED,
 			self.entity.get_instance_id(),
@@ -81,8 +79,5 @@ func get_added_element_names(
 # Helpers
 #=====================
 func position_aura() -> void:
-	print('position_aura called for ', self.entity.human_name)
-	print('self.entity_image_height ', self.entity_image_height)
 	var position_y : int = ((-1) * int(self.entity_image_height / 2.0) - 30)
-	print('position_y ', position_y)
 	self.position.y = position_y

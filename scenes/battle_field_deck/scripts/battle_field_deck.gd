@@ -29,7 +29,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.CURRENT_HAND_SIZE_UPDATED, _on_current_hand_size_updated)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
-	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_CARDS_GAINED, _on_combo_bonus_cards_gained)
 	BattleRadio.connect(
 		BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK,
 		_on_discard_pile_shuffled_into_deck
@@ -73,19 +73,8 @@ func _on_current_hand_size_updated(current_hand_size : int) -> void:
 	if current_hand_size == self.max_hand_size:
 		self.set("can_dra", false)
 
-func _on_combo_bonus_applied(
-	_instance_id : int,
-	combo_bonus : ComboBonus,
-	_targeting : Targeting
-) -> void:
-	if not combo_bonus.is_extra_cards():
-		return
-
-	if not self.can_draw:
-		return
-
-	var num_bonus_cards : int = combo_bonus.card_draw_amount
-	self.draw_and_emit_cards(num_bonus_cards)
+func _on_combo_bonus_cards_gained(num_cards_gained : int) -> void:
+	self.draw_and_emit_cards(num_cards_gained)
 
 func _on_discard_pile_shuffled_into_deck() -> void:
 	self.shuffle_cards()

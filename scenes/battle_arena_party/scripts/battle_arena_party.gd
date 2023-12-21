@@ -11,6 +11,7 @@ var party_standby_bottom_character : Character :
 var party_targeter : Targeter
 var current_combiner : Combiner
 var current_combo_instance_id : int
+var current_combo_bonus_instance_id : int
 
 
 #=======================
@@ -20,7 +21,9 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.STANDBY_SWAP_TO_LEAD_QUEUED, _on_standby_swap_to_lead_queued)
 	BattleRadio.connect(BattleRadio.COMBO_EFFECTS_DEFERRED_TO_GROUP, _on_combo_effects_deferred_to_group)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP, _on_combo_bonus_effects_deferred_to_group)
 	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
+	BattleRadio.connect(BattleRadio.SELF_NON_TARGETING_COMBO_BONUS_APPLIED, _on_self_non_targeting_combo_bonus_applied)
 
 
 #=======================
@@ -69,22 +72,25 @@ func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combine
 	if group_name != BattleConstants.GROUP_PARTY:
 		return
 
-	print('_on_combo_effects_deferred_to_group')
 	var primary_target_instance_id : int = self.party_lead_character.get_instance_id()
 	self.set("current_combiner", combiner)
 	var combo : Combo = combiner.current_combo
 	self.set("current_combo_instance_id", combo.get_instance_id())
-	party_targeter = Targeter.new(
-		combo.targeting_name,
-		self.get_party_instance_ids(),
-		primary_target_instance_id
+	self.set(
+		"party_targeter",
+		Targeter.new(
+			combo.targeting_name,
+			self.get_party_instance_ids(),
+			primary_target_instance_id
+		)
 	)
+
 	var all_combo_effects : Array[Dictionary] = []
-	var target_instance_ids : Array[int] = party_targeter.instance_ids()
+	var target_instance_ids : Array[int] = self.party_targeter.instance_ids()
 	for target_instance_id in target_instance_ids:
 		var target_combo_effects : Array[Dictionary] = combo.get_sequential_effects(target_instance_id)
 		all_combo_effects += target_combo_effects
-	print('all_combo_effects ', all_combo_effects)
+
 	self.emit_effects_enqueued(
 		self.current_combo_instance_id,
 		primary_target_instance_id,
@@ -93,16 +99,51 @@ func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combine
 	self.emit_remove_elements_from_current_combiner(primary_target_instance_id)
 	self.emit_next_effect_queued(primary_target_instance_id)
 
+func _on_combo_bonus_effects_deferred_to_group(
+	group_name : String,
+	combo_bonus : ComboBonus,
+	primary_target_instance_id : int
+) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
+	self.set("current_combo_bonus_instance_id", combo_bonus.get_instance_id())
+	self.set(
+		"party_targeter",
+		Targeter.new(
+			combo_bonus.targeting_name,
+			self.get_party_instance_ids(),
+			primary_target_instance_id
+		)
+	)
+	var all_combo_bonus_effects : Array[Dictionary] = []
+	var target_instance_ids : Array[int] = self.party_targeter.instance_ids()
+	for target_instance_id in target_instance_ids:
+		var target_combo_bonus_effects : Array[Dictionary] = combo_bonus.get_sequential_effects(target_instance_id)
+		all_combo_bonus_effects += target_combo_bonus_effects
+	self.emit_effects_enqueued(
+		self.current_combo_bonus_instance_id,
+		primary_target_instance_id,
+		all_combo_bonus_effects
+	)
+	self.emit_next_effect_queued(primary_target_instance_id)
+
 func _on_effects_finished(effector_instance_id : int) -> void:
 	if self.current_combo_instance_id != effector_instance_id:
 		return
 
-	print('_on_effects_finished called')
-#	BattleRadio.emit_signal(
-#		BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
-#		self.party_lead_character.get_instance_id(),
-#		current_combiner.remove_indexes
-#	)
+func _on_self_non_targeting_combo_bonus_applied(combo_bonus : ComboBonus) -> void:
+	if combo_bonus.is_extra_energy():
+		self.emit_combo_bonus_energy_gained(combo_bonus)
+		return
+
+	if combo_bonus.is_extra_swap():
+		self.emit_combo_bonus_swaps_gained(combo_bonus)
+		return
+
+	if combo_bonus.is_extra_cards():
+		self.emit_combo_bonus_cards_gained(combo_bonus)
+		return
 
 
 #========================
@@ -144,9 +185,26 @@ func emit_next_effect_queued(target_instance_id : int) -> void:
 	)
 
 func emit_remove_elements_from_current_combiner(target_instance_id : int) -> void:
-	print('emit_remove_elements_from_current_combiner')
 	BattleRadio.emit_signal(
 		BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
 		target_instance_id,
 		self.current_combiner.remove_indexes
+	)
+
+func emit_combo_bonus_energy_gained(combo_bonus : ComboBonus) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_BONUS_ENERGY_GAINED,
+		combo_bonus.energy_amount
+	)
+
+func emit_combo_bonus_swaps_gained(combo_bonus : ComboBonus) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_BONUS_SWAPS_GAINED,
+		combo_bonus.swap_amount
+	)
+
+func emit_combo_bonus_cards_gained(combo_bonus : ComboBonus) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_BONUS_CARDS_GAINED,
+		combo_bonus.card_draw_amount
 	)

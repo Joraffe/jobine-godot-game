@@ -49,7 +49,6 @@ func _on_player_turn_ended() -> void:
 	self.set("is_player_turn", false)
 
 func _on_current_swaps_updated(new_current_swaps : int) -> void:
-	print('_on_current_swaps_updated called ', new_current_swaps)
 	self.set("can_swap", new_current_swaps > 0)
 
 func _input(event) -> void:

@@ -35,6 +35,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
 	BattleRadio.connect(BattleRadio.CARDS_DRAWN, _on_cards_drawn)
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
+	BattleRadio.connect(BattleRadio.CARD_FREED, _on_card_freed)
 
 
 #=======================
@@ -111,8 +112,10 @@ func _on_current_lead_updated(current_lead_instance_id : int) -> void:
 	self.set("lead_instance_id", current_lead_instance_id)
 
 func _on_card_played(card : Card) -> void:
-	$Area2D.free_played_card_instance(card)
+	$Area2D.hide_played_card_instance(card)
 
+func _on_card_freed(card : Card) -> void:
+	$Area2D.free_played_card_instance(card)
 
 #=======================
 # Data Helpers

@@ -58,7 +58,6 @@ func _on_add_elements_animation_queued(
 	if not self.applicable(instance_id):
 		return
 
-	print('_on_add_elements_animation_queued')
 	# possibly revisit this to do actual animation
 	# if so, self.finish_adding_elements will be a tween_callback
 	self.render_added_elements(added_element_names)  
@@ -71,7 +70,6 @@ func _on_remove_elements_animation_queued(
 	if not self.applicable(instance_id):
 		return
 
-	print('_on_remove_elements_animation_queued called')
 	var element_names_to_remove : Array[String] = []
 	for i in self.element_names.size():
 		if i in remove_indexes:
@@ -87,8 +85,7 @@ func _on_reposition_elements_animation_queued(
 ) -> void:
 	if not self.applicable(instance_id):
 		return
-	
-	print('_on_reposition_elements_animation_queued called')
+
 	var reposition_dicts : Array[Dictionary] = []
 	for i in remain_indexes.size():
 		var reposition_dict : Dictionary = {}
@@ -102,7 +99,6 @@ func _on_reposition_elements_animation_queued(
 		reposition_dict["element_name"] = old_element_names[remain_index]
 		reposition_dicts.append(reposition_dict)
 
-	print('reposition_dicts ', reposition_dicts)
 	self.queue_element_aura_nodes_to_reposition(reposition_dicts)
 	self.animate_reposition_element_aura_from_queue()
 
@@ -128,20 +124,16 @@ func instantiate_aura_element(element : Element) -> Node2D:
 	return instance
 
 func position_aura_element(instance : Node2D, position_index : int) -> void:
-	print('position_aura_element called')
 	var position_x = self.get_aura_element_position_x(instance, position_index)
-	print('position_x ', position_x)
 	instance.position.x = position_x
 
 func get_aura_element_position_x(instance : Node2D, position_index : int) -> int:
-	print('get_aura_element_position_x called')
 	var aura_element_width : int = instance.image_data.get_img_width()
 	var starting_x : int = (-1 * int(self.aura_width / 2.0)) + int(aura_element_width / 2.0)
 	var offset_x : int = (position_index * aura_element_width) + (position_index * 10)
 	return starting_x + offset_x
 
 func finish_adding_elements() -> void:
-	print('finish_adding_elements')
 	BattleRadio.emit_signal(
 		BattleRadio.ADD_ELEMENTS_ANIMATION_FINISHED,
 		self.entity_instance_id
@@ -201,7 +193,6 @@ func free_removed_element_aura_node() -> void:
 		self.emit_remove_elements_animation_finished()
 
 func emit_remove_elements_animation_finished() -> void:
-	print('emit_remove_elements_animation_finished called')
 	BattleRadio.emit_signal(
 		BattleRadio.REMOVE_ELEMENTS_ANIMATION_FINISHED,
 		self.entity_instance_id
@@ -217,10 +208,8 @@ func check_remove_queue() -> void:
 		)
 
 func queue_element_aura_nodes_to_reposition(element_reposition_dicts : Array[Dictionary]) -> void:
-	print('queue_element_aura_nodes_to_reposition called')
 	var claimed_indexes : Array[int] = []
 	var num_children = self.get_child_count()
-	print('num_children ', num_children)
 	for element_reposition_dict in element_reposition_dicts:
 		var reposition_element_name : String = element_reposition_dict["element_name"]
 		var num_removed_before : int = element_reposition_dict["num_removed_before_remain_index"]
@@ -240,17 +229,13 @@ func queue_element_aura_nodes_to_reposition(element_reposition_dicts : Array[Dic
 					break
 
 func animate_reposition_element_aura_from_queue() -> void:
-	print('animate_reposition_element_aura_from_queue called')
 	var element_reposition_dict : Dictionary = self.reposition_queue.dequeue()
 	var element_aura_node : Node2D = element_reposition_dict["node"]
 	var new_index_position : int = element_reposition_dict["new_index_position"]
-	print('new_index_position ', new_index_position)
 	var position_x = self.get_aura_element_position_x(
 		element_aura_node,
-		element_reposition_dict["new_index_position"]
+		new_index_position
 	)
-	print('position_x ', position_x)
-	print('element_aura_node.position.x ', element_aura_node.position.x)
 	if position_x != element_aura_node.position.x:
 		var tween = create_tween()
 		tween.tween_property(

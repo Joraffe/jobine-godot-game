@@ -39,10 +39,6 @@ func has_fainted() -> bool:
 	return self.current_hp == 0
 
 func add_element_names(element_names_to_add : Array[String]) -> void:
-	print('character.add_element_names')
-	print('old current_element_names ', self.current_element_names)
-	print('element_names_to_add ', element_names_to_add)
-	print('self.current_element_names + element_names_to_add ', self.current_element_names + element_names_to_add)
 	self.set(
 		"current_element_names",
 		self.current_element_names + element_names_to_add

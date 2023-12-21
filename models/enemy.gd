@@ -47,10 +47,6 @@ func get_random_attack_name() -> String:
 	return attack_names[0]
 
 func add_element_names(element_names_to_add : Array[String]) -> void:
-	print('enemy.add_element_names')
-	print('old current_element_names ', self.current_element_names)
-	print('element_names_to_add ', element_names_to_add)
-	print('self.current_element_names + element_names_to_add ', self.current_element_names + element_names_to_add)
 	self.set(
 		"current_element_names",
 		self.current_element_names + element_names_to_add

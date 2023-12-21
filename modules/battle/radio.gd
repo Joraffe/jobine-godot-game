@@ -76,10 +76,12 @@ const CARD_SELECTED : String = "card_selected"
 const CARD_DESELECTED : String = "card_deselected"
 const CARD_PLAYED : String = "card_played"
 const CARD_DISCARDED : String = "card_discarded"
+const CARD_FREED : String = "card_freed"
 signal card_selected(card : Card)
 signal card_deselected(card : Card)
 signal card_played(card : Card)
 signal card_discarded(card : Card)
+signal card_freed(card : Card)
 
 
 # Turn Related
@@ -250,10 +252,26 @@ signal add_elements_to_entity_by_effect(
 )
 
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
-signal combo_effects_deferred_to_group(group_name : String, combo : Combo)
+signal combo_effects_deferred_to_group(group_name : String, combiner : Combiner)
 const CARD_EFFECTS_DEFERRED_TO_GROUP : String = "card_effects_deferred_to_group"
 signal card_effects_deferred_to_group(
 	group_name : String,
 	card : Card,
 	card_target_instance_id : int
 )
+const COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP : String = "combo_bonus_effects_deferred_to_group"
+signal combo_bonus_effects_deferred_to_group(
+	group_name : String,
+	combo_bonus : ComboBonus,
+	primary_target_instance_id : int
+)
+const COMBO_BONUS_CHECK_DEFERRED : String ="combo_bonus_check_deferred"
+signal combo_bonus_check_deferred(combiner : Combiner, target_instance_id : int)
+const SELF_NON_TARGETING_COMBO_BONUS_APPLIED : String = "self_non_targeting_combo_bonus_applied"
+signal self_non_targeting_combo_bonus_applied(combo_bonus : ComboBonus)
+const COMBO_BONUS_ENERGY_GAINED : String = "combo_bonus_energy_gained"
+signal combo_bonus_energy_gained(energy_gained : int)
+const COMBO_BONUS_SWAPS_GAINED : String = "combo_bonus_swaps_gained"
+signal combo_bonus_swaps_gained(swaps_gained : int)
+const COMBO_BONUS_CARDS_GAINED : String = "combo_bonus_cards_gained"
+signal combo_bonus_cards_gained(num_cards_gained : int)

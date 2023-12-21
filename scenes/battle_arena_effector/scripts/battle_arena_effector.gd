@@ -25,7 +25,6 @@ func _init() -> void:
 #=======================
 func set_entity_instance_ids(new_ids : Array[int]) -> void:
 	entity_instance_ids = new_ids
-	print('set_entity_instance_ids')
 	self.set("identifier", Identifier.new(self.entity_instance_ids))
 
 
@@ -39,10 +38,8 @@ func _on_effects_enqueued(
 ) -> void:
 	if not self.identifier.is_applicable(target_instance_id):
 		return
-	print('_on_effects_enqueued ')
-	print('adding effector_instance_id to effector_stack', effector_instance_id)
+
 	self.effector_stack.push(effector_instance_id)
-	print('effects ', effects)
 	for effect in effects:
 		self.effect_queue.enqueue(effect)
 
@@ -55,47 +52,35 @@ func _on_next_effect_queued(instance_id : int) -> void:
 func _on_effect_resolved(instance_id : int, resolve_data : Dictionary) -> void:
 	if not self.identifier.is_applicable(instance_id):
 		return
-	print('_on_effect_resolved called')
+
 	var effect_type : String = resolve_data[BattleConstants.EFFECT_TYPE]
 	var result : String = resolve_data[BattleConstants.EFFECT_RESULT]
 
 	if self.is_damage_effect(effect_type) and self.is_result_fainted(result):
-		print('damage effect + fainted')
 		var effector_instance_id : int = self.effector_stack.pop()
 		self.effect_queue.empty()
 		self.emit_effect_finished(effector_instance_id)
 		return
 
-#	if self.is_element_effect(effect_type):
-#		# wait for elements to settle (see  _on_elements_settled)
-#		return
-
 	# if there are more effects, continue emitting those effects
 	if not self.effect_queue.is_empty():
-		print('there are still more effects')
 		self.emit_next_effect()
 		return
 
 	# otherwise we've finished:
-	print('no more effects, popping from effector_stack')
 	var effector_instance_id : int = self.effector_stack.pop()
 	self.emit_effect_finished(effector_instance_id)
 
 func _on_elements_settled(instance_id : int) -> void:
-	print('_on_elements_settled called')
 	if not self.identifier.is_applicable(instance_id):
-		print('not applicable')
 		return
 
 	if not self.effect_queue.is_empty():
-		print('not waiting for other elements to settle, but have other effects to emit')
 		self.emit_next_effect()
 		return
 
-	print('no other effects, popping from effector_stack')
 	while not self.effector_stack.is_empty():
 		var effector_instance_id : int = self.effector_stack.pop()
-		print('effector_instance_id ', effector_instance_id)
 		self.emit_effect_finished(effector_instance_id)
 
 
@@ -115,10 +100,7 @@ func is_result_fainted(result : String) -> bool:
 	return result == BattleConstants.FAINTED
 
 func emit_next_effect() -> void:
-	print('emit_next_effect called')
 	var effect_data : Dictionary = self.effect_queue.dequeue()
-	print('effect_data', effect_data)
-
 	var effect_type : String = effect_data[BattleConstants.EFFECT_TYPE]
 	if self.is_damage_effect(effect_type):
 		self.emit_entity_damaged(effect_data)
@@ -156,5 +138,4 @@ func emit_element_applied_to_entity(effect_data : Dictionary) -> void:
 	)
 
 func emit_effect_finished(effector_instance_id : int) -> void:
-	print('emit_effect_finished called')
 	BattleRadio.emit_signal(BattleRadio.EFFECTS_FINISHED, effector_instance_id)

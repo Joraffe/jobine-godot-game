@@ -90,8 +90,7 @@ func _on_add_elements_to_entity_by_effect(
 ) -> void:
 	if not self.identifier.is_applicable(target_instance_id):
 		return
-	
-	print('_on_add_elements_to_entity_by_effect called for ', self.enemy.human_name)
+
 	var added_element_names : Array[String] = []
 	for i in num_elements:
 		added_element_names.append(element_name)	
@@ -120,7 +119,6 @@ func _on_enemy_attack_effect_queued(instance_id : int, attack_effect_data : Dict
 	if not self.identifier.is_applicable(instance_id):
 		return
 
-	print('_on_enemy_attack_effect_queued called')
 	var attack_effect_type : String = attack_effect_data["type"]
 	
 	if attack_effect_type == EnemyAttack.DAMAGE_TYPE:
@@ -197,7 +195,6 @@ func emit_effect_resolved(
 
 
 func emit_lead_damaged_by_enemy(attack_effect_data : Dictionary) -> void:
-	print('emit_lead_damaged_by_enemy called')
 	BattleRadio.emit_signal(
 		BattleRadio.LEAD_DAMAGED_BY_ENEMY,
 		self.enemy.get_instance_id(),
@@ -211,7 +208,6 @@ func emit_status_card_attack_effect(_attack_effect_data : Dictionary) -> void:
 	pass
 
 func emit_element_attack_effect(attack_effect_data : Dictionary) -> void:
-	print('emit_element_attack_effect called')
 	BattleRadio.emit_signal(
 		BattleRadio.ELEMENTS_ADDED_TO_LEAD_BY_ENEMY,
 		attack_effect_data["name"],

@@ -29,7 +29,6 @@ func _init() -> void:
 # Setters
 #=======================
 func set_lead_character(new_character : Character) -> void:
-	print('party_lead.set_lead_instance_id called')
 	lead_character = new_character
 	self.set("lead_instance_id", self.lead_character.get_instance_id())
 	$Area2D.empty_lead()
@@ -37,7 +36,6 @@ func set_lead_character(new_character : Character) -> void:
 
 
 func set_lead_instance_id(new_instance_id : int) -> void:
-	print('party_lead.set_lead_instance_id called')
 	lead_instance_id = new_instance_id
 	
 	var new_combiner_entity_ids : Array[int] = [self.lead_instance_id]
@@ -69,7 +67,6 @@ func _on_lead_damaged_by_enemy(enemy_instance_id : int, damage : int) -> void:
 		)
 
 func _on_elements_added_to_lead_by_enemy(element_name : String, num_applied : int) -> void:
-	print('_on_elements_added_to_lead_by_enemy')
 	var elements_to_add : Array[String] = []
 	for i in num_applied:
 		elements_to_add.append(element_name)
@@ -115,7 +112,6 @@ func emit_current_hp_updated() -> void:
 	)
 
 func emit_current_element_names_updated() -> void:
-	print('emit_current_element_names_updated called')
 	BattleRadio.emit_signal(
 		BattleRadio.ENTITY_CURRENT_ELEMENT_NAMES_UPDATED,
 		self.lead_instance_id,

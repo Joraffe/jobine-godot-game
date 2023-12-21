@@ -40,14 +40,12 @@ func _on_end_turn_delay_finished() -> void:
 	BattleRadio.emit_signal(BattleRadio.ENEMY_TURN_ENDED)
 
 func _on_enemy_turn_started() -> void:
-	print('_on_enemy_turn_started')
 	self.set("is_enemy_turn", true)
 
 	self.enqueue_enemies()
 	$NextAttackDelayTimer.start()
 
 func _on_enemy_attack_animation_finished() -> void:
-	print('_on_enemy_attack_animation_finished called')
 	# once the animation is finished, queue the attack effects next
 	self.emit_next_effect_queued()
 
@@ -73,9 +71,7 @@ func _on_effects_finished(effector_instance_id : int) -> void:
 	if not self.current_attacking_enemy.get_instance_id() == effector_instance_id:
 		return
 
-	print('enemies ai _on_effects_finished')
 	if not self.enemy_queue.is_empty():
-		print('next attack queued')
 		$NextAttackDelayTimer.start()
 		return
 

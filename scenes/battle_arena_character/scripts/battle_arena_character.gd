@@ -28,7 +28,6 @@ func set_character(new_character : Character) -> void:
 	character = new_character
 	var instance_ids : Array[int] = [self.character.get_instance_id()]
 	self.set("identifier", Identifier.new(instance_ids))
-	print('battle_arena_character.set_character called')
 
 	# Also set the character_image_data
 	self.set(
@@ -87,8 +86,7 @@ func _on_add_elements_to_entity_by_effect(
 ) -> void:
 	if not self.identifier.is_applicable(target_instance_id):
 		return
-	
-	print('_on_add_elements_to_entity_by_effect called for ', self.character.human_name)
+
 	var added_element_names : Array[String] = []
 	for i in num_elements:
 		added_element_names.append(element_name)	

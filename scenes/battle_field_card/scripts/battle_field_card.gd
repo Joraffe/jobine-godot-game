@@ -75,7 +75,6 @@ func set_card_image_data(new_card_image_data : ImageData):
 # Signal Handlers
 #========================
 func _on_current_lead_updated(updated_lead_instance_id : int) -> void:
-	print('card _on_current_lead_updated called')
 	self.set("lead_instance_id", updated_lead_instance_id)
 
 func _on_current_energy_updated(current_energy : int) -> void:

@@ -95,5 +95,4 @@ func animate(_attack : EnemyAttack) -> void:
 	tween.tween_callback(self.emit_enemy_attack_animation_finished)
 
 func emit_enemy_attack_animation_finished() -> void:
-	print('emit_enemy_attack_animation_finished called')
 	BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED)

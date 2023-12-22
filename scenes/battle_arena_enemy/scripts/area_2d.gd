@@ -92,19 +92,16 @@ func animate(_attack : EnemyAttack) -> void:
 	tween.tween_callback(self.emit_enemy_attack_animation_finished)
 
 func animate_enemy_defeated() -> void:
-	print('animate_enemy_defeated called')
 	var tween = self.create_tween()
 	tween.tween_property($Sprite2D, "modulate:a", 0, 1)
 	tween.tween_callback(self.emit_animation_finished_and_free_entity)
 
 func emit_animation_finished_and_free_entity() -> void:
-	print('emit_animation_finished_and_free_entity called')
 	var enemy_instance_id : int = battle_arena_enemy.enemy.get_instance_id()
 	battle_arena_enemy.queue_free()
 	self.emit_enemy_defeated_animation_finished(enemy_instance_id)
 
 func emit_enemy_defeated_animation_finished(instance_id : int) -> void:
-	print('emit_enemy_defeated_animation_finished called')
 	BattleRadio.emit_signal(
 		BattleRadio.ENEMY_DEFEATED_ANIMATION_FINISHED,
 		instance_id

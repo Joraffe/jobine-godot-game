@@ -37,9 +37,7 @@ func set_lead_character(new_character : Character) -> void:
 
 func set_lead_instance_id(new_instance_id : int) -> void:
 	lead_instance_id = new_instance_id
-	
-	var new_combiner_entity_ids : Array[int] = [self.lead_instance_id]
-	$Combiner.set("entity_ids", new_combiner_entity_ids)
+
 	BattleRadio.emit_signal(
 		BattleRadio.CURRENT_LEAD_UPDATED,
 		self.lead_instance_id

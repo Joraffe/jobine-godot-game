@@ -52,6 +52,10 @@ signal enemy_damaged(enemy : Enemy, damage : int)
 signal enemy_element_applied(enemy : Enemy, element_name : String, num_applied : int)
 signal enemy_attack_queued(enemy : Enemy, attack : EnemyAttack)
 signal enemy_attack_finished
+const ENEMY_DEFEATED_ANIMATION_QUEUED : String = "enemy_defeated_animation_queued"
+signal enemy_defeated_animation_queued(instance_id : int)
+const ENEMY_DEFEATED_ANIMATION_FINISHED : String = "enemy_defeated_animation_finished"
+signal enemy_defeated_animation_finished(instance_id : int)
 
 
 # Lead Related
@@ -136,6 +140,9 @@ signal entity_current_element_names_updated(
 	instance_id : int,
 	new_current_element_names
 )
+const ENTITY_FAINED : String = "entity_fainted"
+signal entity_fainted(instance_id : int)
+
 
 # Combo Related
 const COMBO_APPLIED : String = "combo_applied"

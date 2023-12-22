@@ -33,6 +33,8 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.CARD_EFFECTS_DEFERRED_TO_GROUP, _on_card_effects_deferred_to_group)
 	BattleRadio.connect(BattleRadio.COMBO_EFFECTS_DEFERRED_TO_GROUP, _on_combo_effects_deferred_to_group)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP, _on_combo_bonus_effects_deferred_to_group)
+	BattleRadio.connect(BattleRadio.ENTITY_FAINED, _on_entity_fainted)
+	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_FINISHED, _on_enemy_defeated_animation_finished)
 
 
 #=======================
@@ -46,7 +48,6 @@ func set_enemies(new_enemies : Array[Enemy]) -> void:
 		instance_ids.append(enemy.get_instance_id())
 	self.set("enemy_instance_ids", instance_ids)
 	$Effector.set("entity_instance_ids", instance_ids)
-	$Area2D.render_enemies()
 
 func set_lead_instance_id(new_lead_instance_id : int) -> void:
 	lead_instance_id = new_lead_instance_id
@@ -59,6 +60,7 @@ func set_lead_instance_id(new_lead_instance_id : int) -> void:
 func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("enemies", battle_data.enemies)
 	self.set("lead_instance_id", battle_data.lead_character.get_instance_id())
+	$Area2D.render_enemies()
 
 func _on_current_lead_updated(new_lead_instance_id : int) -> void:
 	self.set("lead_instance_id", new_lead_instance_id)
@@ -123,7 +125,6 @@ func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combine
 	self.emit_remove_elements_from_current_combiner(primary_target_instance_id)
 	self.emit_next_effect_queued(primary_target_instance_id)
 
-
 func _on_combo_bonus_effects_deferred_to_group(
 	group_name : String,
 	combo_bonus : ComboBonus,
@@ -153,6 +154,17 @@ func _on_combo_bonus_effects_deferred_to_group(
 	)
 	self.emit_next_effect_queued(primary_target_instance_id)
 
+func _on_entity_fainted(instance_id : int) -> void:
+	if not self.is_instance_id_applicable(instance_id):
+		return
+
+	self.emit_enemy_defeated_animation_queued(instance_id)
+
+func _on_enemy_defeated_animation_finished(instance_id : int) -> void:
+	if not self.is_instance_id_applicable(instance_id):
+		return
+
+	self.set("enemies", self.filter_enemy_instance_id(instance_id))
 
 #======================
 # Helpers
@@ -163,6 +175,15 @@ func is_instance_id_applicable(instance_id : int) -> bool:
 			return true
 
 	return false
+
+func filter_enemy_instance_id(instance_id : int) -> Array[Enemy]:
+	var new_enemies : Array[Enemy] = []
+
+	for enemy in self.enemies:
+		if not enemy.get_instance_id() == instance_id:
+			new_enemies.append(enemy)
+
+	return new_enemies
 
 func emit_effects_enqueued(
 	effector_instance_id : int,
@@ -187,4 +208,10 @@ func emit_remove_elements_from_current_combiner(target_instance_id : int) -> voi
 		BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
 		target_instance_id,
 		self.current_combiner.remove_indexes
+	)
+
+func emit_enemy_defeated_animation_queued(instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED,
+		instance_id
 	)

@@ -22,6 +22,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_QUEUED, _on_enemy_attack_animation_queued)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_EFFECT_QUEUED, _on_enemy_attack_effect_queued)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_EFFECT_RESOLVED, _on_enemy_attack_effect_resolved)
+	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED, _on_enemy_defeated_animation_queued)
 
 
 #=======================
@@ -160,11 +161,14 @@ func _on_enemy_attack_effect_resolved(instance_id : int, resolve_data : Dictiona
 		return
  
 	if type == EnemyAttack.ELEMENT_TYPE:
-		# for tomorrow: have BattleStats.party._on_element_applied_to_entity
-		# emit the ENEMY_ATTACK_EFFECT_RESOLVED signal to continue the sequence of
-		# events here!
 		BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_EFFECT_FINISHED, finish_data)
 		return
+
+func _on_enemy_defeated_animation_queued(instance_id : int) -> void:
+	if not self.identifier.is_applicable(instance_id):
+		return
+
+	$Area2D.animate_enemy_defeated()
 
 
 #=======================

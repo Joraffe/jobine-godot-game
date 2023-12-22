@@ -59,6 +59,7 @@ func _on_effect_resolved(instance_id : int, resolve_data : Dictionary) -> void:
 	if self.is_damage_effect(effect_type) and self.is_result_fainted(result):
 		var effector_instance_id : int = self.effector_stack.pop()
 		self.effect_queue.empty()
+		self.emit_entity_fainted(instance_id)
 		self.emit_effect_finished(effector_instance_id)
 		return
 
@@ -139,3 +140,9 @@ func emit_element_applied_to_entity(effect_data : Dictionary) -> void:
 
 func emit_effect_finished(effector_instance_id : int) -> void:
 	BattleRadio.emit_signal(BattleRadio.EFFECTS_FINISHED, effector_instance_id)
+
+func emit_entity_fainted(instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ENTITY_FAINED,
+		instance_id
+	)

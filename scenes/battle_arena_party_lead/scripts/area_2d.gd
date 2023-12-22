@@ -22,7 +22,7 @@ func empty_lead() -> void:
  
 func render_lead() -> void:
 	var lead_character = battle_arena_lead.lead_character
-	instantiate_character(lead_character)
+	self.instantiate_character(lead_character)
 
 
 #=======================

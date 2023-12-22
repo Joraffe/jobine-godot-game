@@ -42,9 +42,10 @@ func has_fainted() -> bool:
 	return self.current_hp == 0
 
 func get_random_attack_name() -> String:
-	#var rng = RandomNumberGenerator.new()
-	# var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
-	return attack_names[0]
+	var rng = RandomNumberGenerator.new()
+	var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
+#	var rand_i = 1
+	return attack_names[rand_i]
 
 func add_element_names(element_names_to_add : Array[String]) -> void:
 	self.set(

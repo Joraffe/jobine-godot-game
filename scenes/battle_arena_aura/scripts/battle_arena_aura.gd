@@ -13,7 +13,8 @@ var entity_image_height : int  # used to position the combined aura elements
 var element_names : Array[String] :
 	set = set_element_names
 var elements : Array[Element]
-var element_registry : Dictionary
+
+var combiner : Combiner
 
 var element_remove_queue : Queue = Queue.new()
 var combo_queue : Queue = Queue.new()

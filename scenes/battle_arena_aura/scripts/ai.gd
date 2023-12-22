@@ -55,6 +55,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.COMBO_ANIMATION_FINISHED, _on_combo_animation_finished)
 	BattleRadio.connect(BattleRadio.COMBO_EFFECT_FINISHED, _on_combo_effect_finished)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECT_FINISHED, _on_combo_bonus_effect_finished)
+	BattleRadio.connect(BattleRadio.COMBO_CHECK_DEFERRED, _on_combo_check_deferred)
 
 
 #=======================
@@ -94,28 +95,10 @@ func _on_add_elements_animation_finished(instance_id : int) -> void:
 		return
 
 	if not self.combiner.has_combo():
-		BattleRadio.emit_signal(
-			BattleRadio.ELEMENTS_SETTLED,
-			 self.entity_instance_id
-		)
+		self.emit_elements_settled()
 		return
 
-	BattleRadio.emit_signal(
-		BattleRadio.REMOVE_ELEMENTS_ANIMATION_QUEUED,
-		self.entity_instance_id,
-		self.combiner.remove_indexes
-	)
-
-	if self.combiner.has_remaining_elements():
-		BattleRadio.emit_signal(
-			BattleRadio.REPOSITION_ELEMENTS_ANIMATION_QUEUED,
-			self.entity_instance_id,
-			self.combiner.element_names,
-			self.combiner.remove_indexes,
-			self.combiner.remaining_indexes
-		)
-	else:
-		self.set("is_repositioning_finished", true)
+	self.emit_remove_and_reposition_animations_queued()
 
 func _on_remove_elements_animation_finished(instance_id : int) -> void:
 	if not self.applicable(instance_id):
@@ -155,11 +138,46 @@ func _on_combo_bonus_effect_finished(instance_id : int, finish_data : Dictionary
 
 	self.set("is_combo_bonus_effect_resolved", true)
 
+func _on_combo_check_deferred(instance_id : int) -> void:
+	if not self.applicable(instance_id):
+		return
+
+	if not self.combiner.has_combo():
+		self.emit_elements_settled()
+		return
+
+	self.emit_remove_and_reposition_animations_queued()
+
+
 #=======================
 # Helpers
 #=======================
 func applicable(instance_id : int) -> bool:
 	return instance_id == self.entity_instance_id
+
+func emit_elements_settled() -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ELEMENTS_SETTLED,
+		 self.entity_instance_id
+	)
+
+func emit_remove_and_reposition_animations_queued() -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.REMOVE_ELEMENTS_ANIMATION_QUEUED,
+		self.entity_instance_id,
+		self.combiner.remove_indexes
+	)
+
+	if self.combiner.has_remaining_elements():
+		BattleRadio.emit_signal(
+			BattleRadio.REPOSITION_ELEMENTS_ANIMATION_QUEUED,
+			self.entity_instance_id,
+			self.combiner.element_names,
+			self.combiner.remove_indexes,
+			self.combiner.remaining_indexes
+		)
+	else:
+		self.set("is_repositioning_finished", true)
 
 func check_for_all_animations_finished() -> void:
 	if self.is_removing_finished and self.is_repositioning_finished:
@@ -216,7 +234,8 @@ func emit_combo_effects_deferred_to_group(group_name : String, combiner_to_defer
 	BattleRadio.emit_signal(
 		BattleRadio.COMBO_EFFECTS_DEFERRED_TO_GROUP,
 		group_name,
-		combiner_to_defer
+		combiner_to_defer,
+		self.entity_instance_id
 	)
 
 func emit_combo_bonus_check_deffered(combiner_to_defer : Combiner) -> void:

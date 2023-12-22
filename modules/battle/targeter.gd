@@ -54,9 +54,10 @@ func get_splash_targeting_instance_ids() -> Array[int]:
 	if right_i <= self.possible_target_instance_ids.size() - 1:
 		possible_indexes.append(right_i)
 
-	var rand_i = randi_range(0, possible_indexes.size() - 1)
-	var splash_i = possible_indexes[rand_i]
-	splash_entity_ids.append(self.possible_target_instance_ids[splash_i])
+	if possible_indexes.size() > 0:
+		var rand_i = randi_range(0, possible_indexes.size() - 1)
+		var splash_i = possible_indexes[rand_i]
+		splash_entity_ids.append(self.possible_target_instance_ids[splash_i])
 
 	return splash_entity_ids
 

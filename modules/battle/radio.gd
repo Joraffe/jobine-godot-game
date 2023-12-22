@@ -24,7 +24,7 @@ signal deck_emptied
 
 # Discard Related
 const DISCARD_PILE_SHUFFLED_INTO_DECK : String = "discard_pile_shuffled_into_deck"
-signal discard_pile_shuffled_into_deck
+signal discard_pile_shuffled_into_deck(discard_pile : Array[Card])
 
 
 # Hand Related
@@ -268,7 +268,13 @@ signal add_elements_to_entity_by_effect(
 )
 
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
-signal combo_effects_deferred_to_group(group_name : String, combiner : Combiner)
+signal combo_effects_deferred_to_group(
+	group_name : String, 
+	combiner : Combiner,
+	combo_target_instance_id : int
+)
+const COMBO_CHECK_DEFERRED : String = "combo_check_deferred"
+signal combo_check_deferred(instance_id : int)
 const CARD_EFFECTS_DEFERRED_TO_GROUP : String = "card_effects_deferred_to_group"
 signal card_effects_deferred_to_group(
 	group_name : String,

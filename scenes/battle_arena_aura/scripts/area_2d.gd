@@ -65,12 +65,19 @@ func _on_reposition_elements_animation_queued(
 	for i in remain_indexes.size():
 		var reposition_dict : Dictionary = {}
 		var remain_index = remain_indexes[i]
-		var num_removed_before_remain_index : int = 0
+		var remain_element_name : String = old_element_names[remain_index]
+		var num_same_removed_before : int = 0
+		var num_diff_removed_before : int = 0
 		for remove_index in remove_indexes:
 			if remove_index < remain_index:
-				num_removed_before_remain_index += 1
+				var removed_element_name : String = old_element_names[remove_index]
+				if remain_element_name == removed_element_name:
+					num_same_removed_before += 1
+				else:
+					num_diff_removed_before += 1
 		reposition_dict["new_index_position"] = i
-		reposition_dict["num_removed_before_remain_index"] = num_removed_before_remain_index
+		reposition_dict["num_same_removed_before"] = num_same_removed_before
+		reposition_dict["num_diff_removed_before"] = num_diff_removed_before
 		reposition_dict["element_name"] = old_element_names[remain_index]
 		reposition_dicts.append(reposition_dict)
 
@@ -187,21 +194,27 @@ func queue_element_aura_nodes_to_reposition(element_reposition_dicts : Array[Dic
 	var num_children = self.get_child_count()
 	for element_reposition_dict in element_reposition_dicts:
 		var reposition_element_name : String = element_reposition_dict["element_name"]
-		var num_removed_before : int = element_reposition_dict["num_removed_before_remain_index"]
+		var num_same_removed_before : int = element_reposition_dict["num_same_removed_before"]
+		var num_diff_removed_before : int = element_reposition_dict["num_diff_removed_before"]
 		var num_same_element_visited : int = 0
+		var num_diff_element_visited : int = 0
 		for i in num_children:
 			if i in claimed_indexes:
 				continue
 			var child = self.get_child(i)
 			var element = child.get("element")
-			if element is Element and element.machine_name == reposition_element_name:
-				if num_removed_before - num_same_element_visited != 0:
+			if element is Element:
+				if (num_same_element_visited == num_same_removed_before
+					and num_diff_element_visited == num_diff_removed_before):
+						element_reposition_dict["node"] = child
+						self.reposition_queue.enqueue(element_reposition_dict)
+						claimed_indexes.append(i)
+						break
+
+				if element.machine_name == reposition_element_name:
 					num_same_element_visited += 1
 				else:
-					element_reposition_dict["node"] = child
-					self.reposition_queue.enqueue(element_reposition_dict)
-					claimed_indexes.append(i)
-					break
+					num_diff_element_visited += 1
 
 func animate_reposition_element_aura_from_queue() -> void:
 	var element_reposition_dict : Dictionary = self.reposition_queue.dequeue()

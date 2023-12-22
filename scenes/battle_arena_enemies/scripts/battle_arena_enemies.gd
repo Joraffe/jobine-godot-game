@@ -14,6 +14,7 @@ var current_card_primary_target_instance_id : int
 
 var current_combiner : Combiner
 var current_combo_instance_id : int
+var current_combo_target_instance_id : int
 
 var current_combo_bonus_instance_id : int
 
@@ -33,6 +34,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.CARD_EFFECTS_DEFERRED_TO_GROUP, _on_card_effects_deferred_to_group)
 	BattleRadio.connect(BattleRadio.COMBO_EFFECTS_DEFERRED_TO_GROUP, _on_combo_effects_deferred_to_group)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP, _on_combo_bonus_effects_deferred_to_group)
+	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
 	BattleRadio.connect(BattleRadio.ENTITY_FAINED, _on_entity_fainted)
 	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_FINISHED, _on_enemy_defeated_animation_finished)
 
@@ -95,14 +97,18 @@ func _on_card_effects_deferred_to_group(
 	)
 	self.emit_next_effect_queued(primary_target_instance_id)
 
-func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combiner) -> void:
+func _on_combo_effects_deferred_to_group(
+	group_name : String,
+	combiner : Combiner,
+	primary_target_instance_id : int
+) -> void:
 	if group_name != BattleConstants.GROUP_ENEMIES:
 		return
 
-	var primary_target_instance_id : int = self.current_card_primary_target_instance_id
 	self.set("current_combiner", combiner)
 	var combo : Combo = combiner.current_combo
 	self.set("current_combo_instance_id", combo.get_instance_id())
+	self.set("current_combo_target_instance_id", primary_target_instance_id)
 	self.set(
 		"enemies_targeter",
 		Targeter.new(
@@ -153,6 +159,15 @@ func _on_combo_bonus_effects_deferred_to_group(
 		all_combo_bonus_effects
 	)
 	self.emit_next_effect_queued(primary_target_instance_id)
+
+func _on_effects_finished(effector_instance_id : int) -> void:
+	if self.current_combo_instance_id != effector_instance_id:
+		return
+
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_CHECK_DEFERRED,
+		self.current_combo_target_instance_id
+	)
 
 func _on_entity_fainted(instance_id : int) -> void:
 	if not self.is_instance_id_applicable(instance_id):

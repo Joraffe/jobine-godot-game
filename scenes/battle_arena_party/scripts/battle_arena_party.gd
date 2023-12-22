@@ -10,7 +10,9 @@ var party_standby_bottom_character : Character :
 
 var party_targeter : Targeter
 var current_combiner : Combiner
+
 var current_combo_instance_id : int
+var current_combo_target_instance_id : int
 var current_combo_bonus_instance_id : int
 
 
@@ -58,14 +60,18 @@ func _on_standby_swap_to_lead_queued(standby_instance_id : int) -> void:
 	self.swap_standby_to_lead(standby_instance_id)
 	self.emit_standby_swap_to_lead_finished()
 
-func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combiner) -> void:
+func _on_combo_effects_deferred_to_group(
+	group_name : String,
+	combiner : Combiner,
+	primary_target_instance_id : int
+) -> void:
 	if group_name != BattleConstants.GROUP_PARTY:
 		return
 
-	var primary_target_instance_id : int = self.party_lead_character.get_instance_id()
 	self.set("current_combiner", combiner)
 	var combo : Combo = combiner.current_combo
 	self.set("current_combo_instance_id", combo.get_instance_id())
+	self.set("current_combo_target_instance_id", primary_target_instance_id)
 	self.set(
 		"party_targeter",
 		Targeter.new(
@@ -121,6 +127,11 @@ func _on_combo_bonus_effects_deferred_to_group(
 func _on_effects_finished(effector_instance_id : int) -> void:
 	if self.current_combo_instance_id != effector_instance_id:
 		return
+
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_CHECK_DEFERRED,
+		self.current_combo_target_instance_id
+	)
 
 func _on_self_non_targeting_combo_bonus_applied(combo_bonus : ComboBonus) -> void:
 	if combo_bonus.is_extra_energy():

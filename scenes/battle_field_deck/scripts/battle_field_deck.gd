@@ -30,10 +30,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_CARDS_GAINED, _on_combo_bonus_cards_gained)
-	BattleRadio.connect(
-		BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK,
-		_on_discard_pile_shuffled_into_deck
-	)
+	BattleRadio.connect(BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK, _on_discard_pile_shuffled_into_deck)
 
 #=======================
 # Setters
@@ -41,7 +38,7 @@ func _init() -> void:
 func set_cards(new_cards : Array[Card]) -> void:
 	cards = new_cards
 
-	self.shuffle_cards()
+	self.shuffle_cards_into_deck(cards)
 
 func set_can_draw(new_can_draw : bool) -> void:
 	can_draw = new_can_draw
@@ -76,8 +73,8 @@ func _on_current_hand_size_updated(current_hand_size : int) -> void:
 func _on_combo_bonus_cards_gained(num_cards_gained : int) -> void:
 	self.draw_and_emit_cards(num_cards_gained)
 
-func _on_discard_pile_shuffled_into_deck() -> void:
-	self.shuffle_cards()
+func _on_discard_pile_shuffled_into_deck(discard_pile : Array[Card]) -> void:
+	self.set("cards", discard_pile)
 	if self.remaining_cards_to_draw > 0:
 		self.draw_and_emit_cards(self.remaining_cards_to_draw)
 
@@ -90,6 +87,20 @@ func shuffle_cards() -> void:
 
 	var indexes : Dictionary = {}
 	for i in self.cards.size():
+		indexes[i] = i
+
+	while indexes.keys().size() > 0:
+		var keys = indexes.keys()
+		var rand_i = self.rng.randi_range(0, keys.size() - 1)
+		var rand_key = keys[rand_i]
+		self.shuffled_cards[rand_key] = self.cards[rand_key]
+		indexes.erase(rand_key)
+
+func shuffle_cards_into_deck(cards_to_shuffle : Array[Card]) -> void:
+	self.set("shuffled_cards", {})
+	
+	var indexes : Dictionary = {}
+	for i in cards_to_shuffle.size():
 		indexes[i] = i
 
 	while indexes.keys().size() > 0:

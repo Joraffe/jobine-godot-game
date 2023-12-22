@@ -69,8 +69,9 @@ func _on_effect_resolved(instance_id : int, resolve_data : Dictionary) -> void:
 		return
 
 	# otherwise we've finished:
-	var effector_instance_id : int = self.effector_stack.pop()
-	self.emit_effect_finished(effector_instance_id)
+	if not self.effector_stack.is_empty():
+		self.emit_effects_finished_for_next_effector()
+		return
 
 func _on_elements_settled(instance_id : int) -> void:
 	if not self.identifier.is_applicable(instance_id):
@@ -80,17 +81,15 @@ func _on_elements_settled(instance_id : int) -> void:
 		self.emit_next_effect()
 		return
 
-	while not self.effector_stack.is_empty():
-		var effector_instance_id : int = self.effector_stack.pop()
-		self.emit_effect_finished(effector_instance_id)
+	if not self.effector_stack.is_empty():
+		self.emit_effects_finished_for_next_effector()
+		return
 
 func _on_faint_settled(instance_id : int) -> void:
 	if not self.identifier.is_applicable(instance_id):
 		return
 
-	while not self.effector_stack.is_empty():
-		var effector_instance_id : int = self.effector_stack.pop()
-		self.emit_effect_finished(effector_instance_id)
+	self.emit_effects_finished_for_remaining_effectors()
 
 
 #=======================
@@ -146,8 +145,16 @@ func emit_element_applied_to_entity(effect_data : Dictionary) -> void:
 		num_elements
 	)
 
-func emit_effect_finished(effector_instance_id : int) -> void:
+func emit_effects_finished(effector_instance_id : int) -> void:
 	BattleRadio.emit_signal(BattleRadio.EFFECTS_FINISHED, effector_instance_id)
+
+func emit_effects_finished_for_next_effector() -> void:
+	var effector_instance_id : int = self.effector_stack.pop()
+	self.emit_effects_finished(effector_instance_id)
+
+func emit_effects_finished_for_remaining_effectors() -> void:
+	while not self.effector_stack.is_empty():
+		self.emit_effects_finished_for_next_effector()
 
 func emit_entity_fainted(instance_id : int) -> void:
 	BattleRadio.emit_signal(

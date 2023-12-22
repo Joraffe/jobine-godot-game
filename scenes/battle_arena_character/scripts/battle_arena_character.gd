@@ -41,6 +41,7 @@ func set_character(new_character : Character) -> void:
 	$HealthBar.set("health_bar_type", self.character_type)
 	$HealthBar.set("entity", self.character)
 	$Aura.set("entity", self.character)
+	$Aura.set("element_names", self.character.current_element_names)
 	$Area2D.set("character", self.character)
 	$ComboDisplay.set("entity", self.character)
 

@@ -48,9 +48,12 @@ func set_num_freed(new_num_freed : int) -> void:
 	num_freed = new_num_freed
 
 	if self.num_freed == self.discard_pile.size():
+		BattleRadio.emit_signal(
+			BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK,
+			self.discard_pile
+		)
 		var empty : Array[Card] = []
 		self.set("discard_pile", empty)
-		BattleRadio.emit_signal(BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK)
 	else:
 		self.set("discard_pile_count", self.discard_pile.size() - self.num_freed)
 		$DiscardReshuffleTimer.start()
@@ -90,7 +93,7 @@ func animate_discard_reshuffle():
 		discard_card_instance,
 		"position",
 		Vector2(100, 100),
-		0.1
+		0.01
 	).set_ease(Tween.EASE_IN_OUT)
 	tween.parallel().tween_property(
 		discard_card_instance,

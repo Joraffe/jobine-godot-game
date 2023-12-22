@@ -14,31 +14,6 @@ var free_queue : Queue = Queue.new()
 var reposition_queue : Queue = Queue.new()
 
 
-# -> element applied to entity
-# -> add element animation queued
-# -> add element animation finished
-# -> check for combo queued
-# -> if not combo:
-# ----> element applied finished 
-# -> else if combo:
-# ----> remove combined elements animation queued + reposition remaining elements animation queued
-# ----> remove combined element animation finished + reposition remaining elements animation finished
-# -> elements removed from entity queued
-# -> elements removed from entity finished
-# -> combo animation queued
-# -> combo animation finished
-# -> combo effect queued + combo bonus effect queued
-# -> combo effect resolved + combo effect resolved
-# -> if combo/combo bonus faints the target:
-# ----> combo/combo bonus effect finished
-# -> if combo/combo bonus adds elements:
-# ----> element applied to entity (go back to beginning)
-# -> else:
-# ----> combo/combo bonus effect finished
-# -> element applied finished
-
-
-
 #=======================
 # Godot Lifecycle Hooks
 #=======================

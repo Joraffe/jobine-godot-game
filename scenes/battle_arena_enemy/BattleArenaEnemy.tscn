@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://gyul4bm0j3du" path="res://scenes/battle_arena_health_bar/BattleArenaHealthBar.tscn" id="3_8eg3g"]
 [ext_resource type="PackedScene" uid="uid://b0qdv2d2scwdo" path="res://scenes/battle_arena_aura/BattleArenaAura.tscn" id="4_65erj"]
 [ext_resource type="PackedScene" uid="uid://6rcnlausmknb" path="res://scenes/battle_arena_combo_display/BattleArenaComboDisplay.tscn" id="5_c5x3i"]
-[ext_resource type="PackedScene" uid="uid://dfu8ghvdy7y78" path="res://scenes/battle_arena_enemy_attack/BattleArenaEnemyAttack.tscn" id="6_h8aao"]
+[ext_resource type="PackedScene" uid="uid://dfu8ghvdy7y78" path="res://scenes/battle_arena_enemy_attack_display/BattleArenaEnemyAttackDisplay.tscn" id="6_h8aao"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xwil"]
 size = Vector2(201, 202)

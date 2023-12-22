@@ -45,7 +45,6 @@ func set_enemies(new_enemies : Array[Enemy]) -> void:
 	for enemy in self.enemies:
 		instance_ids.append(enemy.get_instance_id())
 	self.set("enemy_instance_ids", instance_ids)
-	$Combiner.set("entity_ids", instance_ids)
 	$Effector.set("entity_instance_ids", instance_ids)
 	$Area2D.render_enemies()
 

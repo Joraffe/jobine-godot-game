@@ -43,6 +43,7 @@ func _on_enemy_turn_started() -> void:
 	self.set("is_enemy_turn", true)
 
 	self.enqueue_enemies()
+	print('self.enemy_queue.size() ', self.enemy_queue.size())
 	$NextAttackDelayTimer.start()
 
 func _on_enemy_attack_animation_finished() -> void:
@@ -65,6 +66,7 @@ func _on_current_lead_updated(_instance_id : int) -> void:
 	$EndTurnDelayTimer.start()
 
 func _on_effects_finished(effector_instance_id : int) -> void:
+	print('_on_effects_finished called')
 	if not self.is_enemy_turn:
 		return
 
@@ -72,6 +74,8 @@ func _on_effects_finished(effector_instance_id : int) -> void:
 		return
 
 	if not self.enemy_queue.is_empty():
+		print('enemy queue is not empty')
+		print('self.enemy_queue.size() ', self.enemy_queue)
 		$NextAttackDelayTimer.start()
 		return
 
@@ -95,7 +99,9 @@ func enqueue_enemies() -> void:
 		self.enemy_queue.enqueue(enemy)
 
 func enqueue_next_enemy_attack_data() -> void:
+	print('enqueue_next_enemy_attack_data called')
 	var enemy : Enemy = self.enemy_queue.dequeue()
+	print('enemy ', enemy)
 	self.set("current_attacking_enemy", enemy)
 	var attack : EnemyAttack = self.get_random_enemy_attack(enemy)
 	var attack_data : Dictionary = {

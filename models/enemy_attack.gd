@@ -154,7 +154,7 @@ static func SlimeStrike(attack_element_name : String, instance_id : int) -> Enem
 		EnemyAttack.STATUS_DURATION : 0,
 		EnemyAttack.STATUS_CARD_NAME : "",
 		EnemyAttack.NUM_STATUS_CARDS : 0,
-		EnemyAttack.BASE_DAMAGE : 2,
+		EnemyAttack.BASE_DAMAGE : 10,
 		EnemyAttack.ENEMY_INSTANCE_ID : instance_id
 	})
 

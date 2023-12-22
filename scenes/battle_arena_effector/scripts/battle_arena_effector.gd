@@ -18,6 +18,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.NEXT_EFFECT_QUEUED, _on_next_effect_queued)
 	BattleRadio.connect(BattleRadio.EFFECT_RESOLVED, _on_effect_resolved)
 	BattleRadio.connect(BattleRadio.ELEMENTS_SETTLED, _on_elements_settled)
+	BattleRadio.connect(BattleRadio.FAINT_SETTLED, _on_faint_settled)
 
 
 #=======================
@@ -57,10 +58,9 @@ func _on_effect_resolved(instance_id : int, resolve_data : Dictionary) -> void:
 	var result : String = resolve_data[BattleConstants.EFFECT_RESULT]
 
 	if self.is_damage_effect(effect_type) and self.is_result_fainted(result):
-		var effector_instance_id : int = self.effector_stack.pop()
 		self.effect_queue.empty()
 		self.emit_entity_fainted(instance_id)
-		self.emit_effect_finished(effector_instance_id)
+		# defer finishing effects to _on_faint_settled
 		return
 
 	# if there are more effects, continue emitting those effects
@@ -78,6 +78,14 @@ func _on_elements_settled(instance_id : int) -> void:
 
 	if not self.effect_queue.is_empty():
 		self.emit_next_effect()
+		return
+
+	while not self.effector_stack.is_empty():
+		var effector_instance_id : int = self.effector_stack.pop()
+		self.emit_effect_finished(effector_instance_id)
+
+func _on_faint_settled(instance_id : int) -> void:
+	if not self.identifier.is_applicable(instance_id):
 		return
 
 	while not self.effector_stack.is_empty():

@@ -19,7 +19,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ENTITY_DAMAGED_BY_EFFECT, _on_entity_damaged_by_effect)
 	BattleRadio.connect(BattleRadio.ADD_ELEMENTS_TO_ENTITY_BY_EFFECT, _on_add_elements_to_entity_by_effect)
 	BattleRadio.connect(BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY, _on_elements_removed_from_entity)
-	
+
 
 #=======================
 # Setters
@@ -41,6 +41,7 @@ func set_character(new_character : Character) -> void:
 	$HealthBar.set("health_bar_type", self.character_type)
 	$HealthBar.set("entity", self.character)
 	$Aura.set("entity", self.character)
+	$Area2D.set("character", self.character)
 	$ComboDisplay.set("entity", self.character)
 
 func set_image_data(new_image_data : ImageData):

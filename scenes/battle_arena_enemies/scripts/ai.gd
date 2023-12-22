@@ -20,7 +20,6 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ENEMY_TURN_STARTED, _on_enemy_turn_started)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED, _on_enemy_attack_animation_finished)
 	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
-	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
 
 
 func _ready() -> void:
@@ -48,21 +47,6 @@ func _on_enemy_turn_started() -> void:
 func _on_enemy_attack_animation_finished() -> void:
 	# once the animation is finished, queue the attack effects next
 	self.emit_next_effect_queued()
-
-func _on_current_lead_updated(_instance_id : int) -> void:
-	if not self.is_enemy_turn:
-		return
-
-	# this is the case where the previous enemy attack effect
-	# caused the target to faint, requiring we swap in a new
-	# lead; we can then resume the next enemy attack
-	if self.enemy_queue.size() > 0:
-		self.enqueue_next_enemy_attack_data()
-		$NextAttackDelayTimer.start()
-		return
-
-	# otherwise if there are no more enemies to attack we're done
-	$EndTurnDelayTimer.start()
 
 func _on_effects_finished(effector_instance_id : int) -> void:
 	if not self.is_enemy_turn:

@@ -24,6 +24,8 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP, _on_combo_bonus_effects_deferred_to_group)
 	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
 	BattleRadio.connect(BattleRadio.SELF_NON_TARGETING_COMBO_BONUS_APPLIED, _on_self_non_targeting_combo_bonus_applied)
+	BattleRadio.connect(BattleRadio.ENTITY_FAINED, _on_entity_fainted)
+	BattleRadio.connect(BattleRadio.ENTITY_DEFEATED_ANIMATION_FINISHED, _on_entity_defeated_animation_finished)
 
 
 #=======================
@@ -53,20 +55,8 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	$Effector.set("entity_instance_ids", party_instance_ids)
 
 func _on_standby_swap_to_lead_queued(standby_instance_id : int) -> void:
-	var old_lead : Character = self.party_lead_character
-	var swapping_standby : Character
-	var swapping_standby_key : String
-	if self.is_standby_top(standby_instance_id):
-		swapping_standby = self.party_standby_top_character
-		swapping_standby_key = "party_standby_top_character"
-	elif self.is_standby_bottom(standby_instance_id):
-		swapping_standby = self.party_standby_bottom_character
-		swapping_standby_key = "party_standby_bottom_character"
-
-	self.set("party_lead_character", swapping_standby)
-	self.set(swapping_standby_key, old_lead)
+	self.swap_standby_to_lead(standby_instance_id)
 	self.emit_standby_swap_to_lead_finished()
-
 
 func _on_combo_effects_deferred_to_group(group_name : String, combiner : Combiner) -> void:
 	if group_name != BattleConstants.GROUP_PARTY:
@@ -145,6 +135,27 @@ func _on_self_non_targeting_combo_bonus_applied(combo_bonus : ComboBonus) -> voi
 		self.emit_combo_bonus_cards_gained(combo_bonus)
 		return
 
+func _on_entity_fainted(fainted_instance_id : int) -> void:
+	if not self.is_applicable(fainted_instance_id):
+		return
+
+	self.emit_entity_defeated_animation_queued(fainted_instance_id)
+
+func _on_entity_defeated_animation_finished(fainted_instance_id : int) -> void:
+	if not self.is_applicable(fainted_instance_id):
+		return
+
+	if fainted_instance_id == self.party_lead_character.get_instance_id():
+		var next_lead_character : Character = self.get_next_lead_character()
+		# if there's not a lead character, it's a game over!
+		if not next_lead_character:
+			self.emit_battle_lost()
+			return
+
+		self.swap_standby_to_lead(next_lead_character.get_instance_id())
+		self.emit_standby_swap_to_lead_finished()
+		self.emit_faint_settled(fainted_instance_id)
+
 
 #========================
 # Helpers
@@ -162,6 +173,43 @@ func get_party_instance_ids() -> Array[int]:
 		self.party_standby_bottom_character.get_instance_id()
 	]
 	return instance_ids
+
+func is_applicable(instance_id : int) -> bool:
+	return instance_id in self.get_party_instance_ids()
+
+func get_standby_character_queue() -> Queue:
+	var standby_characters : Queue = Queue.new()
+
+	standby_characters.enqueue(self.party_standby_top_character)
+	standby_characters.enqueue(self.party_standby_bottom_character)
+
+	return standby_characters
+
+func get_next_lead_character() -> Character:
+	var next_lead_character : Character
+
+	var standby_character_queue : Queue = self.get_standby_character_queue()
+	while not standby_character_queue.is_empty():
+		var standby_character : Character = standby_character_queue.dequeue()
+		if not standby_character.has_fainted():
+			next_lead_character = standby_character
+			break
+
+	return next_lead_character
+
+func swap_standby_to_lead(standby_instance_id : int) -> void:
+	var old_lead : Character = self.party_lead_character
+	var swapping_standby : Character
+	var swapping_standby_key : String
+	if self.is_standby_top(standby_instance_id):
+		swapping_standby = self.party_standby_top_character
+		swapping_standby_key = "party_standby_top_character"
+	elif self.is_standby_bottom(standby_instance_id):
+		swapping_standby = self.party_standby_bottom_character
+		swapping_standby_key = "party_standby_bottom_character"
+
+	self.set("party_lead_character", swapping_standby)
+	self.set(swapping_standby_key, old_lead)
 
 func emit_standby_swap_to_lead_finished() -> void:
 	BattleRadio.emit_signal(BattleRadio.STANDBY_SWAP_TO_LEAD_FINISHED)
@@ -207,4 +255,19 @@ func emit_combo_bonus_cards_gained(combo_bonus : ComboBonus) -> void:
 	BattleRadio.emit_signal(
 		BattleRadio.COMBO_BONUS_CARDS_GAINED,
 		combo_bonus.card_draw_amount
+	)
+
+func emit_faint_settled(instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.FAINT_SETTLED,
+		instance_id
+	)
+
+func emit_battle_lost() -> void:
+	BattleRadio.emit_signal(BattleRadio.BATTLE_LOST)
+ 
+func emit_entity_defeated_animation_queued(instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ENTITY_DEFEATED_ANIMATION_QUEUED,
+		instance_id
 	)

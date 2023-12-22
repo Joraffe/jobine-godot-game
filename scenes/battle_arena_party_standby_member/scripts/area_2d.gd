@@ -10,7 +10,7 @@ var standby_character : Character :
 var standby_position : String
 var is_mouse_over_standby_member : bool
 var is_player_turn : bool
-var can_swap : bool
+var num_current_swaps : int
 
 
 #=======================
@@ -49,7 +49,7 @@ func _on_player_turn_ended() -> void:
 	self.set("is_player_turn", false)
 
 func _on_current_swaps_updated(new_current_swaps : int) -> void:
-	self.set("can_swap", new_current_swaps > 0)
+	self.set("num_current_swaps", new_current_swaps)
 
 func _input(event) -> void:
 	if not self.is_player_turn:
@@ -61,11 +61,11 @@ func _input(event) -> void:
 	if not MouseUtils.is_left_click(event):
 		return
 
-	if MouseUtils.is_left_click(event) and not self.can_swap:
+	if MouseUtils.is_left_click(event) and not self.can_swap():
 		self.animate_cannot_swap()
 		return
 
-	if MouseUtils.is_left_click(event) and self.can_swap:
+	if MouseUtils.is_left_click(event) and self.can_swap():
 		BattleRadio.emit_signal(
 			BattleRadio.STANDBY_SWAP_TO_LEAD_QUEUED,
 			self.standby_character.get_instance_id()
@@ -110,3 +110,12 @@ func get_character_node() -> Node2D:
 			break
 
 	return character_node
+
+func has_enough_swaps() -> bool:
+	return self.num_current_swaps > 0
+
+func has_not_fainted() -> bool:
+	return not self.standby_character.has_fainted()
+
+func can_swap() -> bool:
+	return self.has_enough_swaps() and self.has_not_fainted()

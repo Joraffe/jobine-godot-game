@@ -118,6 +118,9 @@ signal elements_combined(
 )
 signal elements_settled(instance_id : int)
 
+const FAINT_SETTLED : String = "faint_settled"
+signal faint_settled(instance_id : int)
+
 
 # Entity Related
 const ENTITY_DAMAGED : String = "entity_damaged"
@@ -142,6 +145,10 @@ signal entity_current_element_names_updated(
 )
 const ENTITY_FAINED : String = "entity_fainted"
 signal entity_fainted(instance_id : int)
+const ENTITY_DEFEATED_ANIMATION_QUEUED : String = "entity_defeated_animation_queued"
+signal entity_defeated_animation_queued(instance_id : int)
+const ENTITY_DEFEATED_ANIMATION_FINISHED : String = "entity_defeated_animation_finished"
+signal entity_defeated_animation_finished(instance_id : int)
 
 
 # Combo Related
@@ -242,6 +249,8 @@ const EFFECT_RESOLVED : String = "effect_resolved"
 signal effect_resolved(effector_instance_id : int, resolve_data : Dictionary)
 const EFFECTS_FINISHED : String = "effects_finished"
 signal effects_finished(effector_instance_id : int)
+
+
 
 
 const ENTITY_DAMAGED_BY_EFFECT : String = "entity_damaged_by_effect"

@@ -88,10 +88,7 @@ func _on_card_drawn(drawn_card : Card) -> void:
 		new_hand.append(card_in_hand)
 	new_hand.append(drawn_card)
 
-	hand = new_hand
-
-	if self.is_hand_full():
-		BattleRadio.emit_signal(BattleRadio.HAND_FILLED)
+	self.set("hand", new_hand)
 
 func _on_cards_drawn(drawn_cards : Array[Card]) -> void:
 	var new_hand : Array[Card] = []

@@ -7,42 +7,10 @@ var element_names : Array[String] :
 	set = set_element_names
 var combiner : Combiner
 
-
 var is_repositioning_finished : bool :
 	set = set_is_repositioning_finished
 var is_removing_finished : bool :
 	set = set_is_removing_finished
-
-var is_combo_effect_finished : bool :
-	set = set_is_combo_effect_finished
-var is_combo_bonus_effect_finished : bool :
-	set = set_is_combo_bonus_effect_finished
-
-var finished : bool
-
-
-# -> element applied to entity
-# -> add element animation queued
-# -> add element animation finished
-# -> check for combo queued
-# -> if not combo:
-# ----> element applied finished 
-# -> else if combo:
-# ----> remove combined elements animation queued + reposition remaining elements animation queued
-# ----> remove combined element animation finished + reposition remaining elements animation finished
-# -> elements removed from entity queued
-# -> elements removed from entity finished
-# -> combo animation queued
-# -> combo animation finished
-# -> combo effect queued + combo bonus effect queued
-# -> combo effect resolved + combo effect resolved
-# -> if combo/combo bonus faints the target:
-# ----> combo/combo bonus effect finished
-# -> if combo/combo bonus adds elements:
-# ----> element applied to entity (go back to beginning)
-# -> else:
-# ----> combo/combo bonus effect finished
-# -> element applied finished
 
 
 #=======================
@@ -53,8 +21,6 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.REMOVE_ELEMENTS_ANIMATION_FINISHED, _on_remove_elements_animation_finished)
 	BattleRadio.connect(BattleRadio.REPOSITION_ELEMENTS_ANIMATION_FINISHED, _on_reposition_elements_animation_finished)
 	BattleRadio.connect(BattleRadio.COMBO_ANIMATION_FINISHED, _on_combo_animation_finished)
-	BattleRadio.connect(BattleRadio.COMBO_EFFECT_FINISHED, _on_combo_effect_finished)
-	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECT_FINISHED, _on_combo_bonus_effect_finished)
 	BattleRadio.connect(BattleRadio.COMBO_CHECK_DEFERRED, _on_combo_check_deferred)
 
 
@@ -75,16 +41,6 @@ func set_is_removing_finished(new_is_removing_finished : bool) -> void:
 	is_removing_finished = new_is_removing_finished
 	if self.is_removing_finished:
 		self.check_for_all_animations_finished()
-
-func set_is_combo_effect_finished(new_is_combo_effect_finished : bool) -> void:
-	is_combo_effect_finished = new_is_combo_effect_finished
-	if self.is_combo_effect_finished:
-		self.check_for_all_effects_finished()
-
-func set_is_combo_bonus_effect_finished(new_is_combo_bonus_effect_finished : bool) -> void:
-	is_combo_bonus_effect_finished = new_is_combo_bonus_effect_finished
-	if self.is_combo_bonus_effect_finished:
-		self.check_for_all_effects_finished()
 
 
 #=======================
@@ -118,25 +74,6 @@ func _on_combo_animation_finished(instance_id : int) -> void:
 	self.emit_combo_bonus_check_deffered(self.combiner)
 	var group_name : String = self.get_group_name()
 	self.emit_combo_effects_deferred_to_group(group_name, self.combiner)
-
-func _on_combo_effect_finished(instance_id : int, finish_data : Dictionary) -> void:
-	if not self.applicable(instance_id):
-		return
-
-	if finish_data.get("fainted_target") or finish_data.get("did_not_add_elements"):
-		self.set("finished", true)
-
-	self.set("is_combo_effect_finished", true)
-
-
-func _on_combo_bonus_effect_finished(instance_id : int, finish_data : Dictionary) -> void:
-	if not self.applicable(instance_id):
-		return
-
-	if finish_data.get("fainted_target") or finish_data.get("did_not_add_elements"):
-		self.set("finished", true)
-
-	self.set("is_combo_bonus_effect_resolved", true)
 
 func _on_combo_check_deferred(instance_id : int) -> void:
 	if not self.applicable(instance_id):
@@ -189,24 +126,6 @@ func check_for_all_animations_finished() -> void:
 				self.entity_instance_id,
 				self.combiner.current_combo
 			)
-
-func check_for_all_effects_finished() -> void:
-	if self.is_combo_effect_finished and self.is_combo_bonus_effect_finished:
-		BattleRadio.emit_signal(
-			BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
-			self.entity_instance_id,
-			self.combiner.remove_indexes
-		)
-		# if we are finished, we can emit the "elements settled" event
-		if self.finished:
-			BattleRadio.emit_signal(BattleRadio.ELEMENTS_SETTLED)
-			self.set("finished", false)
-		# otherwise, we dont do anything because elsewhere
-		# will emit another ELEMENT_APPLIED_TO_ENTITY signal
-		# which will start the chain of signal handlers here
-
-		self.set("is_combo_effect_finished", false)
-		self.set("is_combo_bonus_effect_finished", false)
 
 func defer_combo_bonus_check(combiner_to_defer : Combiner) -> void:
 	self.emit_combo_bonus_check_deffered(combiner_to_defer)

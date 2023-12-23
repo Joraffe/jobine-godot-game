@@ -147,14 +147,20 @@ func _input(event):
 	if (not selected and _is_left_mouse_click(event)
 		and battle_field_card.can_play_card()):
 		select_card()
-		BattleRadio.emit_signal("card_selected", battle_field_card.card)
+		BattleRadio.emit_signal(
+			BattleRadio.CARD_SELECTED,
+			battle_field_card.card
+		)
 		move_sprite_z_index(1)
 		move_card_to_mouse(event)
 		return
 
 	if selected and _is_right_mouse_click(event):
 		deselect_card()
-		BattleRadio.emit_signal("card_deselected", battle_field_card.card)
+		BattleRadio.emit_signal(
+			BattleRadio.CARD_DESELECTED,
+			battle_field_card.card
+		)
 		move_sprite_z_index(0)
 		hide_card_targeting()
 		empty_targeting_line_points()

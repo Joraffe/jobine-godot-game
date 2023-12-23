@@ -20,8 +20,6 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ADD_ELEMENTS_TO_ENTITY_BY_EFFECT, _on_add_elements_to_entity_by_effect)
 	BattleRadio.connect(BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY, _on_elements_removed_from_entity)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_QUEUED, _on_enemy_attack_animation_queued)
-	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_EFFECT_QUEUED, _on_enemy_attack_effect_queued)
-	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_EFFECT_RESOLVED, _on_enemy_attack_effect_resolved)
 	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED, _on_enemy_defeated_animation_queued)
 
 
@@ -116,54 +114,6 @@ func _on_enemy_attack_animation_queued(instance_id : int, attack : EnemyAttack):
 	$AttackDisplay.animate()
 	$Area2D.animate(attack)  # This will emit ENEMY_ATTACK_ANIMATION_FINISHED when finished
 
-func _on_enemy_attack_effect_queued(instance_id : int, attack_effect_data : Dictionary) -> void:
-	if not self.identifier.is_applicable(instance_id):
-		return
-
-	var attack_effect_type : String = attack_effect_data["type"]
-	
-	if attack_effect_type == EnemyAttack.DAMAGE_TYPE:
-		self.emit_lead_damaged_by_enemy(attack_effect_data)
-		return
-
-	if attack_effect_type == EnemyAttack.STATUS_TYPE:
-		self.emit_status_attack_effect(attack_effect_data)
-		return
-
-	if attack_effect_type == EnemyAttack.STATUS_CARD_TYPE:
-		self.emit_status_card_attack_effect(attack_effect_data)
-		return
-
-	# we resolve element application last because there's
-	# the possibility of combos happening, which have their
-	# own effects to be applied; would rather not have to
-	# juggle both these attack_effects + the combo effects
-	if attack_effect_type == EnemyAttack.ELEMENT_TYPE:
-		self.emit_element_attack_effect(attack_effect_data)
-		return
-
-func _on_enemy_attack_effect_resolved(instance_id : int, resolve_data : Dictionary) -> void:
-	if not self.identifier.is_applicable(instance_id):
-		return
-
-	# potential attack effect resolutions
-	var type : String = resolve_data["type"]
-	var result : String = resolve_data["result"]
-	var finish_data : Dictionary = {}
-
-	if type == EnemyAttack.DAMAGE_TYPE and result == EnemyAttack.FAINTED:
-		finish_data["should_bail"] = true
-		BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_EFFECT_FINISHED, finish_data)
-		return
-
-	if type == EnemyAttack.DAMAGE_TYPE and result == EnemyAttack.DAMAGED:
-		BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_EFFECT_FINISHED, finish_data)
-		return
- 
-	if type == EnemyAttack.ELEMENT_TYPE:
-		BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_EFFECT_FINISHED, finish_data)
-		return
-
 func _on_enemy_defeated_animation_queued(instance_id : int) -> void:
 	if not self.identifier.is_applicable(instance_id):
 		return
@@ -195,25 +145,4 @@ func emit_effect_resolved(
 			BattleConstants.EFFECT_TYPE : effect_type,
 			BattleConstants.EFFECT_RESULT : effect_result
 		}
-	)
-
-
-func emit_lead_damaged_by_enemy(attack_effect_data : Dictionary) -> void:
-	BattleRadio.emit_signal(
-		BattleRadio.LEAD_DAMAGED_BY_ENEMY,
-		self.enemy.get_instance_id(),
-		attack_effect_data["amount"]
-	)
-
-func emit_status_attack_effect(_attack_effect_data : Dictionary) -> void:
-	pass
-
-func emit_status_card_attack_effect(_attack_effect_data : Dictionary) -> void:
-	pass
-
-func emit_element_attack_effect(attack_effect_data : Dictionary) -> void:
-	BattleRadio.emit_signal(
-		BattleRadio.ELEMENTS_ADDED_TO_LEAD_BY_ENEMY,
-		attack_effect_data["name"],
-		attack_effect_data["amount"]
 	)

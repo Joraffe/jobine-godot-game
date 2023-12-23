@@ -13,8 +13,9 @@ var current_card_instance_id : int
 var current_card_primary_target_instance_id : int
 
 var current_combiner : Combiner
-var current_combo_instance_id : int
-var current_combo_target_instance_id : int
+
+var current_combos : Array[int]
+var current_combo_targets : Array[int]
 
 var current_combo_bonus_instance_id : int
 
@@ -107,8 +108,9 @@ func _on_combo_effects_deferred_to_group(
 
 	self.set("current_combiner", combiner)
 	var combo : Combo = combiner.current_combo
-	self.set("current_combo_instance_id", combo.get_instance_id())
-	self.set("current_combo_target_instance_id", primary_target_instance_id)
+	var current_combo_instance_id : int = combo.get_instance_id()
+	self.current_combos.append(current_combo_instance_id)
+	self.current_combo_targets.append(primary_target_instance_id)
 	self.set(
 		"enemies_targeter",
 		Targeter.new(
@@ -124,7 +126,7 @@ func _on_combo_effects_deferred_to_group(
 		all_combo_effects += target_combo_effects
 
 	self.emit_effects_enqueued(
-		self.current_combo_instance_id,
+		current_combo_instance_id,
 		primary_target_instance_id,
 		all_combo_effects
 	)
@@ -161,12 +163,31 @@ func _on_combo_bonus_effects_deferred_to_group(
 	self.emit_next_effect_queued(primary_target_instance_id)
 
 func _on_effects_finished(effector_instance_id : int) -> void:
-	if self.current_combo_instance_id != effector_instance_id:
+	if effector_instance_id not in self.current_combos:
 		return
+
+	var combo_index : int
+	var remaining_current_combos : Array[int] = []
+	for i in self.current_combos.size():
+		var instance_id : int = self.current_combos[i]
+		if not instance_id == effector_instance_id:
+			remaining_current_combos.append(instance_id)
+		elif instance_id == effector_instance_id:
+			combo_index = i
+	self.set("current_combos", remaining_current_combos)
+
+	var combo_target_instance_id : int
+	var remaining_combo_targets : Array[int] = []
+	for i in self.current_combo_targets.size():
+		if i != combo_index:
+			remaining_combo_targets.append(self.current_combo_targets[i])
+		elif i == combo_index:
+			combo_target_instance_id = self.current_combo_targets[i]
+	self.set("current_combo_targets", remaining_combo_targets)
 
 	BattleRadio.emit_signal(
 		BattleRadio.COMBO_CHECK_DEFERRED,
-		self.current_combo_target_instance_id
+		combo_target_instance_id
 	)
 
 func _on_entity_fainted(instance_id : int) -> void:

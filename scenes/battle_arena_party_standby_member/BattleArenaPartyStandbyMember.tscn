@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://htj0rsmb2qha"]
+
+[ext_resource type="Texture2D" uid="uid://bkah2rip434sb" path="res://scenes/battle_arena_party_standby_member/resources/images/empty/standby_member.png" id="1_53qrj"]
+[ext_resource type="Script" path="res://scenes/battle_arena_party_standby_member/scripts/battle_arena_party_standby_member.gd" id="1_r4hmx"]
+[ext_resource type="Script" path="res://scenes/battle_arena_party_standby_member/scripts/area_2d.gd" id="2_o7xv5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bl033"]
+size = Vector2(200, 200)
+
+[node name="BattleArenaPartyStandbyMember" type="Node2D"]
+script = ExtResource("1_r4hmx")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_o7xv5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("1_53qrj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_bl033")

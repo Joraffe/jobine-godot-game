@@ -23,8 +23,54 @@ func _init(
 	# based off of first_element + second_element
 	set_combo_derived_data()
 
-func has_mono_elements() -> bool:
-	return first_element.machine_name == second_element.machine_name
+func get_sequential_effects(target_instance_id : int) -> Array[Dictionary]:
+	var effects : Array[Dictionary] = []
+
+	if self.has_damage_effect():
+		effects.append(self.get_damage_effect(target_instance_id))
+	if self.has_element_effect():
+		effects.append(self.get_element_effect(target_instance_id))
+
+	return effects
+
+func has_damage_effect() -> bool:
+	return self.base_damage > 0
+
+func has_element_effect() -> bool:
+	return self.num_applied_element > 0
+
+func get_damage_effect(target_instance_id : int) -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
+		BattleConstants.EFFECT_TYPE : BattleConstants.DAMAGE_EFFECT,
+		BattleConstants.EFFECT_AMOUNT : self.base_damage,
+	}
+
+func get_element_effect(target_instance_id : int) -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
+		BattleConstants.EFFECT_TYPE : BattleConstants.ELEMENT_EFFECT,
+		BattleConstants.EFFECT_NAME : self.applied_element_name,
+		BattleConstants.EFFECT_AMOUNT : self.num_applied_element
+	}
+
+func has_reaction() -> bool:
+	return (
+		self.is_evaporate()
+		or self.is_burn()
+		or self.is_explode()
+		or self.is_charge()
+		or self.is_chill()
+		or self.is_melt()
+		or self.is_blaze()
+		or self.is_grow()
+		or self.is_freeze()
+		or self.is_surge()
+		or self.is_tempest()
+		or self.is_torrent()
+	)
 
 func is_evaporate() -> bool:
 	return (
@@ -38,6 +84,13 @@ func is_burn() -> bool:
 		(first_element.is_fire() and second_element.is_nature())
 		or
 		(first_element.is_nature() and second_element.is_fire())
+	)
+
+func is_explode() -> bool:
+	return (
+		(first_element.is_fire() and second_element.is_volt())
+		or
+		(first_element.is_volt() and second_element.is_fire())
 	)
 
 func is_charge() -> bool:
@@ -96,75 +149,96 @@ func is_tempest() -> bool:
 		(first_element.is_aero() and second_element.is_volt())
 	)
 
+func is_torrent() -> bool:
+	return (
+		(first_element.is_water() and second_element.is_aero())
+		or
+		(first_element.is_aero() and second_element.is_water())
+	)
+
 func set_combo_derived_data() -> void:
-	if is_evaporate():
+	if self.is_evaporate():
 		human_name = "Evaporate"
 		machine_name = Combo.EVAPORATE
 		base_damage = 2
 		applied_element_name = ""
 		num_applied_element = 0
 		targeting_name = Targeting.SINGLE
-	elif is_burn():
+	elif self.is_burn():
 		human_name = "Burn"
 		machine_name = Combo.BURN
 		base_damage = 1
 		applied_element_name = ""
 		num_applied_element = 0
-		targeting_name = Targeting.BLAST
-	elif is_charge():
+		targeting_name = Targeting.SPLASH
+	elif self.is_explode():
+		human_name = "Explode"
+		machine_name = Combo.EXPLODE
+		base_damage = 1
+		applied_element_name = ""
+		num_applied_element = 0
+		targeting_name = Targeting.SPLASH
+	elif self.is_charge():
 		human_name = "Charge"
 		machine_name = Combo.CHARGE
 		base_damage = 0
 		applied_element_name = Element.VOLT
 		num_applied_element = 2
 		targeting_name = Targeting.SINGLE
-	elif is_chill():
+	elif self.is_chill():
 		human_name = "Chill"
 		machine_name = Combo.CHILL
 		base_damage = 0
 		applied_element_name = Element.ICE
 		num_applied_element = 1
 		targeting_name = Targeting.ALL
-	elif is_melt():
+	elif self.is_melt():
 		human_name = "Melt"
 		machine_name = Combo.MELT
 		base_damage = 2
 		applied_element_name = ""
 		num_applied_element = 0
 		targeting_name = Targeting.SINGLE
-	elif is_blaze():
+	elif self.is_blaze():
 		human_name = "Blaze"
 		machine_name = Combo.BLAZE
 		base_damage = 0
 		applied_element_name = Element.FIRE
 		num_applied_element = 1
 		targeting_name = Targeting.ALL
-	elif is_grow():
+	elif self.is_grow():
 		human_name = "Grow"
 		machine_name = Combo.GROW
 		base_damage = 1
 		applied_element_name = Element.NATURE
 		num_applied_element = 1
 		targeting_name = Targeting.SINGLE
-	elif is_freeze():
+	elif self.is_freeze():
 		human_name = "Freeze"
 		machine_name = Combo.FREEZE
 		base_damage = 0
 		applied_element_name = Element.ICE
 		num_applied_element = 2
 		targeting_name = Targeting.SINGLE
-	elif is_surge():
+	elif self.is_surge():
 		human_name = "Surge"
 		machine_name = Combo.SURGE
 		base_damage = 1
 		applied_element_name = ""
 		num_applied_element = 0
-		targeting_name = Targeting.BLAST
-	elif is_tempest():
+		targeting_name = Targeting.SPLASH
+	elif self.is_tempest():
 		human_name = "Tempest"
 		machine_name = Combo.TEMPEST
 		base_damage = 0
 		applied_element_name = Element.VOLT
+		num_applied_element = 1
+		targeting_name = Targeting.ALL
+	elif self.is_torrent():
+		human_name = "Tempest"
+		machine_name = Combo.TORRENT
+		base_damage = 0
+		applied_element_name = Element.WATER
 		num_applied_element = 1
 		targeting_name = Targeting.ALL
 	else:
@@ -180,6 +254,9 @@ static func create(combo_data : Dictionary) -> Combo:
 		combo_data[Combo.FIRST_ELEMENT],
 		combo_data[Combo.SECOND_ELEMENT],
 	)
+
+static func Empty() -> Combo:
+	return Combo.new(Element.Empty(), Element.Empty())
 
 
 #========================
@@ -198,6 +275,7 @@ const TARGETING_NAME : String = "targeting_name"
 #=============================
 const EVAPORATE : String = "evaporate"  # water + fire 
 const BURN : String = "burn"  # nature + fire
+const EXPLODE : String = "explode"  # fire + volt
 const CHARGE : String = "charge"  # volt + water
 const CHILL : String = "chill"  # ice + wind
 const MELT : String = "melt"  # fire + ice
@@ -206,11 +284,16 @@ const GROW : String = "grow"  # water + nature
 const FREEZE : String = "freeze"  # water + ice
 const SURGE : String = "surge"  # volt + nature
 const TEMPEST : String = "tempest"  # wind + volt
+const TORRENT : String = "torrent"  # wind + water
 
 
 #========================
 # Combo Signal constants
 #========================
+const FIRST_ELEMENT_INDEX : String = "first_element_index"
+const FIRST_ELEMENT_NAME : String = "first_element_name"
+const SECOND_ELEMENT_INDEX : String = "second_element_index"
+const SECOND_ELEMENT_NAME : String = "second_element_name"
 const FIRST_ELEMENT : String = "first_element"
 const SECOND_ELEMENT : String = "second_element"
 const COMBO : String = "combo"

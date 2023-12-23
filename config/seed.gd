@@ -135,13 +135,15 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 # Seed Data Helpers
 #=====================
 static func _get_juno_character_data() -> Dictionary:
+	var current_element_names : Array[String] = []
 	return {
 		Character.HUMAN_NAME : "Juno",
 		Character.MACHINE_NAME : Character.JUNO,
 		Character.ELEMENT_NAME : Element.NATURE,
 		Character.MAX_HP : 10,
 		Character.CURRENT_HP : 10,
-		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
+		Character.CURRENT_ELEMENT_NAMES : current_element_names,
+		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER
 	}
 
 static func _get_juno_card_names() -> Array[String]:
@@ -152,13 +154,15 @@ static func _get_juno_card_names() -> Array[String]:
 	return cards
 
 static func _get_pettol_character_data() -> Dictionary:
+	var current_element_names : Array[String] = []
 	return {
 		Character.HUMAN_NAME : "Pettol",
 		Character.MACHINE_NAME : Character.PETTOL,
 		Character.ELEMENT_NAME : Element.VOLT,
 		Character.MAX_HP : 15,
 		Character.CURRENT_HP : 15,
-		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
+		Character.CURRENT_ELEMENT_NAMES : current_element_names,
+		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER
 	}
 
 static func _get_pettol_card_names() -> Array[String]:
@@ -169,13 +173,15 @@ static func _get_pettol_card_names() -> Array[String]:
 	return cards
 
 static func _get_axo_character_data() -> Dictionary:
+	var current_element_names : Array[String] = []
 	return {
 		Character.HUMAN_NAME : "Axo",
 		Character.MACHINE_NAME : Character.AXO,
 		Character.ELEMENT_NAME : Element.FIRE,
 		Character.MAX_HP : 7,
 		Character.CURRENT_HP : 7,
-		Character.ENTITY_TYPE : Character.ENTITY_TYPE_CHARACTER
+		Character.CURRENT_ELEMENT_NAMES : current_element_names,
+		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER
 	}
 
 static func _get_axo_card_names() -> Array[String]:
@@ -186,13 +192,20 @@ static func _get_axo_card_names() -> Array[String]:
 	return cards
 
 static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary:
+	var attack_names : Array[String] = [
+		EnemyAttack.SLIME_STRIKE,
+		EnemyAttack.OOZE
+	]
+	var current_element_names : Array[String] = []
 	return {
 		Enemy.HUMAN_NAME : "{element} Slime".format({
-			"elemnet" : element_name.capitalize()
+			"element" : element_name.capitalize()
 		}),
 		Enemy.MACHINE_NAME : Enemy.slime_enemy_name_by_element(element_name),
 		Enemy.ELEMENT_NAME : element_name,
 		Enemy.MAX_HP : 10,
 		Enemy.CURRENT_HP : 10,
-		Enemy.ENTITY_TYPE : Enemy.ENTITY_TYPE_ENEMY
+		Enemy.CURRENT_ELEMENT_NAMES : current_element_names,
+		Enemy.ENTITY_TYPE : BattleConstants.ENTITY_ENEMY,
+		Enemy.ATTACK_NAMES : attack_names
 	}

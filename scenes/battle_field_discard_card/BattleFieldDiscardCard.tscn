@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://1t32jersffba"]
+
+[ext_resource type="Script" path="res://scenes/battle_field_discard_card/scripts/battle_field_discard_card.gd" id="1_plbrl"]
+
+[node name="BattleFieldDiscardCard" type="Node2D"]
+script = ExtResource("1_plbrl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

@@ -5,8 +5,8 @@ var card : Card :
 	set = set_card
 var available_energy : int :
 	set = set_available_energy
-var lead_character : Character :
-	set = set_lead_character
+var lead_instance_id : int :
+	set = set_lead_instance_id
 var is_player_turn : bool :
 	set = set_is_player_turn
 var card_image_data : ImageData:
@@ -58,8 +58,8 @@ func set_available_energy(new_available_energy : int) -> void:
 		color
 	)
 
-func set_lead_character(new_lead_character : Character) -> void:
-	lead_character = new_lead_character
+func set_lead_instance_id(new_lead_instance_id : int) -> void:
+	lead_instance_id = new_lead_instance_id
 
 func set_is_player_turn(new_is_player_turn : bool) -> void:
 	is_player_turn = new_is_player_turn
@@ -74,17 +74,17 @@ func set_card_image_data(new_card_image_data : ImageData):
 #========================
 # Signal Handlers
 #========================
-func _on_current_lead_updated(updated_leader : Character) -> void:
-	lead_character = updated_leader
+func _on_current_lead_updated(updated_lead_instance_id : int) -> void:
+	self.set("lead_instance_id", updated_lead_instance_id)
 
 func _on_current_energy_updated(current_energy : int) -> void:
-	available_energy = current_energy
+	self.set('available_energy', current_energy)
 
 func _on_player_turn_started() -> void:
-	is_player_turn = true
+	self.set("is_player_turn", true)
 
 func _on_player_turn_ended() -> void:
-	is_player_turn = false
+	self.set("is_player_turn" , false)
 
 
 #========================
@@ -94,7 +94,7 @@ func has_enough_energy() -> bool:
 	return self.available_energy >= self.card.cost
 
 func belongs_to_lead() -> bool:
-	return self.lead_character.machine_name == self.card.character_name
+	return self.lead_instance_id == self.card.character_instance_id
 
 func can_play_card() -> bool:
-	return has_enough_energy() and belongs_to_lead()
+	return self.has_enough_energy() and self.belongs_to_lead()

@@ -5,182 +5,80 @@ var aura_element_scene : PackedScene = preload(
 	"res://scenes/battle_arena_aura_element/BattleArenaAuraElement.tscn"
 )
 
-var entity  # used to associate this with an character/enemy
-var aura_width : int  # used to position the aura element
-var element_registry : Dictionary = {}
-var elements : Array[Element] = []
+var entity : Variant :  # used to associate this with an character/enemy
+	set = set_entity
+var aura_width : int  # used to position individual aura elements
+var entity_image_height : int  # used to position the combined aura elements
+
+var element_names : Array[String] :
+	set = set_element_names
+var elements : Array[Element]
+
+var combiner : Combiner
+
+var element_remove_queue : Queue = Queue.new()
+var combo_queue : Queue = Queue.new()
 
 
 #=======================
-# Godot Lifecycle Hooks
+# Setters
 #=======================
-func _init() -> void:
-	BattleRadio.connect(BattleRadio.ELEMENTS_COMBINED, _on_elements_combined)
+func set_entity(new_entity : Variant) -> void:
+	entity = new_entity
+	self.position_aura()
+	$Area2D.set("entity_instance_id", self.entity.get_instance_id())
+	$AI.set("entity_instance_id" , self.entity.get_instance_id())
+	$AI.set("entity_type", self.entity.entity_type)
 
+func set_element_names(new_element_names : Array[String]) -> void:
+	var old_element_names = self.element_names
+	element_names = new_element_names
+	$Area2D.set("element_names", new_element_names)
+	$AI.set("element_names", new_element_names)
 
-#=======================
-# Signal Handlers
-#=======================
-func _on_elements_combined(combo_data : Dictionary) -> void:
-	if combo_data[Combo.ENTITY] != entity:
-		return
-
-	var first_combo_index = combo_data[Combo.FIRST_ELEMENT][Combo.INDEX]
-	var first_combo_element = combo_data[Combo.FIRST_ELEMENT][Combo.ELEMENT]
-	var second_combo_index = combo_data[Combo.SECOND_ELEMENT][Combo.INDEX]
-	var second_combo_element = combo_data[Combo.SECOND_ELEMENT][Combo.ELEMENT]
-
-	var new_elements : Array[Element] = []
-	for i in elements.size():
-		if i not in [first_combo_index, second_combo_index]:
-			new_elements.append(elements[i])
-
-	elements = new_elements
-	unregister_element(first_combo_element)
-	unregister_element(second_combo_element)
-	tween_up_and_free_element(first_combo_element)
-	tween_up_and_free_element(second_combo_element)
-	reposition_remaining_aura_elements()
-
-	await get_tree().create_timer(0.5).timeout
-	BattleRadio.emit_signal(BattleRadio.COMBO_APPLIED, combo_data)
+	if new_element_names.size() > old_element_names.size():
+		BattleRadio.emit_signal(
+			BattleRadio.ADD_ELEMENTS_ANIMATION_QUEUED,
+			self.entity.get_instance_id(),
+			self.get_added_element_names(new_element_names, old_element_names)
+		)
 
 #========================
 # Aura Functionality
 #========================
-func apply_element(element : Element) -> void:
-	elements.append(element)
-	register_element(element)
-	var instance = instantiate_aura_element(element)
-	position_aura_element(instance, num_elements_applied() - 1)
-	check_for_combo()
+func get_added_element_names(
+	new_element_names : Array[String],
+	old_element_names : Array[String],
+) -> Array[String]:
+	var added_element_names : Array[String] = []
 
-func register_element(element : Element) -> void:
-	if not element_registry.has(element.machine_name):
-		element_registry[element.machine_name] = 1
-	elif element_registry.has(element.machine_name):
-		element_registry[element.machine_name] += 1
+	var new_element_counter : Dictionary = {}
+	for new_element_name in new_element_names:
+		if not new_element_counter.has(new_element_name):
+			new_element_counter[new_element_name] = 1
+		else:
+			new_element_counter[new_element_name] += 1
 
-func unregister_element(element : Element) -> void:
-	if element_registry[element.machine_name] == 1:
-		element_registry.erase(element.machine_name)
-	elif element_registry[element.machine_name] > 1:
-		element_registry[element.machine_name] -= 1
+	var old_element_counter : Dictionary = {}
+	for old_element_name in old_element_names:
+		if not old_element_counter.has(old_element_name):
+			old_element_counter[old_element_name] = 1
+		else:
+			old_element_counter[old_element_name] += 1
 
-func num_elements_applied() -> int:
-	var num_elements : int = 0
-	for key in element_registry.keys():
-		var element_amount : int = element_registry[key]
-		num_elements += element_amount
-	return num_elements
+	for new_element_name in new_element_counter.keys():
+		var new_element_count : int = new_element_counter.get(new_element_name)
+		var old_element_count : int = old_element_counter.get(new_element_name, 0)
+		var added_element_count : int = new_element_count - old_element_count
+		for i in added_element_count:
+			added_element_names.append(new_element_name)
 
-func has_multiple_distinct_elements() -> bool:
-	return element_registry.keys().size() >= 2
+	return added_element_names
 
-func check_for_combo() -> void:
-	var combo_data : Dictionary = {}
 
-	# Need at least 2 diff elements to combine
-	if not has_multiple_distinct_elements():
-		return
-
-	for index in elements.size():
-		combo_data  = check_index_for_combo(index)
-		if combo_data[Combo.COMBO]:
-			BattleRadio.emit_signal(
-				BattleRadio.ELEMENTS_COMBINED,
-				combo_data,
-			)
-			break
-
-func check_index_for_combo(element_index : int) -> Dictionary:
-	var combo_data : Dictionary = {
-		Combo.ENTITY_ID: null,
-		Combo.FIRST_ELEMENT: null,
-		Combo.SECOND_ELEMENT: null,
-		Combo.COMBO: null
-	}
-
-	var element : Element = elements[element_index]
-	for compared_index in elements.size():
-		if compared_index == element_index:
-			continue
-
-		var compared_element : Element = elements[compared_index]
-		var combo = Combo.create({
-			Combo.FIRST_ELEMENT: element,
-			Combo.SECOND_ELEMENT: compared_element
-		})
-		if combo.has_mono_elements():
-			continue
-
-		combo_data[Combo.ENTITY] = entity
-		combo_data[Combo.FIRST_ELEMENT] = {
-			Combo.INDEX : element_index,
-			Combo.ELEMENT : element
-		}
-		combo_data[Combo.SECOND_ELEMENT] = {
-			Combo.INDEX : compared_index,
-			Combo.ELEMENT: compared_element
-		}
-		combo_data[Combo.COMBO] = combo
-		return combo_data
-
-	# if we make it here, the element at the index
-	# we are checking cannot combine with any others
-	return {
-		Combo.ENTITY_ID : null,
-		Combo.FIRST_ELEMENT: null,
-		Combo.SECOND_ELEMENT: null,
-		Combo.COMBO: null
-	}
-
-#======================
-# Data Helpers
 #=====================
-func instantiate_aura_element(element : Element) -> Node2D:
-	var instance = aura_element_scene.instantiate()
-	instance.set("element", element)
-	add_child(instance)
-	return instance
-
-func get_aura_element_position_x(instance : Node2D, position_index : int) -> int:
-	var aura_element_width : int = instance.image_data.get_img_width()
-	var starting_x : int = (-1 * int(aura_width / 2.0)) + int(aura_element_width / 2.0)
-	var offset_x : int = (position_index * aura_element_width) + (position_index * 10)
-	return starting_x + offset_x
-
-func position_aura_element(instance : Node2D, position_index : int) -> void:
-	var position_x = get_aura_element_position_x(instance, position_index)
-	instance.position.x = position_x
-
-func tween_to_aura_element_position(instance : Node2D, position_index : int) -> void:
-	var position_x = get_aura_element_position_x(instance, position_index)
-	var tween = create_tween()
-	tween.tween_property(
-		instance,
-		"position",
-		Vector2(position_x, instance.position.y),
-		0.75
-	)
-
-func reposition_remaining_aura_elements():
-	for i in elements.size():
-		for child in self.get_children():
-			if child.get("element") == elements[i]:
-				tween_to_aura_element_position(child, i)
-
-func tween_up_and_free_element(element : Element) -> void:
-	for child in get_children():
-		if child.get("element") == element:
-			var tween = child.create_tween()
-			var sprite_2d = child.get_node("Area2D/Sprite2D")
-			var cur_position = sprite_2d.position
-			var new_position = Vector2(cur_position.x, cur_position.y - 50)
-			tween.tween_property(
-				sprite_2d,
-				"position",
-				new_position,
-				0.5
-			)
-			tween.tween_callback(child.queue_free)
+# Helpers
+#=====================
+func position_aura() -> void:
+	var position_y : int = ((-1) * int(self.entity_image_height / 2.0) - 30)
+	self.position.y = position_y

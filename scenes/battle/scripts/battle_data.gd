@@ -19,7 +19,12 @@ func _init(seed_data : Dictionary) -> void:
 	top_swap_character = BattleData.get_battle_top_swap_character(seed_data)
 	bottom_swap_character = BattleData.get_battle_bottom_swap_character(seed_data)
 	enemies = BattleData.get_battle_enemies(seed_data)
-	cards = BattleData.get_battle_cards(seed_data)
+	var character_instance_id_map : Dictionary = {
+		lead_character.machine_name : lead_character.get_instance_id(),
+		top_swap_character.machine_name : top_swap_character.get_instance_id(),
+		bottom_swap_character.machine_name : bottom_swap_character.get_instance_id()
+	}
+	cards = BattleData.get_battle_cards(seed_data, character_instance_id_map)
 	discard_pile = BattleData.get_battle_discard_pile(seed_data)
 	hand = BattleData.get_battle_hand(seed_data)
 	max_hand_size = 5  # sticking this here in case want this to change
@@ -47,29 +52,35 @@ static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
 	var battle_enemies : Array[Enemy] = []
 	var enemy_seed_data : Dictionary = seed_data[SeedData.ENEMIES]
 
-	for i in range(4):
+	for i in range(2):
 		var rand_enemy_name = Enemy.get_random_enemy_machine_name()
 		battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
+#	battle_enemies.append(Enemy.create(enemy_seed_data["ice_slime"]))
+#	battle_enemies.append(Enemy.create(enemy_seed_data["water_slime"]))
 
 	return battle_enemies
 
-static func get_battle_cards(seed_data : Dictionary) -> Array[Card]:
+static func get_battle_cards(seed_data : Dictionary, character_instance_id_map : Dictionary) -> Array[Card]:
 	var card_seed_data : Dictionary = seed_data[SeedData.CARDS]
 #	{
 #		"juno_character": [{ # juno card array }],
 #		"pettol_character": [{ # pettol card array }],
 #		"axo_character": [{ # axo card array }],
 #	}
-	var card_names : Array[String] = []
+	var cards_data : Array[Dictionary] = []
 
 	# iterate through all character cards
 	for character_name in card_seed_data.keys():
+		var character_instance_id : int = character_instance_id_map[character_name]
 		var character_card_names : Array[String]
 		character_card_names = card_seed_data[character_name]
 		for character_card_name in character_card_names:
-			card_names.append(character_card_name)
+			cards_data.append({
+				Card.MACHINE_NAME : character_card_name,
+				Card.CHARACTER_INSTANCE_ID : character_instance_id
+			})
 
-	return Card.by_machine_names(card_names)
+	return Card.by_names_and_instance_ids(cards_data)
 
 static func get_battle_hand(_seed_data : Dictionary) -> Array[Card]:
 	var battle_hand : Array[Card] = []

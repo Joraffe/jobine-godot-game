@@ -19,7 +19,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
-	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_ENERGY_GAINED, _on_combo_bonus_energy_gained)
 
 #=======================
 # Setters
@@ -45,6 +45,10 @@ func set_current_energy(new_current_energy : int) -> void:
 			"{name}.png".format({"name": instance_name})  # filename
 		)
 	)
+	BattleRadio.emit_signal(
+		BattleRadio.CURRENT_ENERGY_UPDATED,
+		current_energy
+	)
 
 
 func set_image_data(new_image_data : ImageData) -> void:
@@ -59,33 +63,15 @@ func set_image_data(new_image_data : ImageData) -> void:
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
 	# This also involves setting up initial max_energy
-	max_energy = battle_data.max_energy
-	current_energy = battle_data.current_energy
+	self.set("max_energy", battle_data.max_energy)
+	self.set("current_energy", battle_data.current_energy)
 
 func _on_player_turn_started() -> void:
 	# This effectively replenishes energy at the start of turn
-	current_energy = self.max_energy
+	self.set("current_energy", self.max_energy)
 
-	BattleRadio.emit_signal(
-		BattleRadio.CURRENT_ENERGY_UPDATED,
-		current_energy
-	)
+func _on_card_played(card : Card) -> void:
+	self.set("current_energy", self.current_energy - card.cost)
 
-func _on_card_played(card : Card, _targeting : Targeting) -> void:
-	current_energy = self.current_energy - card.cost
-
-	BattleRadio.emit_signal(
-		BattleRadio.CURRENT_ENERGY_UPDATED,
-		current_energy
-	)
-
-func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
-	if not combo_bonus.is_extra_energy():
-		return
-
-	current_energy = self.current_energy + combo_bonus.energy_amount
-	BattleRadio.emit_signal(
-		BattleRadio.CURRENT_ENERGY_UPDATED,
-		current_energy
-	)
+func _on_combo_bonus_energy_gained(energy_gained : int) -> void:
+	self.set("current_energy", self.current_energy + energy_gained)

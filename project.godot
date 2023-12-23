@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.1", "Forward Plus")
 
 [autoload]
 
-BattleRadio="*res://scenes/battle/scripts/battle_radio.gd"
+BattleRadio="*res://modules/battle/radio.gd"
 
 [display]
 

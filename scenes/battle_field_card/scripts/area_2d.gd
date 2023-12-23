@@ -14,7 +14,6 @@ var is_targeting_enabled : bool = false
 var sprite_original_global_position : Vector2
 var card_targeting_position : Vector2
 var card_played : bool = false
-var card_primary_target_instance_id : int
 var lead_character : Character
 
 
@@ -31,7 +30,7 @@ func _ready():
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_ENABLED, _on_card_targeting_enabled)
 	BattleRadio.connect(BattleRadio.CARD_TARGETING_DISABLED, _on_card_targeting_disabled)
 	BattleRadio.connect(BattleRadio.ENEMY_TARGET_SELECTED, _on_enemy_target_selected)
-	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_CHECK_DEFERRED, _on_combo_bonus_check_deferred)
 
 
 #========================
@@ -76,48 +75,59 @@ func _on_enemy_target_selected(enemy : Enemy) -> void:
 	clean_up_card_targeting()
 	move_card_to_discard_pile()
 	set_card_played()
-	set_card_primary_target_instance_id(enemy.get_instance_id())
-
-	var targeting_name : String = battle_field_card.card.targeting_name
-	var targeting : Targeting = Targeting.by_machine_name(
-		targeting_name,
-		card_primary_target_instance_id
-	)
 
 	# Stuff related to actually playing the card effects
 	BattleRadio.emit_signal(
 		BattleRadio.CARD_PLAYED,
-		battle_field_card.card,
-		targeting
+		self.battle_field_card.card
+	)
+	BattleRadio.emit_signal(
+		BattleRadio.CARD_EFFECTS_DEFERRED_TO_GROUP,
+		BattleConstants.GROUP_ENEMIES,
+		self.battle_field_card.card,
+		enemy.get_instance_id()
 	)
 
-func _on_combo_applied(combo_data : Dictionary) -> void:
+func _on_combo_bonus_check_deferred(combiner : Combiner, target_intance_id : int) -> void:
 	if not self.card_played:
 		return
-
-	if not battle_field_card.card.combo_trigger:
+	
+	var card : Card = self.battle_field_card.card
+	if not card.combo_trigger:
+		self.emit_card_freed(card)
 		return
 
-	var combo_name : String = combo_data[Combo.COMBO].machine_name
-	var combo_trigger_name = battle_field_card.card.combo_trigger.machine_name
+	var combo_name : String = combiner.current_combo.machine_name
+	var combo_trigger_name : String = card.combo_trigger.machine_name
 	if combo_name != combo_trigger_name:
+		self.emit_card_freed(card)
 		return
 
-	var combo_bonus_targeting : Targeting = Targeting.by_machine_name(
-		battle_field_card.card.combo_bonus_targeting_name,
-		card_primary_target_instance_id
-	)
-	var combo_bonus_data : Dictionary = {
-		ComboBonus.ENTITY_INSTANCE_ID : card_primary_target_instance_id,
-		ComboBonus.COMBO_TRIGGER : battle_field_card.card.combo_trigger,
-		ComboBonus.COMBO_BONUS : battle_field_card.card.combo_bonus,
-		ComboBonus.TARGETING : combo_bonus_targeting
-	}
+	var combo_bonus : ComboBonus = card.combo_bonus
+	# for non-combat effects (i.e. energy, swaps, cards)
+	if combo_bonus.is_self_non_targeting():
+		self.emit_self_non_targeting_combo_bonus_applied(combo_bonus)
+		self.emit_card_freed(card)
+		return
 
-	BattleRadio.emit_signal(
-		BattleRadio.COMBO_BONUS_APPLIED,
-		combo_bonus_data
-	)
+	# for combat effects (i.e. extra damage)
+	if combo_bonus.is_other_targeting():
+		self.emit_combo_bonus_effects_deferred_to_group(
+			BattleConstants.GROUP_ENEMIES,
+			combo_bonus,
+			target_intance_id
+		)
+		self.emit_card_freed(card)
+		return
+
+	if combo_bonus.is_self_targeting():
+		self.emit_combo_bonus_effects_deferred_to_group(
+			BattleConstants.GROUP_PARTY,
+			combo_bonus,
+			card.character_instance_id
+		)
+		self.emit_card_freed(card)
+		return
 
 func _input(event):
 	if not battle_field_card.is_player_turn:
@@ -137,14 +147,20 @@ func _input(event):
 	if (not selected and _is_left_mouse_click(event)
 		and battle_field_card.can_play_card()):
 		select_card()
-		BattleRadio.emit_signal("card_selected", battle_field_card.card)
+		BattleRadio.emit_signal(
+			BattleRadio.CARD_SELECTED,
+			battle_field_card.card
+		)
 		move_sprite_z_index(1)
 		move_card_to_mouse(event)
 		return
 
 	if selected and _is_right_mouse_click(event):
 		deselect_card()
-		BattleRadio.emit_signal("card_deselected", battle_field_card.card)
+		BattleRadio.emit_signal(
+			BattleRadio.CARD_DESELECTED,
+			battle_field_card.card
+		)
 		move_sprite_z_index(0)
 		hide_card_targeting()
 		empty_targeting_line_points()
@@ -169,7 +185,7 @@ func _input(event):
 
 
 #========================
-# Input Handler Helpers
+# Helpers
 #========================
 func _is_left_mouse_click(event) -> bool:
 	return (
@@ -301,9 +317,6 @@ func hide_card_after_played() -> void:
 func set_card_played() -> void:
 	card_played = true
 
-func set_card_primary_target_instance_id(instance_id : int) -> void:
-	card_primary_target_instance_id = instance_id
-
 func targeting_arrow_look_at_mouse(event) -> void:
 	var far_left = Vector2(350, 350)
 	var far_right = Vector2(1850, 350)
@@ -364,3 +377,27 @@ func position_targeting() -> void:
 	# later use when wanting to center cards during targeting
 	card_targeting_position = self.global_position + Vector2(0, -50)
 	battle_field_card_targeting.global_position = card_targeting_position
+
+func emit_self_non_targeting_combo_bonus_applied(combo_bonus : ComboBonus) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.SELF_NON_TARGETING_COMBO_BONUS_APPLIED,
+		combo_bonus
+	)
+
+func emit_combo_bonus_effects_deferred_to_group(
+	group_name : String,
+	combo_bonus : ComboBonus, 
+	target_instance_id : int
+) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP,
+		group_name,
+		combo_bonus,
+		target_instance_id
+	)
+
+func emit_card_freed(card : Card) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.CARD_FREED,
+		card
+	)

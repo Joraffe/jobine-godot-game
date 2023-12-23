@@ -57,5 +57,8 @@ const DURATION : String = "duration"
 #=============================
 # Status machine_name list
 #=============================
-const VULNERABLE : String = "vulnerable"  # enemies take +1 dmg
+const VULNERABLE : String = "vulnerable"  # take +1 dmg
+const WEAK : String = "weak"  # deal -1 dmg
 const HASTE : String = "haste"  # next card cost 1 less energy
+const SLOW : String = "slow"  # next card cost 1 more energy
+const IMBALANCE : String = "imbalance"  # next combo bonus negated

@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bd8uqor5v0lyx" path="res://scenes/battle_field_hand/BattleFieldHand.tscn" id="2_lgftt"]
 [ext_resource type="PackedScene" uid="uid://bg0s51h2to0aw" path="res://scenes/battle_field_energy/BattleFieldEnergy.tscn" id="3_p3dc2"]
 [ext_resource type="PackedScene" uid="uid://b1hydx1myflmv" path="res://scenes/battle_field_discard/BattleFieldDiscard.tscn" id="4_sbvxb"]
-[ext_resource type="PackedScene" uid="uid://dq2hck2h4syl8" path="res://scenes/battle_field_swap/BattleFieldSwap.tscn" id="4_ysj4s"]
+[ext_resource type="PackedScene" uid="uid://nrt0ehh68yje" path="res://scenes/battle_field_swaps/BattleFieldSwaps.tscn" id="6_vgukd"]
 [ext_resource type="PackedScene" uid="uid://bepym6av6ei68" path="res://scenes/battle_field_turn_button/BattleFieldTurnButton.tscn" id="6_wu8ui"]
 
 [node name="BattleField" type="Node2D"]
@@ -19,10 +19,10 @@ position = Vector2(765, 90)
 position = Vector2(650, -20)
 
 [node name="Energy" parent="." instance=ExtResource("3_p3dc2")]
-position = Vector2(-430, -165)
-
-[node name="Swap" parent="." instance=ExtResource("4_ysj4s")]
-position = Vector2(-745, 2.08165e-12)
+position = Vector2(-825, 100)
 
 [node name="TurnButton" parent="." instance=ExtResource("6_wu8ui")]
 position = Vector2(760, -150)
+
+[node name="Swaps" parent="." instance=ExtResource("6_vgukd")]
+position = Vector2(-610, 100)

@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://bjvc8wuqgpqjq"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena/scripts/battle_arena.gd" id="1_isylk"]
-[ext_resource type="PackedScene" uid="uid://doh4l57cjeii4" path="res://scenes/battle_arena_lead/BattleArenaLead.tscn" id="2_1xhxh"]
 [ext_resource type="Script" path="res://scenes/battle_arena/scripts/area_2d.gd" id="2_i73dh"]
+[ext_resource type="PackedScene" uid="uid://ctjdh56gee0on" path="res://scenes/battle_arena_party/BattleArenaParty.tscn" id="3_n0ix1"]
 [ext_resource type="PackedScene" uid="uid://bgbti82hg83nq" path="res://scenes/battle_arena_enemies/BattleArenaEnemies.tscn" id="3_ua2l3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8dtb0"]
-size = Vector2(1500.5, 600)
+size = Vector2(1801, 602)
 
 [node name="BattleArena" type="Node2D"]
 script = ExtResource("1_isylk")
@@ -15,11 +15,11 @@ script = ExtResource("1_isylk")
 script = ExtResource("2_i73dh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(150.75, 2.08165e-12)
+position = Vector2(0.5, 1)
 shape = SubResource("RectangleShape2D_8dtb0")
 
-[node name="Party" parent="." instance=ExtResource("2_1xhxh")]
-position = Vector2(-300, 2.08165e-12)
+[node name="Party" parent="." instance=ExtResource("3_n0ix1")]
+position = Vector2(-500, 2.08165e-12)
 
 [node name="Enemies" parent="." instance=ExtResource("3_ua2l3")]
 position = Vector2(450, 2.08165e-12)

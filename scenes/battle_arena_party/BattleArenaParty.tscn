@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctjdh56gee0on"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_party/scripts/battle_arena_party.gd" id="1_74rlm"]
+[ext_resource type="PackedScene" uid="uid://doh4l57cjeii4" path="res://scenes/battle_arena_party_lead/BattleArenaPartyLead.tscn" id="1_qbk4o"]
+[ext_resource type="PackedScene" uid="uid://cb727wgfaqfxr" path="res://scenes/battle_arena_party_standby/BattleArenaPartyStandby.tscn" id="2_o1mgq"]
+[ext_resource type="PackedScene" uid="uid://dcapogvtgofc1" path="res://scenes/battle_arena_effector/BattleArenaEffector.tscn" id="4_a2y6x"]
+
+[node name="BattleArenaParty" type="Node2D"]
+script = ExtResource("1_74rlm")
+
+[node name="PartyLead" parent="." instance=ExtResource("1_qbk4o")]
+position = Vector2(300, 2.08165e-12)
+
+[node name="PartyStandby" parent="." instance=ExtResource("2_o1mgq")]
+position = Vector2(-225, 100)
+
+[node name="Effector" parent="." instance=ExtResource("4_a2y6x")]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cb727wgfaqfxr"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_party_standby/scripts/battle_arena_party_standby.gd" id="1_mmkdn"]
+[ext_resource type="Texture2D" uid="uid://l5oy5pe7conf" path="res://scenes/battle_arena_party_standby/resources/images/empty/standby.png" id="2_bj7ai"]
+[ext_resource type="PackedScene" uid="uid://htj0rsmb2qha" path="res://scenes/battle_arena_party_standby_member/BattleArenaPartyStandbyMember.tscn" id="3_ffpxd"]
+
+[node name="BattleArenaPartyStandby" type="Node2D"]
+script = ExtResource("1_mmkdn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bj7ai")
+
+[node name="TopStandbyMember" parent="." instance=ExtResource("3_ffpxd")]
+position = Vector2(2.08165e-12, -175)
+
+[node name="BottomStandbyMember" parent="." instance=ExtResource("3_ffpxd")]
+position = Vector2(2.08165e-12, 225)

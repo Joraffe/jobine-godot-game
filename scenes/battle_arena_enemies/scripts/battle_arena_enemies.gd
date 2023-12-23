@@ -1,22 +1,44 @@
 extends Node2D
 
 
-var enemies : Array[Enemy]:
+var enemies : Array[Enemy] :
 	set = set_enemies
+var enemy_instance_ids : Array[int]
+var lead_instance_id : int :
+	set = set_lead_instance_id
+
+var enemies_targeter : Targeter
+
+var current_card_instance_id : int
+var current_card_primary_target_instance_id : int
+
+var current_combiner : Combiner
+
+var current_combos : Array[int]
+var current_combo_targets : Array[int]
+
+var current_combo_bonus_instance_id : int
+
 var image_data : ImageData = ImageData.new(
 	"battle_arena_enemies",
 	"empty",
 	"enemies.png"
 )
 
+
 #=======================
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
-	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
-	BattleRadio.connect(BattleRadio.COMBO_APPLIED, _on_combo_applied)
-	BattleRadio.connect(BattleRadio.COMBO_BONUS_APPLIED, _on_combo_bonus_applied)
+	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
+	BattleRadio.connect(BattleRadio.CARD_EFFECTS_DEFERRED_TO_GROUP, _on_card_effects_deferred_to_group)
+	BattleRadio.connect(BattleRadio.COMBO_EFFECTS_DEFERRED_TO_GROUP, _on_combo_effects_deferred_to_group)
+	BattleRadio.connect(BattleRadio.COMBO_BONUS_EFFECTS_DEFERRED_TO_GROUP, _on_combo_bonus_effects_deferred_to_group)
+	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
+	BattleRadio.connect(BattleRadio.ENTITY_FAINED, _on_entity_fainted)
+	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_FINISHED, _on_enemy_defeated_animation_finished)
+
 
 #=======================
 # Setters
@@ -24,200 +46,208 @@ func _init() -> void:
 func set_enemies(new_enemies : Array[Enemy]) -> void:
 	enemies = new_enemies
 
-	$Area2D.render_enemies()
+	var instance_ids : Array[int] = []
+	for enemy in self.enemies:
+		instance_ids.append(enemy.get_instance_id())
+	self.set("enemy_instance_ids", instance_ids)
+	$Effector.set("entity_instance_ids", instance_ids)
+
+func set_lead_instance_id(new_lead_instance_id : int) -> void:
+	lead_instance_id = new_lead_instance_id
+	$AI.set("lead_instance_id" , self.lead_instance_id)
 
 
 #========================
 # Signal Handlers
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
-	enemies = battle_data.enemies
+	self.set("enemies", battle_data.enemies)
+	self.set("lead_instance_id", battle_data.lead_character.get_instance_id())
+	$Area2D.render_enemies()
 
-func _on_card_played(card : Card, targeting : Targeting) -> void:
-	if targeting.is_single_targeting():
-		var enemy_instance_id : int = targeting.primary_target_instance_id
-		var target_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
-		self.handle_card_played_on_enemy(card, target_enemy)
+func _on_current_lead_updated(new_lead_instance_id : int) -> void:
+	self.set("lead_instance_id", new_lead_instance_id)
+
+func _on_card_effects_deferred_to_group(
+	group_name : String,
+	card : Card,
+	primary_target_instance_id : int
+) -> void:
+	if group_name != BattleConstants.GROUP_ENEMIES:
 		return
 
-	if targeting.is_blast_targeting():
-		var enemy_instance_id : int = targeting.primary_target_instance_id
-		var primary_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
-		var blast_enemies : Array[Enemy] = self.get_blast_enemies(primary_enemy)
-		for enemy in blast_enemies:
-			self.handle_card_played_on_enemy(card, enemy)
-		return
-
-	if targeting.is_all_targeting():
-		for enemy in self.enemies:
-			self.handle_card_played_on_enemy(card, enemy)
-
-func _on_combo_applied(combo_data : Dictionary) -> void:
-	var combo : Combo = combo_data[Combo.COMBO]
-	var targeting : Targeting = Targeting.by_machine_name(
-		combo.targeting_name,
-		combo_data[Combo.ENTITY].get_instance_id()
+	self.set(
+		"enemies_targeter",
+		Targeter.new(
+			card.targeting_name,
+			self.enemy_instance_ids,
+			primary_target_instance_id
+		)
 	)
+	self.set("current_card_instance_id", card.get_instance_id())
+	self.set("current_card_primary_target_instance_id", primary_target_instance_id)
+	var card_effect_instance_ids : Array[int] = self.enemies_targeter.instance_ids()
+	var all_card_effects : Array[Dictionary] = []
+	for instance_id in card_effect_instance_ids:
+		var card_effects : Array[Dictionary] = card.get_sequential_effects(instance_id)
+		all_card_effects += card_effects
+	self.emit_effects_enqueued(
+		self.current_card_instance_id,
+		primary_target_instance_id,
+		all_card_effects
+	)
+	self.emit_next_effect_queued(primary_target_instance_id)
 
-	if targeting.is_single_targeting():
-		self.handle_combo_single_targeting(combo_data)
+func _on_combo_effects_deferred_to_group(
+	group_name : String,
+	combiner : Combiner,
+	primary_target_instance_id : int
+) -> void:
+	if group_name != BattleConstants.GROUP_ENEMIES:
 		return
 
-	if targeting.is_blast_targeting():
-		self.handle_combo_blast_targeting(combo_data)
-		return
-
-	if targeting.is_all_targeting():
-		self.handle_combo_all_targeting(combo_data)
-		return
-
-func _on_combo_bonus_applied(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
-	if not (combo_bonus.is_extra_damage() or combo_bonus.is_extra_status()):
-		return
-
-	var targeting = combo_bonus_data[ComboBonus.TARGETING]
-	if targeting.is_single_targeting():
-		var enemy_instance_id : int = targeting.primary_target_instance_id
-		var target_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
-		self.apply_combo_bonus_to_enemy(combo_bonus, target_enemy)
-		return
-
-	if targeting.is_blast_targeting():
-		var enemy_instance_id : int = targeting.primary_target_instance_id
-		var primary_enemy : Enemy = self.get_enemy_by_instance_id(enemy_instance_id)
-		var blast_enemies : Array[Enemy] = self.get_blast_enemies(primary_enemy)
-		for enemy in blast_enemies:
-			self.apply_combo_bonus_to_enemy(combo_bonus, enemy)
-		return
-
-	if targeting.is_all_targeting():
-		for enemy in self.enemies:
-			self.apply_combo_bonus_to_enemy(combo_bonus, enemy)
-		return
-
-
-#======================
-# Handler Helpers
-#======================
-func handle_card_played_on_enemy(card : Card, enemy : Enemy) -> void:
-	if card.base_damage != 0:
-		BattleRadio.emit_signal(
-			BattleRadio.ENEMY_DAMAGED,
-			enemy,
-			card.base_damage
+	self.set("current_combiner", combiner)
+	var combo : Combo = combiner.current_combo
+	var current_combo_instance_id : int = combo.get_instance_id()
+	self.current_combos.append(current_combo_instance_id)
+	self.current_combo_targets.append(primary_target_instance_id)
+	self.set(
+		"enemies_targeter",
+		Targeter.new(
+			combo.targeting_name,
+			self.enemy_instance_ids,
+			primary_target_instance_id
 		)
+	)
+	var all_combo_effects : Array[Dictionary] = []
+	var target_instance_ids : Array[int] = self.enemies_targeter.instance_ids()
+	for target_instance_id in target_instance_ids:
+		var target_combo_effects : Array[Dictionary] = combo.get_sequential_effects(target_instance_id)
+		all_combo_effects += target_combo_effects
 
-	if card.element_amount != 0:
-		BattleRadio.emit_signal(
-			BattleRadio.ENEMY_ELEMENT_APPLIED,
-			enemy,
-			card.element_name,
-			card.element_amount
-		)
+	self.emit_effects_enqueued(
+		current_combo_instance_id,
+		primary_target_instance_id,
+		all_combo_effects
+	)
+	self.emit_remove_elements_from_current_combiner(primary_target_instance_id)
+	self.emit_next_effect_queued(primary_target_instance_id)
 
-func handle_combo_single_targeting(combo_data : Dictionary) -> void:
-	var combo: Combo = combo_data[Combo.COMBO]
-	var target : Enemy = combo_data[Combo.ENTITY]
-	self.apply_combo_to_enemy(combo, target)
-
-func handle_combo_blast_targeting(combo_data : Dictionary) -> void:
-	var combo: Combo = combo_data[Combo.COMBO]
-	var target : Enemy = combo_data[Combo.ENTITY]
-	var blast_targets = self.get_blast_enemies(target)
-	for blast_target in blast_targets:
-		self.apply_combo_to_enemy(combo, blast_target)
-
-func handle_combo_all_targeting(combo_data : Dictionary) -> void:
-	var combo : Combo = combo_data[Combo.COMBO]
-	for enemy in enemies:
-		self.apply_combo_to_enemy(combo, enemy)
-
-func apply_combo_to_enemy(combo : Combo, enemy : Enemy) -> void:
-	self.apply_combo_damage_to_enemy(combo, enemy)
-	self.apply_combo_elements_to_enemy(combo, enemy)
-
-func apply_combo_damage_to_enemy(combo : Combo, enemy : Enemy) -> void:
-	if combo.base_damage != 0:
-		BattleRadio.emit_signal(
-			BattleRadio.ENEMY_DAMAGED,
-			enemy,
-			combo.base_damage
-		)
-
-func apply_combo_elements_to_enemy(combo : Combo, enemy : Enemy) -> void:
-	if combo.applied_element_name != "":
-		BattleRadio.emit_signal(
-			BattleRadio.ENEMY_ELEMENT_APPLIED,
-			enemy,
-			combo.applied_element_name,
-			combo.num_applied_element
-		)
-
-
-func handle_combo_bonus_single_targeting(combo_bonus : ComboBonus, target : Enemy) -> void:
-	self.apply_combo_bonus_to_enemy(combo_bonus, target)
-
-func handle_combo_bonus_blast_targeting(combo_bonus : ComboBonus, target) -> void:
-	var blast_targets = self.get_blast_enemies(target)
-	for blast_target in blast_targets:
-		self.apply_combo_bonus_to_enemy(combo_bonus, blast_target)
-
-func handle_combo_bonus_all_targeting(combo_bonus_data : Dictionary) -> void:
-	var combo_bonus : ComboBonus = combo_bonus_data[ComboBonus.COMBO_BONUS]
-	for enemy in self.enemies:
-		self.apply_combo_bonus_to_enemy(combo_bonus, enemy)
-
-func apply_combo_bonus_to_enemy(combo_bonus : ComboBonus, enemy : Enemy) -> void:
-	if combo_bonus.is_extra_damage():
-		apply_combo_bonus_damage_to_enemy(combo_bonus, enemy)
+func _on_combo_bonus_effects_deferred_to_group(
+	group_name : String,
+	combo_bonus : ComboBonus,
+	primary_target_instance_id : int
+) -> void:
+	if group_name != BattleConstants.GROUP_ENEMIES:
 		return
 
-	if combo_bonus.is_extra_status():
-		apply_combo_bonus_status_to_enemy(combo_bonus, enemy)
+	self.set("current_combo_bonus_instance_id", combo_bonus.get_instance_id())
+	self.set(
+		"enemies_targeter",
+		Targeter.new(
+			combo_bonus.targeting_name,
+			self.enemy_instance_ids,
+			primary_target_instance_id
+		)
+	)
+	var all_combo_bonus_effects : Array[Dictionary] = []
+	var target_instance_ids : Array[int] = self.enemies_targeter.instance_ids()
+	for target_instance_id in target_instance_ids:
+		var target_combo_bonus_effects : Array[Dictionary] = combo_bonus.get_sequential_effects(target_instance_id)
+		all_combo_bonus_effects += target_combo_bonus_effects
+	self.emit_effects_enqueued(
+		self.current_combo_bonus_instance_id,
+		primary_target_instance_id,
+		all_combo_bonus_effects
+	)
+	self.emit_next_effect_queued(primary_target_instance_id)
+
+func _on_effects_finished(effector_instance_id : int) -> void:
+	if effector_instance_id not in self.current_combos:
 		return
 
-func apply_combo_bonus_damage_to_enemy(combo_bonus : ComboBonus, enemy : Enemy) -> void:
+	var combo_index : int
+	var remaining_current_combos : Array[int] = []
+	for i in self.current_combos.size():
+		var instance_id : int = self.current_combos[i]
+		if not instance_id == effector_instance_id:
+			remaining_current_combos.append(instance_id)
+		elif instance_id == effector_instance_id:
+			combo_index = i
+	self.set("current_combos", remaining_current_combos)
+
+	var combo_target_instance_id : int
+	var remaining_combo_targets : Array[int] = []
+	for i in self.current_combo_targets.size():
+		if i != combo_index:
+			remaining_combo_targets.append(self.current_combo_targets[i])
+		elif i == combo_index:
+			combo_target_instance_id = self.current_combo_targets[i]
+	self.set("current_combo_targets", remaining_combo_targets)
+
 	BattleRadio.emit_signal(
-		BattleRadio.ENEMY_DAMAGED,
-		enemy,
-		combo_bonus.damage
+		BattleRadio.COMBO_CHECK_DEFERRED,
+		combo_target_instance_id
 	)
 
-func apply_combo_bonus_status_to_enemy(_combo_bonus : ComboBonus, _enemy : Enemy) -> void:
-	# TODO: Apply status effect
-	pass
+func _on_entity_fainted(instance_id : int) -> void:
+	if not self.is_instance_id_applicable(instance_id):
+		return
 
+	self.emit_enemy_defeated_animation_queued(instance_id)
+
+func _on_enemy_defeated_animation_finished(instance_id : int) -> void:
+	if not self.is_instance_id_applicable(instance_id):
+		return
+
+	self.set("enemies", self.filter_enemy_instance_id(instance_id))
 
 #======================
-# Enemy Helpers
+# Helpers
 #======================
-func get_blast_enemies(target : Enemy) -> Array[Enemy]:
-	var blast_enemies : Array[Enemy] = []
-
-	var target_i : int
-	var left_i : int
-	var right_i : int
-	for i in enemies.size():
-		if enemies[i] == target:
-			target_i = i
-			left_i = i - 1
-			right_i = i + 1
-
-	blast_enemies.append(self.enemies[target_i])
-	if left_i >= 0:
-		blast_enemies.append(self.enemies[left_i])
-	if right_i <= self.enemies.size() - 1:
-		blast_enemies.append(self.enemies[right_i])
-
-	return blast_enemies
-
-func get_enemy_by_instance_id(instance_id : int) -> Enemy:
-	var found_enemy : Enemy
-
+func is_instance_id_applicable(instance_id : int) -> bool:
 	for enemy in self.enemies:
 		if enemy.get_instance_id() == instance_id:
-			found_enemy = enemy
-			break
+			return true
 
-	return found_enemy
+	return false
+
+func filter_enemy_instance_id(instance_id : int) -> Array[Enemy]:
+	var new_enemies : Array[Enemy] = []
+
+	for enemy in self.enemies:
+		if not enemy.get_instance_id() == instance_id:
+			new_enemies.append(enemy)
+
+	return new_enemies
+
+func emit_effects_enqueued(
+	effector_instance_id : int,
+	target_instance_id : int,
+	effects : Array[Dictionary]
+) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.EFFECTS_ENQUEUED,
+		effector_instance_id,
+		target_instance_id,
+		effects
+	)
+
+func emit_next_effect_queued(target_instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.NEXT_EFFECT_QUEUED,
+		target_instance_id
+	)
+
+func emit_remove_elements_from_current_combiner(target_instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY,
+		target_instance_id,
+		self.current_combiner.remove_indexes
+	)
+
+func emit_enemy_defeated_animation_queued(instance_id : int) -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED,
+		instance_id
+	)

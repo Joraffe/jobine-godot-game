@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://divki1bf6ik2w"]
+[gd_scene load_steps=11 format=3 uid="uid://divki1bf6ik2w"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_character/scripts/battle_arena_character.gd" id="1_nkwos"]
 [ext_resource type="Shader" path="res://shaders/greyscale_shader.gdshader" id="1_os1tg"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b2wnrbokc3arp" path="res://scenes/battle_arena_character/resources/images/empty_character.png" id="2_tfovw"]
 [ext_resource type="PackedScene" uid="uid://b0qdv2d2scwdo" path="res://scenes/battle_arena_aura/BattleArenaAura.tscn" id="3_6xr3q"]
 [ext_resource type="PackedScene" uid="uid://6rcnlausmknb" path="res://scenes/battle_arena_combo_display/BattleArenaComboDisplay.tscn" id="5_1mibe"]
+[ext_resource type="PackedScene" uid="uid://cqndokc6ccevw" path="res://scenes/battle_arena_status_effects/BattleArenaStatusEffects.tscn" id="8_ngbxp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_radp8"]
 resource_local_to_scene = true
@@ -37,3 +38,5 @@ position = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="ComboDisplay" parent="." instance=ExtResource("5_1mibe")]
 position = Vector2(2.08165e-12, -280)
+
+[node name="StatusEffects" parent="." instance=ExtResource("8_ngbxp")]

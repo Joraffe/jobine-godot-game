@@ -27,8 +27,8 @@ const IS_PLAYER_TURN : String = "is_player_turn"
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CARD_DRAWN, _on_card_drawn)
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
@@ -71,11 +71,17 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("lead_instance_id", battle_data.lead_character.get_instance_id())
 	self.set("hand", battle_data.hand)
 
-func _on_player_turn_started() -> void:
-	is_player_turn = true
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
 
-func _on_player_turn_ended() -> void:
-	is_player_turn = false
+	self.set("is_player_turn", true)
+
+func _on_turn_ended(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
+	self.set("is_player_turn", false)
 	$Area2D.discard_hand()
 	var empty_hand : Array[Card] = []
 	self.set("hand", empty_hand)

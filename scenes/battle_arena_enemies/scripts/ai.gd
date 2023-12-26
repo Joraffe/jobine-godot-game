@@ -17,7 +17,7 @@ var is_enemy_turn : bool
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.ENEMY_TURN_STARTED, _on_enemy_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED, _on_enemy_attack_animation_finished)
 	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
 
@@ -36,9 +36,12 @@ func _on_next_attack_delay_finished() -> void:
 
 func _on_end_turn_delay_finished() -> void:
 	self.set("is_enemy_turn", false)
-	BattleRadio.emit_signal(BattleRadio.ENEMY_TURN_ENDED)
+	BattleRadio.emit_signal(BattleRadio.TURN_ENDED, BattleConstants.GROUP_ENEMIES)
 
-func _on_enemy_turn_started() -> void:
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_ENEMIES:
+		return
+
 	self.set("is_enemy_turn", true)
 
 	self.enqueue_enemies()

@@ -136,6 +136,7 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 #=====================
 static func _get_juno_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
+	var current_status_effects : Array[StatusEffect] = []
 	return {
 		Character.HUMAN_NAME : "Juno",
 		Character.MACHINE_NAME : Character.JUNO,
@@ -143,7 +144,8 @@ static func _get_juno_character_data() -> Dictionary:
 		Character.MAX_HP : 10,
 		Character.CURRENT_HP : 10,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
-		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER
+		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects
 	}
 
 static func _get_juno_card_names() -> Array[String]:
@@ -155,6 +157,7 @@ static func _get_juno_card_names() -> Array[String]:
 
 static func _get_pettol_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
+	var current_status_effects : Array[StatusEffect] = []
 	return {
 		Character.HUMAN_NAME : "Pettol",
 		Character.MACHINE_NAME : Character.PETTOL,
@@ -162,7 +165,8 @@ static func _get_pettol_character_data() -> Dictionary:
 		Character.MAX_HP : 15,
 		Character.CURRENT_HP : 15,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
-		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER
+		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects
 	}
 
 static func _get_pettol_card_names() -> Array[String]:
@@ -174,6 +178,7 @@ static func _get_pettol_card_names() -> Array[String]:
 
 static func _get_axo_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
+	var current_status_effects : Array[StatusEffect] = []
 	return {
 		Character.HUMAN_NAME : "Axo",
 		Character.MACHINE_NAME : Character.AXO,
@@ -181,7 +186,8 @@ static func _get_axo_character_data() -> Dictionary:
 		Character.MAX_HP : 7,
 		Character.CURRENT_HP : 7,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
-		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER
+		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects
 	}
 
 static func _get_axo_card_names() -> Array[String]:
@@ -197,6 +203,7 @@ static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary
 		EnemyAttack.OOZE
 	]
 	var current_element_names : Array[String] = []
+	var current_status_effects : Array[StatusEffect] = []
 	return {
 		Enemy.HUMAN_NAME : "{element} Slime".format({
 			"element" : element_name.capitalize()
@@ -207,5 +214,6 @@ static func _get_elemental_slime_enemy_data(element_name : String) -> Dictionary
 		Enemy.CURRENT_HP : 10,
 		Enemy.CURRENT_ELEMENT_NAMES : current_element_names,
 		Enemy.ENTITY_TYPE : BattleConstants.ENTITY_ENEMY,
-		Enemy.ATTACK_NAMES : attack_names
+		Enemy.ATTACK_NAMES : attack_names,
+		Enemy.CURRENT_STATUS_EFFECTS : current_status_effects
 	}

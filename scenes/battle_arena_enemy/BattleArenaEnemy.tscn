@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dybur2v7evw1s"]
+[gd_scene load_steps=9 format=3 uid="uid://dybur2v7evw1s"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/battle_arena_enemy.gd" id="1_mcro6"]
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/area_2d.gd" id="2_2isn1"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b0qdv2d2scwdo" path="res://scenes/battle_arena_aura/BattleArenaAura.tscn" id="4_65erj"]
 [ext_resource type="PackedScene" uid="uid://6rcnlausmknb" path="res://scenes/battle_arena_combo_display/BattleArenaComboDisplay.tscn" id="5_c5x3i"]
 [ext_resource type="PackedScene" uid="uid://dfu8ghvdy7y78" path="res://scenes/battle_arena_enemy_attack_display/BattleArenaEnemyAttackDisplay.tscn" id="6_gpekc"]
+[ext_resource type="PackedScene" uid="uid://cqndokc6ccevw" path="res://scenes/battle_arena_status_effects/BattleArenaStatusEffects.tscn" id="7_k43vd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xwil"]
 size = Vector2(201, 202)
@@ -34,3 +35,5 @@ position = Vector2(2.08165e-12, -180)
 [node name="AttackDisplay" parent="." instance=ExtResource("6_gpekc")]
 visible = false
 position = Vector2(2.08165e-12, -180)
+
+[node name="StatusEffects" parent="." instance=ExtResource("7_k43vd")]

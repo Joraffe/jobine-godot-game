@@ -2,6 +2,12 @@ extends Resource
 class_name Enemy
 
 
+signal status_effect_duration_updated(instance_id : int, new_duration : int)
+signal new_status_effect_added(new_status_effect : StatusEffect)
+signal status_effects_removed(removed_status_effects : Array[StatusEffect])
+signal status_effects_remained(remained_status_effects : Array[StatusEffect])
+
+
 var human_name : String
 var machine_name : String
 var element_name : String
@@ -10,7 +16,7 @@ var current_hp : int
 var current_element_names : Array[String]
 var entity_type : String
 var attack_names : Array[String]
-
+var current_status_effects : Array[StatusEffect]
 
 func _init(
 	_human_name : String,
@@ -20,7 +26,8 @@ func _init(
 	_current_hp : int,
 	_current_element_names : Array[String],
 	_entity_type : String,
-	_attack_names : Array[String]
+	_attack_names : Array[String],
+	_current_status_effects : Array[StatusEffect]
 ):
 	human_name = _human_name
 	machine_name = _machine_name
@@ -30,6 +37,7 @@ func _init(
 	current_element_names = _current_element_names
 	entity_type = _entity_type
 	attack_names = _attack_names
+	current_status_effects = _current_status_effects
 
 func take_damage(damage : int) -> void:
 	var old_current_hp : int = self.current_hp
@@ -60,6 +68,52 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 			new_elements.append(self.current_element_names[i])
 	self.set("current_element_names", new_elements)
 
+func add_status_effect(added_status_effect_name : String, added_duration : int) -> void:
+	for current_status_effect in self.current_status_effects:
+		if added_status_effect_name == current_status_effect.machine_name:
+			current_status_effect.duration += added_duration
+			self.emit_signal(
+				BattleConstants.STATUS_EFFECT_DURATION_UPDATED,
+				current_status_effect.get_instance_id(),
+				current_status_effect.duration
+			)
+			return
+
+	# if we've made it here, then we need to add a new status effect
+	var new_status_effect : StatusEffect = StatusEffect.by_machine_name(
+		added_status_effect_name,
+		added_duration
+	)
+	self.current_status_effects.append(new_status_effect)
+	self.emit_signal(
+		BattleConstants.NEW_STATUS_EFFECT_ADDED,
+		new_status_effect
+	)
+
+func reduce_current_status_effects_duration_by(reduce_amount : int) -> void:
+	for status_effect in self.current_status_effects:
+		if status_effect.reduces_on_turn_end:
+			status_effect.duration -= reduce_amount
+
+func filter_zero_duration_status_effects() -> void:
+	var remaining : Array[StatusEffect] = []
+	var removed : Array[StatusEffect] = []
+	for status_effect in self.current_status_effects:
+		if status_effect.duration > 0:
+			remaining.append(status_effect)
+		else:
+			removed.append(status_effect)
+
+	if removed:
+		self.set("current_status_effects", remaining)
+		self.emit_signal(BattleConstants.STATUS_EFFECTS_REMOVED, removed)
+
+	if remaining:
+		self.emit_signal(BattleConstants.STATUS_EFFECTS_REMAINED, remaining)
+
+func belongs_to_group(group_name : String) -> bool:
+	return group_name == BattleConstants.GROUP_ENEMIES
+
 static func create(enemy_data : Dictionary) -> Enemy:
 	return Enemy.new(
 		enemy_data[Enemy.HUMAN_NAME],
@@ -69,7 +123,8 @@ static func create(enemy_data : Dictionary) -> Enemy:
 		enemy_data[Enemy.CURRENT_HP],
 		enemy_data[Enemy.CURRENT_ELEMENT_NAMES],
 		enemy_data[Enemy.ENTITY_TYPE],
-		enemy_data[Enemy.ATTACK_NAMES]
+		enemy_data[Enemy.ATTACK_NAMES],
+		enemy_data[Enemy.CURRENT_STATUS_EFFECTS]
 	)
 
 static func create_multi(enemies_data : Array[Dictionary]) -> Array[Enemy]:
@@ -92,6 +147,7 @@ const CURRENT_HP : String = "current_hp"
 const CURRENT_ELEMENT_NAMES : String = "current_element_names"
 const ENTITY_TYPE : String = "entity_type"
 const ATTACK_NAMES : String = "attack_names"
+const CURRENT_STATUS_EFFECTS : String = "current_status_effects"
 
 
 #============================

@@ -19,8 +19,8 @@ var card_image_data : ImageData:
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.CURRENT_LEAD_UPDATED, _on_current_lead_updated)
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
 
 #=======================
 # Setters
@@ -80,10 +80,16 @@ func _on_current_lead_updated(updated_lead_instance_id : int) -> void:
 func _on_current_energy_updated(current_energy : int) -> void:
 	self.set('available_energy', current_energy)
 
-func _on_player_turn_started() -> void:
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn", true)
 
-func _on_player_turn_ended() -> void:
+func _on_turn_ended(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn" , false)
 
 

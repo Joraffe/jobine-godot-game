@@ -33,7 +33,7 @@ var energy_amount : int
 
 # derived values
 var shield_element : Element
-var status : Status
+var status_effect : StatusEffect
 
 
 func _init(
@@ -65,9 +65,9 @@ func _init(
 func set_derived_data() -> void:
 	if self.shield_element_name != "":
 		shield_element = Element.by_machine_name(self.shield_element_name)
-	
+
 	if self.status_name != "":
-		status = Status.by_machine_name(self.status_name, self.status_duration)
+		status_effect = StatusEffect.by_machine_name(self.status_name, self.status_duration)
 
 func is_extra_damage() -> bool:
 	return self.machine_name == ComboBonus.EXTRA_DAMAGE

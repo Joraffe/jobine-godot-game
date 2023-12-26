@@ -28,5 +28,13 @@ const EFFECT_RESULT : String = "effect_result"
 const FAINTED : String = "fainted"
 const DAMAGED : String = "damaged"
 const ADDED_ELEMENTS : String = "added_elements"
+const ADDED_STATUS : String = "added_status"
 
 const SHOULD_BAIL : String = "should_bail"
+
+
+# non-BattleRadio shared signal names
+const STATUS_EFFECT_DURATION_UPDATED : String = "status_effect_duration_updated"
+const NEW_STATUS_EFFECT_ADDED : String = "new_status_effect_added"
+const STATUS_EFFECTS_REMOVED : String = "status_effects_removed"
+const STATUS_EFFECTS_REMAINED : String = "status_effects_remained"

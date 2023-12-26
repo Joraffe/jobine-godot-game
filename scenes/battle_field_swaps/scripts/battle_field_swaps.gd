@@ -11,8 +11,8 @@ var is_player_turn : bool
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
 	BattleRadio.connect(BattleRadio.STANDBY_SWAP_TO_LEAD_FINISHED, _on_standby_swap_to_lead_finished)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_SWAPS_GAINED, _on_combo_bonus_swaps_gained)
 
@@ -34,11 +34,17 @@ func set_num_available_swaps(new_num_available_swaps : int) -> void:
 #========================
 # Signal Handlers
 #========================
-func _on_player_turn_started() -> void:
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("num_available_swaps", 2)
 	self.set("is_player_turn", true)
 
-func _on_player_turn_ended() -> void:
+func _on_turn_ended(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn", false)
 
 func _on_standby_swap_to_lead_finished() -> void:

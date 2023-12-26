@@ -27,8 +27,8 @@ var image_data : ImageData = ImageData.new(
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
 	BattleRadio.connect(BattleRadio.CURRENT_HAND_SIZE_UPDATED, _on_current_hand_size_updated)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_CARDS_GAINED, _on_combo_bonus_cards_gained)
 	BattleRadio.connect(BattleRadio.DISCARD_PILE_SHUFFLED_INTO_DECK, _on_discard_pile_shuffled_into_deck)
 
@@ -60,10 +60,16 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("cards", battle_data.cards)
 	self.set("max_hand_size", battle_data.max_hand_size)
 
-func _on_player_turn_started() -> void:
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn", true)
 
-func _on_player_turn_ended() -> void:
+func _on_turn_ended(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn", false)
 
 func _on_current_hand_size_updated(current_hand_size : int) -> void:

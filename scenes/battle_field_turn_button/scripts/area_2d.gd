@@ -35,4 +35,7 @@ func _input(event) -> void:
 	if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
 		return
 
-	BattleRadio.emit_signal(BattleRadio.PLAYER_TURN_ENDED)
+	BattleRadio.emit_signal(
+		BattleRadio.TURN_ENDED,
+		BattleConstants.GROUP_PARTY
+	)

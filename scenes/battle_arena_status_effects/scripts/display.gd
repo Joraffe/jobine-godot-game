@@ -5,7 +5,8 @@ var status_effect_scene = preload(
 	"res://scenes/battle_arena_status_effect/BattleArenaStatusEffect.tscn"
 )
 
-var entity : Variant
+var entity : Variant :
+	set = set_entity
 var entity_image_width : int
 
 
@@ -16,6 +17,17 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ADD_STATUS_EFFECT_ANIMATION_QUEUED, _on_add_status_effect_animation_queued)
 	BattleRadio.connect(BattleRadio.REMOVE_STATUS_EFFECT_ANIMATION_QUEUED, _on_remove_status_effect_animation_queued)
 	BattleRadio.connect(BattleRadio.REPOSITION_STATUS_EFFECT_ANIMATION_QUEUED, _on_reposition_status_effect_animation_queued)
+
+
+#=======================
+# Godot Lifecycle Hooks
+#=======================
+func set_entity(new_entity : Variant) -> void:
+	entity = new_entity
+
+	if self.entity.has_status_effects():
+		for status_effect in self.entity.current_status_effects:
+			self.animate_add_status_effect(status_effect)
 
 
 #=======================

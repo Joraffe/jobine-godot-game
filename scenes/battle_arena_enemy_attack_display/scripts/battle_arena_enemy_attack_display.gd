@@ -3,6 +3,8 @@ extends Node2D
 
 var enemy_attack : EnemyAttack :
 	set = set_enemy_attack
+var entity_image_height : int :
+	set = set_entity_image_height
 
 
 #=======================
@@ -20,6 +22,10 @@ func set_enemy_attack(new_attack : EnemyAttack) -> void:
 
 	$Panel/MarginContainer/Label.set_attack_text(enemy_attack)
 
+func set_entity_image_height(new_height : int) -> void:
+	entity_image_height = new_height
+
+	self.position_attack_display()
 
 #=======================
 # Signal Handlers
@@ -32,6 +38,10 @@ func _on_enemy_attack_timeout() -> void:
 #=======================
 # Node Helpers
 #=======================
+func position_attack_display() -> void:
+	var position_y : int = ((-1) * int(self.entity_image_height / 2.0) - 50)
+	self.position.y = position_y
+
 func animate() -> void:
 	self.show()
 	$Timer.start()

@@ -1,15 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://dybur2v7evw1s"]
+[gd_scene load_steps=10 format=3 uid="uid://dhk1pdbvgr727"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/battle_arena_enemy.gd" id="1_mcro6"]
 [ext_resource type="Script" path="res://scenes/battle_arena_enemy/scripts/area_2d.gd" id="2_2isn1"]
 [ext_resource type="PackedScene" uid="uid://gyul4bm0j3du" path="res://scenes/battle_arena_health_bar/BattleArenaHealthBar.tscn" id="3_8eg3g"]
 [ext_resource type="PackedScene" uid="uid://b0qdv2d2scwdo" path="res://scenes/battle_arena_aura/BattleArenaAura.tscn" id="4_65erj"]
+[ext_resource type="PackedScene" uid="uid://cqndokc6ccevw" path="res://scenes/battle_arena_status_effects/BattleArenaStatusEffects.tscn" id="5_833lc"]
 [ext_resource type="PackedScene" uid="uid://6rcnlausmknb" path="res://scenes/battle_arena_combo_display/BattleArenaComboDisplay.tscn" id="5_c5x3i"]
-[ext_resource type="PackedScene" uid="uid://dfu8ghvdy7y78" path="res://scenes/battle_arena_enemy_attack_display/BattleArenaEnemyAttackDisplay.tscn" id="6_gpekc"]
-[ext_resource type="PackedScene" uid="uid://cqndokc6ccevw" path="res://scenes/battle_arena_status_effects/BattleArenaStatusEffects.tscn" id="7_k43vd"]
+[ext_resource type="PackedScene" uid="uid://dfu8ghvdy7y78" path="res://scenes/battle_arena_enemy_attack_display/BattleArenaEnemyAttackDisplay.tscn" id="6_4638m"]
+[ext_resource type="PackedScene" uid="uid://b57e20t7yc3oa" path="res://scenes/battle_arena_display_status_effect/BattleArenaDisplayStatusEffect.tscn" id="8_60bc8"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3xwil"]
-size = Vector2(201, 202)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olipv"]
+size = Vector2(200, 200)
 
 [node name="BattleArenaEnemy" type="Node2D"]
 script = ExtResource("1_mcro6")
@@ -20,20 +21,17 @@ script = ExtResource("2_2isn1")
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_3xwil")
+shape = SubResource("RectangleShape2D_olipv")
 
 [node name="HealthBar" parent="." instance=ExtResource("3_8eg3g")]
-position = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="Aura" parent="." instance=ExtResource("4_65erj")]
-position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="StatusEffects" parent="." instance=ExtResource("5_833lc")]
 
 [node name="ComboDisplay" parent="." instance=ExtResource("5_c5x3i")]
-position = Vector2(2.08165e-12, -180)
 
-[node name="AttackDisplay" parent="." instance=ExtResource("6_gpekc")]
+[node name="AttackDisplay" parent="." instance=ExtResource("6_4638m")]
 visible = false
-position = Vector2(2.08165e-12, -180)
 
-[node name="StatusEffects" parent="." instance=ExtResource("7_k43vd")]
+[node name="DisplayStatusEffect" parent="." instance=ExtResource("8_60bc8")]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://f11ctkk6v2jq"
-path="res://.godot/imported/mouse.png-3388a4f3690954ded9c3a413ad235465.ctex"
+uid="uid://by1dafbyo7564"
+path="res://.godot/imported/frozen_immune.png-11d484512d046e94b1ab6b4eaf1e9843.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_mouse/resources/images/mouse.png"
-dest_files=["res://.godot/imported/mouse.png-3388a4f3690954ded9c3a413ad235465.ctex"]
+source_file="res://scenes/battle_arena_status_effect/resources/images/frozen_immune/frozen_immune.png"
+dest_files=["res://.godot/imported/frozen_immune.png-11d484512d046e94b1ab6b4eaf1e9843.ctex"]
 
 [params]
 

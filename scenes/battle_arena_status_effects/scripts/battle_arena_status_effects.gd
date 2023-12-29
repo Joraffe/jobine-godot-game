@@ -21,7 +21,6 @@ func set_entity(new_entity : Variant) -> void:
 	self.entity.connect(BattleConstants.STATUS_EFFECTS_REMOVED, _on_status_effects_removed)
 	self.entity.connect(BattleConstants.STATUS_EFFECTS_REMAINED, _on_status_effects_remained)
 
-	$AI.set("entity", self.entity)
 	$Display.set("entity", self.entity)
 
 func set_entity_image_height(new_image_height : int) -> void:

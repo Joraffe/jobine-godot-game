@@ -269,7 +269,7 @@ func set_freeze_derived_data() -> void:
 	self.set("applied_element_name", "")
 	self.set("num_applied_element", 0)
 	self.set("targeting_name", Targeting.SINGLE)
-	self.set("status_effect_name", StatusEffect.FROSTBITE)
+	self.set("status_effect_name", StatusEffect.FROZEN)
 	self.set("status_effect_duration", 1)
 
 func set_surge_derived_data() -> void:

@@ -12,6 +12,7 @@ var hand : Array[Card]
 var max_hand_size : int
 var max_energy : int
 var current_energy : int
+var background_name : String
 
 
 func _init(seed_data : Dictionary) -> void:
@@ -30,6 +31,7 @@ func _init(seed_data : Dictionary) -> void:
 	max_hand_size = 5  # sticking this here in case want this to change
 	max_energy = 3
 	current_energy = 3
+	background_name = "basic"
 
 
 #=======================
@@ -52,11 +54,15 @@ static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
 	var battle_enemies : Array[Enemy] = []
 	var enemy_seed_data : Dictionary = seed_data[SeedData.ENEMIES]
 
-	for i in range(2):
-		var rand_enemy_name = Enemy.get_random_enemy_machine_name()
-		battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
-#	battle_enemies.append(Enemy.create(enemy_seed_data["ice_slime"]))
-#	battle_enemies.append(Enemy.create(enemy_seed_data["water_slime"]))
+#	for i in range(2):
+#		var rand_enemy_name = Enemy.get_random_enemy_machine_name()
+#		battle_enemies.append(Enemy.create(enemy_seed_data[rand_enemy_name]))
+	battle_enemies.append(Enemy.create(enemy_seed_data["ice_slime"]))
+	battle_enemies.append(Enemy.create(enemy_seed_data["water_slime"]))
+
+	battle_enemies[0].current_status_effects.append(
+		StatusEffect.by_machine_name(StatusEffect.FROZEN, 1)
+	)
 
 	return battle_enemies
 

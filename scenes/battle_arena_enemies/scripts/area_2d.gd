@@ -6,13 +6,6 @@ var enemy_scene = preload("res://scenes/battle_arena_enemy/BattleArenaEnemy.tscn
 
 
 #=======================
-# Godot Lifecycle Hooks
-#=======================
-func _ready() -> void:
-	pass
-
-
-#=======================
 # Area2D Functionality
 #=======================
 func render_enemies() -> void:

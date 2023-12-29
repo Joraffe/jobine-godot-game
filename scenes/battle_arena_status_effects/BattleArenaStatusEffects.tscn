@@ -1,14 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqndokc6ccevw"]
+[gd_scene load_steps=3 format=3 uid="uid://cqndokc6ccevw"]
 
 [ext_resource type="Script" path="res://scenes/battle_arena_status_effects/scripts/battle_arena_status_effects.gd" id="1_dh45d"]
 [ext_resource type="Script" path="res://scenes/battle_arena_status_effects/scripts/display.gd" id="2_dtkxf"]
-[ext_resource type="Script" path="res://scenes/battle_arena_status_effects/scripts/ai.gd" id="2_pkmms"]
 
 [node name="BattleArenaStatusEffects" type="Node2D"]
 script = ExtResource("1_dh45d")
 
 [node name="Display" type="Node2D" parent="."]
 script = ExtResource("2_dtkxf")
-
-[node name="AI" type="Node" parent="."]
-script = ExtResource("2_pkmms")

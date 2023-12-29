@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wscp6csvecbe"
-path="res://.godot/imported/frostbite.png-b70f4e4982b8a03621035d794536f385.ctex"
+uid="uid://d1h8ai6e7q68t"
+path="res://.godot/imported/basic.png-bf00807ca7f14bd26b54047e323e0f36.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_status_effect/resources/images/frostbite/frostbite.png"
-dest_files=["res://.godot/imported/frostbite.png-b70f4e4982b8a03621035d794536f385.ctex"]
+source_file="res://scenes/battle_background/resources/images/basic/basic.png"
+dest_files=["res://.godot/imported/basic.png-bf00807ca7f14bd26b54047e323e0f36.ctex"]
 
 [params]
 

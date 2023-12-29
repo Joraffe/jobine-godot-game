@@ -60,15 +60,19 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 			new_elements.append(self.current_element_names[i])
 	self.set("current_element_names", new_elements)
 
+func has_status_effects() -> bool:
+	return self.current_status_effects.size() > 0
+
 func add_status_effect(added_status_effect_name : String, added_duration : int) -> void:
 	for current_status_effect in self.current_status_effects:
 		if added_status_effect_name == current_status_effect.machine_name:
-			current_status_effect.duration += added_duration
-			self.emit_signal(
-				BattleConstants.STATUS_EFFECT_DURATION_UPDATED,
-				current_status_effect.get_instance_id(),
-				current_status_effect.duration
-			)
+			if current_status_effect.stackable:
+				current_status_effect.duration += added_duration
+				self.emit_signal(
+					BattleConstants.STATUS_EFFECT_DURATION_UPDATED,
+					current_status_effect.get_instance_id(),
+					current_status_effect.duration
+				)
 			return
 
 	# if we've made it here, then we need to add a new status effect
@@ -82,10 +86,19 @@ func add_status_effect(added_status_effect_name : String, added_duration : int) 
 		new_status_effect
 	)
 
-func reduce_current_status_effects_duration_by(reduce_amount : int) -> void:
+func remove_duration_from_status_effect(removed_status_effect_name : String, duration_to_remove : int) -> void:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name == removed_status_effect_name:
+			status_effect.duration -= duration_to_remove
+
+func get_reducable_status_effects() -> Array[StatusEffect]:
+	var reduceable_status_effects : Array[StatusEffect] = []
+
 	for status_effect in self.current_status_effects:
 		if status_effect.reduces_on_turn_end:
-			status_effect.duration -= reduce_amount
+			reduceable_status_effects.append(status_effect)
+
+	return reduceable_status_effects
 
 func filter_zero_duration_status_effects() -> void:
 	var remaining : Array[StatusEffect] = []
@@ -102,7 +115,6 @@ func filter_zero_duration_status_effects() -> void:
 
 	if remaining:
 		self.emit_signal(BattleConstants.STATUS_EFFECTS_REMAINED, remaining)
-
 
 func belongs_to_group(group_name : String) -> bool:
 	return group_name == BattleConstants.GROUP_PARTY

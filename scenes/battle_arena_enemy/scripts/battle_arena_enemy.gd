@@ -20,8 +20,10 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ADD_ELEMENTS_TO_ENTITY_BY_EFFECT, _on_add_elements_to_entity_by_effect)
 	BattleRadio.connect(BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY, _on_elements_removed_from_entity)
 	BattleRadio.connect(BattleRadio.STATUS_EFFECT_ADDED_BY_EFFECT, _on_status_effect_added_by_effect)
+	BattleRadio.connect(BattleRadio.STATUS_EFFECT_REMOVED_BY_EFFECT, _on_status_effect_removed_by_effect)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_QUEUED, _on_enemy_attack_animation_queued)
 	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED, _on_enemy_defeated_animation_queued)
+	BattleRadio.connect(BattleRadio.ENEMY_SKIP_TURN_ANIMATION_QUEUED, _on_enemy_skip_turn_animation_queued)
 
 
 #=======================
@@ -44,9 +46,11 @@ func set_enemy(new_enemy : Enemy) -> void:
 		)
 	)
 	$HealthBar.set("health_bar_type", self.get_health_bar_type())
+	$Area2D.set("enemy", self.enemy)
 	$HealthBar.set("entity", self.enemy)
 	$Aura.set("entity", self.enemy)
 	$ComboDisplay.set("entity", self.enemy)
+	$DisplayStatusEffect.set("entity", self.enemy)
 	$StatusEffects.set("entity", self.enemy)
 
 func set_image_data(new_image_data : ImageData) -> void:
@@ -56,6 +60,8 @@ func set_image_data(new_image_data : ImageData) -> void:
 	$Aura.set("entity_image_height", self.image_data.get_img_height())
 	$Aura/Area2D.set("aura_width", self.image_data.get_img_width())
 	$HealthBar.set("entity_image_height", self.image_data.get_img_height())
+	$ComboDisplay.set("entity_image_height", self.image_data.get_img_height())
+	$AttackDisplay.set("entity_image_height", self.image_data.get_img_height())
 	$StatusEffects.set("entity_image_height", self.image_data.get_img_height())
 	$StatusEffects.set("entity_image_width", self.image_data.get_img_width())
 
@@ -127,6 +133,23 @@ func _on_status_effect_added_by_effect(
 		BattleConstants.ADDED_STATUS
 	)
 
+func _on_status_effect_removed_by_effect(
+	_effector_instance_id : int,
+	instance_id : int,
+	status_effect_name : String,
+	duration_to_remove : int
+) -> void:
+	if not self.identifier.is_applicable(instance_id):
+		return
+
+	self.enemy.remove_duration_from_status_effect(status_effect_name, duration_to_remove)
+	self.enemy.filter_zero_duration_status_effects()
+	self.emit_effect_resolved(
+		self.enemy.get_instance_id(),
+		BattleConstants.REMOVE_STATUS_EFFECT,
+		BattleConstants.REMOVED_STATUS
+	)
+
 func _on_enemy_attack_animation_queued(instance_id : int, attack : EnemyAttack):
 	if not self.identifier.is_applicable(instance_id):
 		return
@@ -144,6 +167,15 @@ func _on_enemy_defeated_animation_queued(instance_id : int) -> void:
 func _on_new_status_effect_added() -> void:
 	$StatusEffects.set("entity_current_status_effects", self.enemy.current_status_effects)
 
+func _on_enemy_skip_turn_animation_queued(instance_id : int, skip_reason : String) -> void:
+	if not self.identifier.is_applicable(instance_id):
+		return
+
+	var skip_status_map = self.skip_reason_status_effect_map()
+	if skip_reason in skip_status_map.keys():
+		var status_effect_name : String = skip_status_map[skip_reason]
+		$DisplayStatusEffect.animate_status_effect(status_effect_name)
+
 
 #=======================
 # Helpers
@@ -156,6 +188,11 @@ func get_health_bar_type() -> String:
 		return "boss"
 
 	return "unknown enemy.entity_type"
+
+func skip_reason_status_effect_map() -> Dictionary:
+	return {
+		BattleConstants.SKIP_FROZEN : StatusEffect.FROZEN
+	}
 
 func emit_effect_resolved(
 	instance_id : int,

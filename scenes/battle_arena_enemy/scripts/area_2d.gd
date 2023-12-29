@@ -2,6 +2,7 @@ extends Area2D
 
 
 @onready var battle_arena_enemy : Node2D = get_parent()
+var enemy : Enemy
 var is_player_turn : bool
 var targetable : bool = false
 var is_mouse_over : bool = false
@@ -67,6 +68,9 @@ func _input(event) -> void:
 #========================
 # Helpers
 #========================
+func is_applicable(instance_id : int) -> bool:
+	return instance_id == self.enemy.get_instance_id()
+
 func _is_left_mouse_click(event) -> bool:
 	return (
 		event is InputEventMouseButton

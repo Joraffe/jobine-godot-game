@@ -18,6 +18,8 @@ const STANDBY_BOTTOM_POSITION : String = "standby_bottom_position"
 const EFFECT_TYPE : String = "effect_type"
 const DAMAGE_EFFECT : String = "damage_effect"
 const STATUS_EFFECT : String = "status_effect"
+const ADD_STATUS_EFFECT : String = "add_status_effect"
+const REMOVE_STATUS_EFFECT : String = "remove_status_effect"
 const STATUS_CARD_EFFECT : String = "status_card_effect"
 const ELEMENT_EFFECT : String = "element_effect"
 
@@ -29,8 +31,11 @@ const FAINTED : String = "fainted"
 const DAMAGED : String = "damaged"
 const ADDED_ELEMENTS : String = "added_elements"
 const ADDED_STATUS : String = "added_status"
+const REMOVED_STATUS : String = "removed_status"
 
 const SHOULD_BAIL : String = "should_bail"
+
+const SKIP_FROZEN : String = "skip_frozen"
 
 
 # non-BattleRadio shared signal names

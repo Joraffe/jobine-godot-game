@@ -13,7 +13,8 @@ var image_data : ImageData :
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.STATUS_EFFECT_DURATION_UPDATED, _on_status_effect_duration_updated)
+	pass
+	#BattleRadio.connect(BattleRadio.STATUS_EFFECT_DURATION_UPDATED, _on_status_effect_duration_updated)
 
 
 #=======================
@@ -56,6 +57,7 @@ func is_applicable(instance_id : int) -> bool:
 	return instance_id == self.status_effect.get_instance_id()
 
 func update_duration_text(duration : int) -> void:
-	$Area2D/Sprite2D/Panel/MarginContainer/Label.text = "{duration}".format({
-		"duration" : duration
-	})
+	if self.status_effect.stackable:
+		$Area2D/Sprite2D/Panel/MarginContainer/Label.text = "{duration}".format({
+			"duration" : duration
+		})

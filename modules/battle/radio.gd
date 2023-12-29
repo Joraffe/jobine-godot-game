@@ -46,6 +46,10 @@ const ENEMY_DEFEATED_ANIMATION_QUEUED : String = "enemy_defeated_animation_queue
 signal enemy_defeated_animation_queued(instance_id : int)
 const ENEMY_DEFEATED_ANIMATION_FINISHED : String = "enemy_defeated_animation_finished"
 signal enemy_defeated_animation_finished(instance_id : int)
+const ENEMY_SKIP_TURN_ANIMATION_QUEUED : String = "enemy_skip_turn_animation_queued"
+signal enemy_skip_turn_animation_queued(instance_id : int, skip_reason : String)
+const ENEMY_SKIP_TURN_ANIMATION_FINISHED : String = "enemy_skip_turn_animation_finished"
+signal enemy_skip_turn_animation_finished(instance_id : int)
 
 
 # Card Related
@@ -95,6 +99,8 @@ const ENTITY_DEFEATED_ANIMATION_QUEUED : String = "entity_defeated_animation_que
 signal entity_defeated_animation_queued(instance_id : int)
 const ENTITY_DEFEATED_ANIMATION_FINISHED : String = "entity_defeated_animation_finished"
 signal entity_defeated_animation_finished(instance_id : int)
+const ENTITY_STATUS_EFFECTS_REDUCED : String = "entity_status_effects_reduced"
+signal entity_status_effect_reduced(instance_id : int)
 
 
 # Enemy Attack Related
@@ -171,7 +177,13 @@ signal status_effect_added_by_effect(
 	status_name : String,
 	duration : int
 )
-
+const STATUS_EFFECT_REMOVED_BY_EFFECT : String = "status_effect_removed_by_effect"
+signal status_effect_removed_by_effect(
+	effector_instance_id : int,
+	entity_instance_id : int,
+	status_name : String,
+	duration_to_remove : int
+)
 
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
 signal combo_effects_deferred_to_group(
@@ -230,3 +242,4 @@ signal adjust_status_effects_deferred(
 	status_effects_to_remove : Array[StatusEffect],
 	status_effects_to_adjust : Array[StatusEffect]
 )
+

@@ -49,6 +49,22 @@ func take_damage(damage : int) -> void:
 func has_fainted() -> bool:
 	return self.current_hp == 0
 
+func is_frozen() -> bool:
+	var enemy_is_frozen : bool = false
+
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name == StatusEffect.FROZEN:
+			enemy_is_frozen = true
+			break
+
+	return enemy_is_frozen
+
+func can_attack() -> bool:
+	if self.is_frozen():
+		return false
+	else:
+		return true
+
 func get_random_attack_name() -> String:
 	var rng = RandomNumberGenerator.new()
 	var rand_i = rng.randi_range(0, self.attack_names.size() - 1)
@@ -67,6 +83,9 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 		if not i in indexes_to_remove:
 			new_elements.append(self.current_element_names[i])
 	self.set("current_element_names", new_elements)
+
+func has_status_effects() -> bool:
+	return self.current_status_effects.size() > 0
 
 func add_status_effect(added_status_effect_name : String, added_duration : int) -> void:
 	for current_status_effect in self.current_status_effects:
@@ -90,10 +109,19 @@ func add_status_effect(added_status_effect_name : String, added_duration : int) 
 		new_status_effect
 	)
 
-func reduce_current_status_effects_duration_by(reduce_amount : int) -> void:
+func remove_duration_from_status_effect(removed_status_effect_name : String, duration_to_remove : int) -> void:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name == removed_status_effect_name:
+			status_effect.duration -= duration_to_remove
+
+func get_reducable_status_effects() -> Array[StatusEffect]:
+	var reduceable_status_effects : Array[StatusEffect] = []
+
 	for status_effect in self.current_status_effects:
 		if status_effect.reduces_on_turn_end:
-			status_effect.duration -= reduce_amount
+			reduceable_status_effects.append(status_effect)
+
+	return reduceable_status_effects
 
 func filter_zero_duration_status_effects() -> void:
 	var remaining : Array[StatusEffect] = []

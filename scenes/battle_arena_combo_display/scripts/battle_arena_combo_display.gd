@@ -2,6 +2,8 @@ extends Node2D
 
 
 var entity : Variant
+var entity_image_height : int :
+	set = set_entity_image_height
 var combo : Combo :
 	set = set_combo
 var original_label_position : Vector2
@@ -22,6 +24,10 @@ func set_combo(new_combo : Combo) -> void:
 	$Label.update_combo_text(combo)
 	self.animate_combo_text()
 
+func set_entity_image_height(new_entity_image_height : int) -> void:
+	entity_image_height = new_entity_image_height
+
+	self.position_combo_display()
 
 #=======================
 # Signal Handlers
@@ -35,6 +41,10 @@ func _on_combo_animation_queued(instance_id : int, combo_to_animate : Combo) -> 
 #=======================
 # Helpers
 #=======================
+func position_combo_display() -> void:
+	var position_y : int = ((-1) * int(self.entity_image_height / 2.0) - 50)
+	self.position.y = position_y
+
 func animate_combo_text() -> void:
 	var tween = create_tween()
 	var label = $Label

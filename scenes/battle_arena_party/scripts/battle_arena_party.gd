@@ -36,14 +36,17 @@ func _init() -> void:
 func set_party_lead_character(new_character : Character) -> void:
 	party_lead_character = new_character
 	$PartyLead.set("lead_character", self.party_lead_character)
+	$AI.set("party_lead_character", self.party_lead_character)
 
 func set_party_standby_top_character(new_character : Character) -> void:
 	party_standby_top_character = new_character
 	$PartyStandby.set("standby_top_character", self.party_standby_top_character)
+	$AI.set("party_standby_top_character", self.party_standby_top_character)
 
 func set_party_standby_bottom_character(new_character : Character) -> void:
 	party_standby_bottom_character = new_character
 	$PartyStandby.set("standby_bottom_character", self.party_standby_bottom_character)
+	$AI.set("party_standby_bottom_character", self.party_standby_bottom_character)
 
 
 #========================

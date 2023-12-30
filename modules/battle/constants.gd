@@ -36,10 +36,13 @@ const REMOVED_STATUS : String = "removed_status"
 const SHOULD_BAIL : String = "should_bail"
 
 const SKIP_FROZEN : String = "skip_frozen"
+const REMOVE_FROZEN : String = "remove_frozen"
 
 
 # non-BattleRadio shared signal names
 const STATUS_EFFECT_DURATION_UPDATED : String = "status_effect_duration_updated"
 const NEW_STATUS_EFFECT_ADDED : String = "new_status_effect_added"
+const NEW_STATUS_EFFECT_NOT_ADDED : String = "new_status_effect_not_added"
+const NEW_STATUS_EFFECT_DISPLAYED : String = "new_status_effect_displayed"
 const STATUS_EFFECTS_REMOVED : String = "status_effects_removed"
 const STATUS_EFFECTS_REMAINED : String = "status_effects_remained"

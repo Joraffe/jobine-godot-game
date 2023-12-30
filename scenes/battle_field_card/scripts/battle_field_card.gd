@@ -5,8 +5,10 @@ var card : Card :
 	set = set_card
 var available_energy : int :
 	set = set_available_energy
-var lead_instance_id : int :
-	set = set_lead_instance_id
+
+var lead_instance_id : int
+var lead_character : Character
+
 var is_player_turn : bool :
 	set = set_is_player_turn
 var card_image_data : ImageData:
@@ -21,6 +23,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.CURRENT_ENERGY_UPDATED, _on_current_energy_updated)
 	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
 	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
+
 
 #=======================
 # Setters
@@ -58,9 +61,6 @@ func set_available_energy(new_available_energy : int) -> void:
 		color
 	)
 
-func set_lead_instance_id(new_lead_instance_id : int) -> void:
-	lead_instance_id = new_lead_instance_id
-
 func set_is_player_turn(new_is_player_turn : bool) -> void:
 	is_player_turn = new_is_player_turn
 
@@ -74,8 +74,8 @@ func set_card_image_data(new_card_image_data : ImageData):
 #========================
 # Signal Handlers
 #========================
-func _on_current_lead_updated(updated_lead_instance_id : int) -> void:
-	self.set("lead_instance_id", updated_lead_instance_id)
+func _on_current_lead_updated(updated_lead_character : Character) -> void:
+	self.set("lead_character", updated_lead_character)
 
 func _on_current_energy_updated(current_energy : int) -> void:
 	self.set('available_energy', current_energy)
@@ -100,7 +100,14 @@ func has_enough_energy() -> bool:
 	return self.available_energy >= self.card.cost
 
 func belongs_to_lead() -> bool:
-	return self.lead_instance_id == self.card.character_instance_id
+	return self.lead_character.get_instance_id() == self.card.character_instance_id
+
+func lead_can_act() -> bool:
+	return self.lead_character.can_act()
 
 func can_play_card() -> bool:
-	return self.has_enough_energy() and self.belongs_to_lead()
+	return (
+		self.has_enough_energy()
+		and self.belongs_to_lead()
+		and self.lead_can_act()
+	)

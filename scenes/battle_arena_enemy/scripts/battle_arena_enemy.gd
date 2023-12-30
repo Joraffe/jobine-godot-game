@@ -23,7 +23,7 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.STATUS_EFFECT_REMOVED_BY_EFFECT, _on_status_effect_removed_by_effect)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_QUEUED, _on_enemy_attack_animation_queued)
 	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED, _on_enemy_defeated_animation_queued)
-	BattleRadio.connect(BattleRadio.ENEMY_SKIP_TURN_ANIMATION_QUEUED, _on_enemy_skip_turn_animation_queued)
+	BattleRadio.connect(BattleRadio.SKIP_TURN_ANIMATION_QUEUED, _on_skip_turn_animation_queued)
 
 
 #=======================
@@ -45,13 +45,14 @@ func set_enemy(new_enemy : Enemy) -> void:
 			"{name}.png".format({"name": self.enemy.machine_name})  # filename
 		)
 	)
-	$HealthBar.set("health_bar_type", self.get_health_bar_type())
+	$HealthBar.set("health_bar_type", self.get_enemy_type())
+	$DisplayStatusEffect.set("status_effect_type", self.get_enemy_type())
 	$Area2D.set("enemy", self.enemy)
 	$HealthBar.set("entity", self.enemy)
 	$Aura.set("entity", self.enemy)
 	$ComboDisplay.set("entity", self.enemy)
-	$DisplayStatusEffect.set("entity", self.enemy)
 	$StatusEffects.set("entity", self.enemy)
+	$DisplayStatusEffect.set("entity", self.enemy)
 
 func set_image_data(new_image_data : ImageData) -> void:
 	image_data = new_image_data
@@ -64,6 +65,7 @@ func set_image_data(new_image_data : ImageData) -> void:
 	$AttackDisplay.set("entity_image_height", self.image_data.get_img_height())
 	$StatusEffects.set("entity_image_height", self.image_data.get_img_height())
 	$StatusEffects.set("entity_image_width", self.image_data.get_img_width())
+	$DisplayStatusEffect.set("entity_image_height", self.image_data.get_img_height())
 
 
 #========================
@@ -167,20 +169,20 @@ func _on_enemy_defeated_animation_queued(instance_id : int) -> void:
 func _on_new_status_effect_added() -> void:
 	$StatusEffects.set("entity_current_status_effects", self.enemy.current_status_effects)
 
-func _on_enemy_skip_turn_animation_queued(instance_id : int, skip_reason : String) -> void:
+func _on_skip_turn_animation_queued(instance_id : int, skip_reason : String) -> void:
 	if not self.identifier.is_applicable(instance_id):
 		return
 
 	var skip_status_map = self.skip_reason_status_effect_map()
 	if skip_reason in skip_status_map.keys():
 		var status_effect_name : String = skip_status_map[skip_reason]
-		$DisplayStatusEffect.animate_status_effect(status_effect_name)
+		$DisplayStatusEffect.animate_status_effect_skip_turn(status_effect_name)
 
 
 #=======================
 # Helpers
 #=======================
-func get_health_bar_type() -> String:
+func get_enemy_type() -> String:
 	if self.enemy.entity_type == BattleConstants.ENTITY_ENEMY:
 		return "enemy"
 

@@ -18,6 +18,7 @@ func set_entity(new_entity : Variant) -> void:
 
 	self.entity.connect(BattleConstants.STATUS_EFFECT_DURATION_UPDATED, _on_current_status_effect_duration_updated)
 	self.entity.connect(BattleConstants.NEW_STATUS_EFFECT_ADDED, _on_new_status_effect_added)
+	self.entity.connect(BattleConstants.NEW_STATUS_EFFECT_NOT_ADDED, _on_new_status_effect_no_added)
 	self.entity.connect(BattleConstants.STATUS_EFFECTS_REMOVED, _on_status_effects_removed)
 	self.entity.connect(BattleConstants.STATUS_EFFECTS_REMAINED, _on_status_effects_remained)
 
@@ -50,6 +51,10 @@ func _on_current_status_effect_duration_updated(
 func _on_new_status_effect_added(new_status_effect : StatusEffect) -> void:
 	self.emit_add_status_effect_animation_queued(new_status_effect)
 
+func _on_new_status_effect_no_added(_new_status_effect_name : String) -> void:
+	# skip the add animation to go to the next effect
+	self.emit_add_status_effect_animation_finished()
+
 func _on_status_effects_removed(removed_status_effects : Array[StatusEffect]) -> void:
 	self.emit_remove_status_effect_animation_queued(removed_status_effects)
 
@@ -71,6 +76,12 @@ func emit_add_status_effect_animation_queued(added_status_effect : StatusEffect)
 		BattleRadio.ADD_STATUS_EFFECT_ANIMATION_QUEUED,
 		self.entity.get_instance_id(),
 		added_status_effect
+	)
+
+func emit_add_status_effect_animation_finished() -> void:
+	BattleRadio.emit_signal(
+		BattleRadio.ADD_STATUS_EFFECT_ANIMATION_FINISHED,
+		self.entity.get_instance_id()
 	)
 
 func emit_remove_status_effect_animation_queued(removed : Array[StatusEffect]) -> void:

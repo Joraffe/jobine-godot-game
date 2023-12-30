@@ -4,6 +4,8 @@ class_name Character
 
 signal status_effect_duration_updated(instance_id : int, new_duration : int)
 signal new_status_effect_added(new_status_effect : StatusEffect)
+signal new_status_effect_not_added(new_status_effect_name : String)
+signal new_status_effect_displayed(new_status_effect : StatusEffect)
 signal status_effects_removed(removed_status_effects : Array[StatusEffect])
 signal status_effects_remained(remained_status_effects : Array[StatusEffect])
 
@@ -63,7 +65,86 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 func has_status_effects() -> bool:
 	return self.current_status_effects.size() > 0
 
+func has_end_turn_effects() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name in StatusEffect.END_TURN_EFFECTS:
+			return true
+
+	return false
+
+func has_end_turn_animation() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name in StatusEffect.END_TURN_ANIMATIONS:
+			return true
+
+	return false
+
+func get_end_turn_animation_name() -> String:
+	var end_turn_animation : String = ""
+
+
+	for status_effect in self.current_status_effects:
+		if status_effect.has_end_turn_animation():
+			end_turn_animation = status_effect.get_end_turn_animation_name()
+
+	return end_turn_animation
+
+func has_reduceable_status_effects() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.reduces_on_turn_end:
+			return true
+
+	return false
+
+func can_be_inflicted_by(status_effect_name : String) -> bool:
+	if status_effect_name == StatusEffect.FROZEN:
+		if self.has_frozen_immunity():
+			return false
+
+	return true
+
+func has_frozen_immunity() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name == StatusEffect.FROZEN_IMMUNE:
+			return true
+
+	return false
+
+func can_act() -> bool:
+	# certain status effects prevent being able to act/play cards
+	var prevents_action : Array[String] = [StatusEffect.FROZEN]
+
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name in prevents_action:
+			return false
+
+	return true
+
+func is_frozen() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name == StatusEffect.FROZEN:
+			return true
+
+	return false
+
+func get_displayable_status_effect() -> StatusEffect:
+	var displayable_status_effect : StatusEffect
+
+	for status_effect in self.current_status_effects:
+		if status_effect.displays_on_entity:
+			displayable_status_effect = status_effect
+			break
+
+	return displayable_status_effect
+
 func add_status_effect(added_status_effect_name : String, added_duration : int) -> void:
+	if not self.can_be_inflicted_by(added_status_effect_name):
+		self.emit_signal(
+			BattleConstants.NEW_STATUS_EFFECT_NOT_ADDED,
+			added_status_effect_name
+		)
+		return
+
 	for current_status_effect in self.current_status_effects:
 		if added_status_effect_name == current_status_effect.machine_name:
 			if current_status_effect.stackable:
@@ -85,6 +166,11 @@ func add_status_effect(added_status_effect_name : String, added_duration : int) 
 		BattleConstants.NEW_STATUS_EFFECT_ADDED,
 		new_status_effect
 	)
+	if new_status_effect.displays_on_entity:
+		self.emit_signal(
+			BattleConstants.NEW_STATUS_EFFECT_DISPLAYED,
+			new_status_effect
+		)
 
 func remove_duration_from_status_effect(removed_status_effect_name : String, duration_to_remove : int) -> void:
 	for status_effect in self.current_status_effects:

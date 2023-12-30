@@ -60,9 +60,9 @@ static func get_battle_enemies(seed_data : Dictionary) -> Array[Enemy]:
 	battle_enemies.append(Enemy.create(enemy_seed_data["ice_slime"]))
 	battle_enemies.append(Enemy.create(enemy_seed_data["water_slime"]))
 
-	battle_enemies[0].current_status_effects.append(
-		StatusEffect.by_machine_name(StatusEffect.FROZEN, 1)
-	)
+#	battle_enemies[0].current_status_effects.append(
+#		StatusEffect.by_machine_name(StatusEffect.FROZEN, 1)
+#	)
 
 	return battle_enemies
 

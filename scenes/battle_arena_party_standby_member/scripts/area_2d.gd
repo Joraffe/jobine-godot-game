@@ -123,5 +123,12 @@ func has_enough_swaps() -> bool:
 func has_not_fainted() -> bool:
 	return not self.standby_character.has_fainted()
 
+func standby_character_can_act() -> bool:
+	return self.standby_character.can_act()
+
 func can_swap() -> bool:
-	return self.has_enough_swaps() and self.has_not_fainted()
+	return (
+		self.has_enough_swaps()
+		and self.has_not_fainted()
+		and self.standby_character_can_act()
+	)

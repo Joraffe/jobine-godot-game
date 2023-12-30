@@ -36,7 +36,7 @@ signal current_hand_size_updated(current_hand_size_updated : int)
 const CURRENT_SWAPS_UPDATED : String = "current_swaps_updated"
 signal current_swaps_updated(current_swaps : int)
 const CURRENT_LEAD_UPDATED : String = "current_lead_updated"
-signal current_lead_updated(current_lead_instance_id : int)
+signal current_lead_updated(current_lead : Character)
 
 
 # Enemy Related
@@ -46,10 +46,6 @@ const ENEMY_DEFEATED_ANIMATION_QUEUED : String = "enemy_defeated_animation_queue
 signal enemy_defeated_animation_queued(instance_id : int)
 const ENEMY_DEFEATED_ANIMATION_FINISHED : String = "enemy_defeated_animation_finished"
 signal enemy_defeated_animation_finished(instance_id : int)
-const ENEMY_SKIP_TURN_ANIMATION_QUEUED : String = "enemy_skip_turn_animation_queued"
-signal enemy_skip_turn_animation_queued(instance_id : int, skip_reason : String)
-const ENEMY_SKIP_TURN_ANIMATION_FINISHED : String = "enemy_skip_turn_animation_finished"
-signal enemy_skip_turn_animation_finished(instance_id : int)
 
 
 # Card Related
@@ -70,7 +66,14 @@ const TURN_STARTED : String = "turn_started"
 signal turn_started(group_name : String)
 const TURN_ENDED : String = "turn_ended"
 signal turn_ended(group_name : String)
-
+const CHECK_PARTY_END_TURN_EFFECTS_DEFERRED : String = "check_party_end_turn_effects_deferred"
+signal check_party_end_turn_effects_deferred
+const CHECK_PARTY_END_TURN_EFFECTS_FINISHED : String = "check_party_end_turn_effects_finished"
+signal check_party_end_turn_effects_finished
+const END_TURN_ANIMATION_QUEUED : String = "end_turn_animation_queued"
+signal end_turn_animation_queued(instance_id : int, animation_name : String)
+const END_TURN_ANIMATION_FINISHED : String = "end_turn_animation_finished"
+signal end_turn_animation_finished(instance_id : int)
 
 # Energy Related
 const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"
@@ -185,6 +188,15 @@ signal status_effect_removed_by_effect(
 	duration_to_remove : int
 )
 
+const STATUS_EFFECT_FADE_IN_ANIMATION_QUEUED : String = "status_effect_fade_in_animation_queued"
+signal status_effect_fade_in_animation_queued(instance_id : int, status_effect_name : String)
+const STATUS_EFFECT_FADE_IN_ANIMATION_FINISHED : String = "status_effect_fade_in_animation_finished"
+signal status_effect_fade_in_animation_finished(instance_id : int)
+const STATUS_EFFECT_FADE_OUT_ANIMATION_QUEUED : String = "status_effect_fade_out_animation_queued"
+signal status_effect_fade_out_animation_queued(instance_id : int)
+const STATUS_EFFECT_FADE_OUT_ANIMATION_FINISHED : String = "status_effect_fade_out_animation_finished"
+signal status_effect_fade_out_animation_finished(instance_id : int)
+
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
 signal combo_effects_deferred_to_group(
 	group_name : String, 
@@ -243,3 +255,9 @@ signal adjust_status_effects_deferred(
 	status_effects_to_adjust : Array[StatusEffect]
 )
 
+
+# Related to skipping turns
+const SKIP_TURN_ANIMATION_QUEUED : String = "skip_turn_animation_queued"
+signal skip_turn_animation_queued(instance_id : int, skip_reason : String)
+const SKIP_TURN_ANIMATION_FINISHED : String = "skip_turn_animation_finished"
+signal skip_turn_animation_finished(instance_id : int)

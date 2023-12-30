@@ -65,8 +65,8 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("lead_instance_id", battle_data.lead_character.get_instance_id())
 	$Area2D.render_enemies()
 
-func _on_current_lead_updated(new_lead_instance_id : int) -> void:
-	self.set("lead_instance_id", new_lead_instance_id)
+func _on_current_lead_updated(new_lead : Character) -> void:
+	self.set("lead_instance_id", new_lead.get_instance_id())
 
 func _on_card_effects_deferred_to_group(
 	group_name : String,

@@ -11,11 +11,7 @@ var enemy_queue : Queue = Queue.new()
 var attack_animation_queue : Queue = Queue.new()
 var current_attacking_enemy : Enemy
 
-var effect_reduce_queue : Queue = Queue.new()
-var current_reducing_enemy : Enemy
-
 var skip_animation_queue : Queue = Queue.new()
-var current_skipping_enemy : Enemy
 
 
 #=======================
@@ -24,7 +20,7 @@ var current_skipping_enemy : Enemy
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED, _on_enemy_attack_animation_finished)
-	BattleRadio.connect(BattleRadio.ENEMY_SKIP_TURN_ANIMATION_FINISHED, _on_enemy_skip_turn_animation_finished)
+	BattleRadio.connect(BattleRadio.SKIP_TURN_ANIMATION_FINISHED, _on_skip_turn_animation_finished)
 	BattleRadio.connect(BattleRadio.EFFECTS_FINISHED, _on_effects_finished)
 
 
@@ -64,7 +60,7 @@ func _on_enemy_attack_animation_finished() -> void:
 	# once the animation is finished, queue the attack effects next
 	self.emit_next_attack_effect_queued()
 
-func _on_enemy_skip_turn_animation_finished(instance_id : int) -> void:
+func _on_skip_turn_animation_finished(instance_id : int) -> void:
 	# once the skip turn animation is finished,
 	# queue the next effects associated with the skip
 	self.emit_next_skip_effect_queued(instance_id)
@@ -154,7 +150,6 @@ func emit_next_attack_effect_queued():
 
 # Related to skipping enemy turns
 func enqueue_next_enemy_skip_turn_data(skipping_enemy : Enemy) -> void:
-	self.set("current_skipping_enemy", skipping_enemy)
 	var reason : String = self.cannot_attack_reason(skipping_enemy)
 	var skip_data : Dictionary = {
 		"enemy" : skipping_enemy,
@@ -167,7 +162,7 @@ func enqueue_next_enemy_skip_turn_data(skipping_enemy : Enemy) -> void:
 func queue_next_enemy_skip_turn_animation() -> void:
 	var skip_data : Dictionary = self.skip_animation_queue.dequeue()
 	BattleRadio.emit_signal(
-		BattleRadio.ENEMY_SKIP_TURN_ANIMATION_QUEUED,
+		BattleRadio.SKIP_TURN_ANIMATION_QUEUED,
 		skip_data["enemy"].get_instance_id(),
 		skip_data["reason"]
 	)
@@ -214,7 +209,6 @@ func get_frozen_immunity_effect(skipping_enemy : Enemy) -> Dictionary:
 
 # Related to reducing status effects
 func enqueue_next_enemy_status_effect_reduction_data(next_enemy : Enemy) -> void:
-	self.set("current_reducing_enemy", next_enemy)
 	var status_effects_to_reduce : Array[StatusEffect] = next_enemy.get_reducable_status_effects()
 	var reduce_effects : Array[Dictionary] = []
 	for status_effect in status_effects_to_reduce:

@@ -20,6 +20,8 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ADD_ELEMENTS_TO_ENTITY_BY_EFFECT, _on_add_elements_to_entity_by_effect)
 	BattleRadio.connect(BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY, _on_elements_removed_from_entity)
 	BattleRadio.connect(BattleRadio.STATUS_EFFECT_ADDED_BY_EFFECT, _on_status_effect_added_by_effect)
+	BattleRadio.connect(BattleRadio.STATUS_EFFECT_REMOVED_BY_EFFECT, _on_status_effect_removed_by_effect)
+
 
 #=======================
 # Setters
@@ -39,12 +41,14 @@ func set_character(new_character : Character) -> void:
 		)
 	)
 	$HealthBar.set("health_bar_type", self.character_type)
+	$DisplayStatusEffect.set("status_effect_type", self.character_type)
 	$HealthBar.set("entity", self.character)
 	$Aura.set("entity", self.character)
 	$Aura.set("element_names", self.character.current_element_names)
 	$Area2D.set("character", self.character)
 	$ComboDisplay.set("entity", self.character)
 	$StatusEffects.set("entity", self.character)
+	$DisplayStatusEffect.set("entity", self.character)
 
 func set_image_data(new_image_data : ImageData):
 	image_data = new_image_data
@@ -122,6 +126,23 @@ func _on_status_effect_added_by_effect(
 		self.character.get_instance_id(),
 		BattleConstants.STATUS_EFFECT,
 		BattleConstants.ADDED_STATUS
+	)
+
+func _on_status_effect_removed_by_effect(
+	_effector_instance_id : int,
+	instance_id : int,
+	status_effect_name : String,
+	duration_to_remove : int
+) -> void:
+	if not self.identifier.is_applicable(instance_id):
+		return
+
+	self.character.remove_duration_from_status_effect(status_effect_name, duration_to_remove)
+	self.character.filter_zero_duration_status_effects()
+	self.emit_effect_resolved(
+		self.character.get_instance_id(),
+		BattleConstants.REMOVE_STATUS_EFFECT,
+		BattleConstants.REMOVED_STATUS
 	)
 
 #=======================

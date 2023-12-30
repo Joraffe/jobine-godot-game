@@ -4,6 +4,8 @@ class_name Enemy
 
 signal status_effect_duration_updated(instance_id : int, new_duration : int)
 signal new_status_effect_added(new_status_effect : StatusEffect)
+signal new_status_effect_displayed(new_status_effect : StatusEffect)
+signal new_status_effect_not_added(new_status_effect_name : String)
 signal status_effects_removed(removed_status_effects : Array[StatusEffect])
 signal status_effects_remained(remained_status_effects : Array[StatusEffect])
 
@@ -59,6 +61,20 @@ func is_frozen() -> bool:
 
 	return enemy_is_frozen
 
+func can_be_inflicted_by(status_effect_name : String) -> bool:
+	if status_effect_name == StatusEffect.FROZEN:
+		if self.has_frozen_immunity():
+			return false
+
+	return true
+
+func has_frozen_immunity() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.machine_name == StatusEffect.FROZEN_IMMUNE:
+			return true
+
+	return false
+
 func can_attack() -> bool:
 	if self.is_frozen():
 		return false
@@ -87,7 +103,24 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 func has_status_effects() -> bool:
 	return self.current_status_effects.size() > 0
 
+func get_displayable_status_effect() -> StatusEffect:
+	var displayable_status_effect : StatusEffect
+
+	for status_effect in self.current_status_effects:
+		if status_effect.displays_on_entity:
+			displayable_status_effect = status_effect
+			break
+
+	return displayable_status_effect
+
 func add_status_effect(added_status_effect_name : String, added_duration : int) -> void:
+	if not self.can_be_inflicted_by(added_status_effect_name):
+		self.emit_signal(
+			BattleConstants.NEW_STATUS_EFFECT_NOT_ADDED,
+			added_status_effect_name
+		)
+		return
+
 	for current_status_effect in self.current_status_effects:
 		if added_status_effect_name == current_status_effect.machine_name:
 			current_status_effect.duration += added_duration

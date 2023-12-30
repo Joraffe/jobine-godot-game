@@ -9,6 +9,7 @@ var effect_on_remove : bool
 var remove_effect_data : Dictionary
 var stackable : bool
 var duration : int  # in turns
+var displays_on_entity : bool
 
 
 func _init(
@@ -18,7 +19,8 @@ func _init(
 	_effect_on_remove : bool,
 	_remove_effect_data : Dictionary,
 	_stackable : bool,
-	_duration : int
+	_duration : int,
+	_displays_on_entity : bool
 ) -> void:
 	human_name = _human_name
 	machine_name = _machine_name
@@ -26,6 +28,7 @@ func _init(
 	effect_on_remove = _effect_on_remove
 	stackable = _stackable
 	duration = _duration
+	displays_on_entity = _displays_on_entity
 
 func get_reduce_effect(effector_instance_id : int, target_instance_id : int) -> Dictionary:
 	return {
@@ -36,6 +39,12 @@ func get_reduce_effect(effector_instance_id : int, target_instance_id : int) -> 
 		BattleConstants.EFFECT_AMOUNT : 1
 	}
 
+func has_end_turn_animation() -> bool:
+	return self.machine_name in StatusEffect.END_TURN_ANIMATIONS
+
+func get_end_turn_animation_name() -> String:
+	return StatusEffect.END_TURN_ANIMATION_MAP[self.machine_name]
+
 static func create(status_data : Dictionary) -> StatusEffect:
 	return StatusEffect.new(
 		status_data[StatusEffect.HUMAN_NAME],
@@ -44,7 +53,8 @@ static func create(status_data : Dictionary) -> StatusEffect:
 		status_data[StatusEffect.EFFECT_ON_REMOVE],
 		status_data[StatusEffect.REMOVE_EFFECT_DATA],
 		status_data[StatusEffect.STACKABLE],
-		status_data[StatusEffect.DURATION]
+		status_data[StatusEffect.DURATION],
+		status_data[StatusEffect.DISPLAYS_ON_ENTITY]
 	)
 
 static func by_machine_name(status_machine_name : String, status_duration : int) -> StatusEffect:
@@ -66,7 +76,8 @@ static func Shock(status_duration : int) -> StatusEffect:
 		StatusEffect.EFFECT_ON_REMOVE : false,
 		StatusEffect.REMOVE_EFFECT_DATA : {},
 		StatusEffect.STACKABLE : true,
-		StatusEffect.DURATION : status_duration
+		StatusEffect.DURATION : status_duration,
+		StatusEffect.DISPLAYS_ON_ENTITY : false
 	})
 
 static func Frozen() -> StatusEffect:
@@ -79,7 +90,8 @@ static func Frozen() -> StatusEffect:
 			StatusEffect.REMOVE_EFFECT_STATUS_EFFECT_NAME : ""
 		},
 		StatusEffect.STACKABLE : false,
-		StatusEffect.DURATION : 1
+		StatusEffect.DURATION : 1,
+		StatusEffect.DISPLAYS_ON_ENTITY : true
 	})
 
 static func FrozenImmune() -> StatusEffect:
@@ -90,7 +102,8 @@ static func FrozenImmune() -> StatusEffect:
 		StatusEffect.EFFECT_ON_REMOVE : false,
 		StatusEffect.REMOVE_EFFECT_DATA : {},
 		StatusEffect.STACKABLE : true,
-		StatusEffect.DURATION : 1
+		StatusEffect.DURATION : 1,
+		StatusEffect.DISPLAYS_ON_ENTITY : false
 	})
 
 
@@ -105,6 +118,7 @@ const REMOVE_EFFECT_DATA : String = "remove_effect_data"
 const REMOVE_EFFECT_STATUS_EFFECT_NAME : String = "remove_effect_status_effect_name"
 const STACKABLE : String = "stackable"
 const DURATION : String = "duration"
+const DISPLAYS_ON_ENTITY : String = "displays_on_entity"
 
 
 #=============================
@@ -113,3 +127,19 @@ const DURATION : String = "duration"
 const SHOCK : String = "shock"  # caused by charge combo; volt dmg +1 modifier
 const FROZEN : String = "frozen"  # caused by freeze combo
 const FROZEN_IMMUNE : String = "frozen_immune"  # cannot be frozen for a duration
+
+
+#==========================================
+# End Turn related things
+#==========================================
+const DEFROST_ANIMATION : String = "defrost"
+
+const END_TURN_EFFECTS : Array[String] = [
+	StatusEffect.FROZEN
+]
+const END_TURN_ANIMATIONS : Array[String] = [
+	StatusEffect.FROZEN
+]
+const END_TURN_ANIMATION_MAP : Dictionary = {
+	StatusEffect.FROZEN : StatusEffect.DEFROST_ANIMATION
+}

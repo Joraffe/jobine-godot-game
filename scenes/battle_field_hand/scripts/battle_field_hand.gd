@@ -7,8 +7,10 @@ var max_hand_size : int :
 	set = set_max_hand_size
 var available_energy : int :
 	set = set_available_energy
-var lead_instance_id : int : 
-	set = set_lead_instance_id
+
+
+var lead_character : Character
+
 var is_player_turn : bool :
 	set = set_is_player_turn
 
@@ -56,9 +58,6 @@ func set_max_hand_size(new_max_hand_size : int) -> void:
 func set_available_energy(new_available_energy : int) -> void:
 	available_energy = new_available_energy
 
-func set_lead_instance_id(new_lead_instance_id : int) -> void:
-	lead_instance_id = new_lead_instance_id
-
 func set_is_player_turn(new_is_player_turn : bool) -> void:
 	is_player_turn = new_is_player_turn
 
@@ -68,7 +67,7 @@ func set_is_player_turn(new_is_player_turn : bool) -> void:
 #========================
 func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("max_hand_size", battle_data.max_hand_size)
-	self.set("lead_instance_id", battle_data.lead_character.get_instance_id())
+	self.set("lead_character", battle_data.lead_character)
 	self.set("hand", battle_data.hand)
 
 func _on_turn_started(group_name : String) -> void:
@@ -111,8 +110,8 @@ func _on_cards_drawn(drawn_cards : Array[Card]) -> void:
 func _on_current_energy_updated(current_energy : int) -> void:
 	self.set("available_energy", current_energy)
 
-func _on_current_lead_updated(current_lead_instance_id : int) -> void:
-	self.set("lead_instance_id", current_lead_instance_id)
+func _on_current_lead_updated(current_lead : Character) -> void:
+	self.set("lead_character", current_lead)
 
 func _on_card_played(card : Card) -> void:
 	$Area2D.hide_played_card_instance(card)

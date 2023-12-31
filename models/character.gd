@@ -65,6 +65,32 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 func has_status_effects() -> bool:
 	return self.current_status_effects.size() > 0
 
+func has_status_effects_that_remove_on_turn_end() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.reduces_on_turn_end and status_effect.duration == 1:
+			return true
+
+	return false
+
+func has_any_status_effect_removal_effects() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.will_remove_on_turn_end_with_effects():
+			return true
+
+	return false
+
+func get_sequential_status_effect_removal_effects(effector_instance_id : int) -> Array[Dictionary]:
+	var remove_effects : Array[Dictionary] = []
+
+	for status_effect in self.current_status_effects:
+		if status_effect.reduces_on_turn_end and status_effect.duration == 1:
+			remove_effects += status_effect.get_remove_effects(
+				effector_instance_id,
+				self.get_instance_id()
+			)
+
+	return remove_effects
+
 func has_end_turn_effects() -> bool:
 	for status_effect in self.current_status_effects:
 		if status_effect.machine_name in StatusEffect.END_TURN_EFFECTS:
@@ -81,7 +107,6 @@ func has_end_turn_animation() -> bool:
 
 func get_end_turn_animation_name() -> String:
 	var end_turn_animation : String = ""
-
 
 	for status_effect in self.current_status_effects:
 		if status_effect.has_end_turn_animation():
@@ -237,6 +262,10 @@ const CURRENT_STATUS_EFFECTS : String = "current_status_effects"
 const JUNO : String = "juno"
 const PETTOL : String = "pettol"
 const AXO : String = "axo"
+const MAU : String = "mau"
+const EB : String = "eb"
+const GATZ : String = "gatz"
+
 
 #============================
 # Other constants

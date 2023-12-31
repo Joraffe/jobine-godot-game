@@ -34,6 +34,9 @@ func _on_check_party_end_turn_effects_deferred() -> void:
 	$NextDelayTimer.start()
 
 func _on_end_turn_animation_finished(instance_id : int) -> void:
+	if not self.is_applicable(instance_id):
+		return
+
 	self.emit_next_effect_queued(instance_id)
 
 func _on_effects_finished(effector_instance_id : int) -> void:
@@ -67,6 +70,13 @@ func _on_end_delay_timer() -> void:
 #=======================
 # Helpers
 #=======================
+func is_applicable(instance_id : int) -> bool:
+	return instance_id in [
+		self.party_lead_character.get_instance_id(),
+		self.party_standby_top_character.get_instance_id(),
+		self.party_standby_bottom_character.get_instance_id()
+	]
+
 func is_effector_instance_id_applicable(effector_instance_id : int) -> bool:
 	return effector_instance_id == self.get_instance_id()
 
@@ -74,7 +84,7 @@ func has_end_turn_animation(party_member : Character) -> bool:
 	return party_member.has_end_turn_animation()
 
 func has_end_turn_effects(party_member : Character) -> bool:
-	return party_member.has_end_turn_effects()
+	return party_member.has_any_status_effect_removal_effects()
 
 func has_reduceable_status_effects(party_member : Character) -> bool:
 	return party_member.has_reduceable_status_effects()
@@ -85,34 +95,9 @@ func has_any_effects(party_member : Character) -> bool:
 		or self.has_reduceable_status_effects(party_member)
 	)
 
-func end_turn_effect_for(party_member : Character) -> String:
-	var end_turn_effect : String = ""
-
-	if party_member.is_frozen():
-		end_turn_effect = BattleConstants.REMOVE_FROZEN
-
-	return end_turn_effect
-
 func get_animation_data_for(effect_name : String) -> Dictionary:
 	return {
 		"animation_name" : effect_name
-	}
-
-func get_sequential_end_effects(party_member : Character, end_turn_effect : String) -> Array[Dictionary]:
-	var end_effects : Array[Dictionary] = []
-
-	if end_turn_effect == BattleConstants.REMOVE_FROZEN:
-		end_effects.append(self.get_frozen_immunity_effect(party_member))
-
-	return end_effects
-
-func get_frozen_immunity_effect(party_member : Character) -> Dictionary:
-	return {
-		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
-		BattleConstants.TARGET_INSTANCE_ID : party_member.get_instance_id(),
-		BattleConstants.EFFECT_TYPE : BattleConstants.STATUS_EFFECT,
-		BattleConstants.EFFECT_NAME : StatusEffect.FROZEN_IMMUNE,
-		BattleConstants.EFFECT_AMOUNT : 1
 	}
 
 func enqueue_party_members() -> void:
@@ -126,9 +111,12 @@ func enqueue_party_members() -> void:
 		self.party_queue.enqueue(self.party_standby_bottom_character)
 
 func emit_end_effects_enqueued_for(party_member : Character) -> void:
-	var end_turn_effect : String = self.end_turn_effect_for(party_member)
-	var end_effects : Array[Dictionary] = self.get_sequential_end_effects(party_member, end_turn_effect)
-	self.emit_end_effects_enqueued(party_member.get_instance_id(), end_effects)
+	self.emit_end_effects_enqueued(
+		party_member.get_instance_id(),
+		party_member.get_sequential_status_effect_removal_effects(
+			self.get_instance_id()
+		)
+	)
 
 func emit_reduce_effects_enqueued_for(party_member : Character) -> void:
 	var status_effects_to_reduce : Array[StatusEffect] = party_member.get_reducable_status_effects()

@@ -118,4 +118,7 @@ func emit_enemy_defeated_animation_finished(instance_id : int) -> void:
 	)
 
 func emit_enemy_attack_animation_finished() -> void:
-	BattleRadio.emit_signal(BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED)
+	BattleRadio.emit_signal(
+		BattleRadio.ENEMY_ATTACK_ANIMATION_FINISHED,
+		self.enemy.get_instance_id()
+	)

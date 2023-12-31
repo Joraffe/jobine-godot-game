@@ -103,6 +103,25 @@ func remove_elements_at_indexes(indexes_to_remove : Array[int]) -> void:
 func has_status_effects() -> bool:
 	return self.current_status_effects.size() > 0
 
+func has_any_status_effect_removal_effects() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.will_remove_on_turn_end_with_effects():
+			return true
+
+	return false
+
+func get_sequential_status_effect_removal_effects(effector_instance_id : int) -> Array[Dictionary]:
+	var remove_effects : Array[Dictionary] = []
+
+	for status_effect in self.current_status_effects:
+		if status_effect.reduces_on_turn_end and status_effect.duration == 1:
+			remove_effects += status_effect.get_remove_effects(
+				effector_instance_id,
+				self.get_instance_id()
+			)
+
+	return remove_effects
+
 func get_displayable_status_effect() -> StatusEffect:
 	var displayable_status_effect : StatusEffect
 
@@ -147,6 +166,13 @@ func remove_duration_from_status_effect(removed_status_effect_name : String, dur
 		if status_effect.machine_name == removed_status_effect_name:
 			status_effect.duration -= duration_to_remove
 
+func has_reduceable_status_effects() -> bool:
+	for status_effect in self.current_status_effects:
+		if status_effect.reduces_on_turn_end:
+			return true
+
+	return false
+
 func get_reducable_status_effects() -> Array[StatusEffect]:
 	var reduceable_status_effects : Array[StatusEffect] = []
 
@@ -171,6 +197,15 @@ func filter_zero_duration_status_effects() -> void:
 
 	if remaining:
 		self.emit_signal(BattleConstants.STATUS_EFFECTS_REMAINED, remaining)
+
+func get_end_turn_animation_name() -> String:
+	var end_turn_animation : String = ""
+
+	for status_effect in self.current_status_effects:
+		if status_effect.has_end_turn_animation():
+			end_turn_animation = status_effect.get_end_turn_animation_name()
+
+	return end_turn_animation
 
 func belongs_to_group(group_name : String) -> bool:
 	return group_name == BattleConstants.GROUP_ENEMIES

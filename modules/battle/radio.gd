@@ -110,7 +110,7 @@ signal entity_status_effect_reduced(instance_id : int)
 const ENEMY_ATTACK_ANIMATION_QUEUED : String = "enemy_attack_animation_queued"
 signal enemy_attack_animation_queued(enemy_instance_id : int, attack : EnemyAttack)
 const ENEMY_ATTACK_ANIMATION_FINISHED : String = "enemy_attack_animation_finished"
-signal enemy_attack_animation_finished
+signal enemy_attack_animation_finished(instance_id : int)
 
 
 # Element Animations
@@ -188,15 +188,6 @@ signal status_effect_removed_by_effect(
 	duration_to_remove : int
 )
 
-const STATUS_EFFECT_FADE_IN_ANIMATION_QUEUED : String = "status_effect_fade_in_animation_queued"
-signal status_effect_fade_in_animation_queued(instance_id : int, status_effect_name : String)
-const STATUS_EFFECT_FADE_IN_ANIMATION_FINISHED : String = "status_effect_fade_in_animation_finished"
-signal status_effect_fade_in_animation_finished(instance_id : int)
-const STATUS_EFFECT_FADE_OUT_ANIMATION_QUEUED : String = "status_effect_fade_out_animation_queued"
-signal status_effect_fade_out_animation_queued(instance_id : int)
-const STATUS_EFFECT_FADE_OUT_ANIMATION_FINISHED : String = "status_effect_fade_out_animation_finished"
-signal status_effect_fade_out_animation_finished(instance_id : int)
-
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
 signal combo_effects_deferred_to_group(
 	group_name : String, 
@@ -254,10 +245,3 @@ signal adjust_status_effects_deferred(
 	status_effects_to_remove : Array[StatusEffect],
 	status_effects_to_adjust : Array[StatusEffect]
 )
-
-
-# Related to skipping turns
-const SKIP_TURN_ANIMATION_QUEUED : String = "skip_turn_animation_queued"
-signal skip_turn_animation_queued(instance_id : int, skip_reason : String)
-const SKIP_TURN_ANIMATION_FINISHED : String = "skip_turn_animation_finished"
-signal skip_turn_animation_finished(instance_id : int)

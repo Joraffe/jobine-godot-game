@@ -26,6 +26,7 @@ func _init(
 	machine_name = _machine_name
 	reduces_on_turn_end = _reduces_on_turn_end
 	effect_on_remove = _effect_on_remove
+	remove_effect_data = _remove_effect_data
 	stackable = _stackable
 	duration = _duration
 	displays_on_entity = _displays_on_entity
@@ -38,6 +39,32 @@ func get_reduce_effect(effector_instance_id : int, target_instance_id : int) -> 
 		BattleConstants.EFFECT_NAME : self.machine_name,
 		BattleConstants.EFFECT_AMOUNT : 1
 	}
+
+func has_gain_status_effect_on_remove() -> bool:
+	return StatusEffect.GAINED_STATUS_NAME in self.remove_effect_data.keys()
+
+func will_remove_on_turn_end_with_effects() -> bool:
+	return (
+		self.reduces_on_turn_end
+		and self.duration == 1
+		and not self.remove_effect_data.is_empty()
+	)
+
+func has_remove_effects() -> bool:
+	return not self.remove_effect_data.is_empty()
+
+func get_remove_effects(effector_instance_id : int, target_instance_id : int) -> Array[Dictionary]:
+	var remove_effects : Array[Dictionary] = []
+	if self.has_gain_status_effect_on_remove():
+		remove_effects.append({
+		BattleConstants.EFFECTOR_INSTANCE_ID : effector_instance_id,
+		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
+		BattleConstants.EFFECT_TYPE : BattleConstants.STATUS_EFFECT,
+		BattleConstants.EFFECT_NAME : self.remove_effect_data[StatusEffect.GAINED_STATUS_NAME],
+		BattleConstants.EFFECT_AMOUNT : 1
+	})
+
+	return remove_effects
 
 func has_end_turn_animation() -> bool:
 	return self.machine_name in StatusEffect.END_TURN_ANIMATIONS
@@ -87,7 +114,7 @@ static func Frozen() -> StatusEffect:
 		StatusEffect.REDUCES_ON_TURN_END : true,
 		StatusEffect.EFFECT_ON_REMOVE : true,
 		StatusEffect.REMOVE_EFFECT_DATA : {
-			StatusEffect.REMOVE_EFFECT_STATUS_EFFECT_NAME : ""
+			StatusEffect.GAINED_STATUS_NAME : StatusEffect.FROZEN_IMMUNE
 		},
 		StatusEffect.STACKABLE : false,
 		StatusEffect.DURATION : 1,
@@ -106,6 +133,18 @@ static func FrozenImmune() -> StatusEffect:
 		StatusEffect.DISPLAYS_ON_ENTITY : false
 	})
 
+static func Heat() -> StatusEffect:
+	return StatusEffect.create({
+		StatusEffect.HUMAN_NAME : "Heat",
+		StatusEffect.MACHINE_NAME : StatusEffect.HEAT,
+		StatusEffect.REDUCES_ON_TURN_END : true,
+		StatusEffect.EFFECT_ON_REMOVE : false,
+		StatusEffect.REMOVE_EFFECT_DATA : {},
+		StatusEffect.STACKABLE : true,
+		StatusEffect.DURATION : 1,
+		StatusEffect.DISPLAYS_ON_ENTITY : true
+	})
+
 
 #========================
 # Init Param kwarg names
@@ -115,10 +154,12 @@ const MACHINE_NAME : String = "machine_name"
 const REDUCES_ON_TURN_END : String = "reduces_on_turn_end"
 const EFFECT_ON_REMOVE : String = "effect_on_remove"
 const REMOVE_EFFECT_DATA : String = "remove_effect_data"
-const REMOVE_EFFECT_STATUS_EFFECT_NAME : String = "remove_effect_status_effect_name"
 const STACKABLE : String = "stackable"
 const DURATION : String = "duration"
 const DISPLAYS_ON_ENTITY : String = "displays_on_entity"
+
+# remove effect data
+const GAINED_STATUS_NAME : String = "gained_status_name"
 
 
 #=============================
@@ -127,6 +168,7 @@ const DISPLAYS_ON_ENTITY : String = "displays_on_entity"
 const SHOCK : String = "shock"  # caused by charge combo; volt dmg +1 modifier
 const FROZEN : String = "frozen"  # caused by freeze combo
 const FROZEN_IMMUNE : String = "frozen_immune"  # cannot be frozen for a duration
+const HEAT : String = "heat"
 
 
 #==========================================

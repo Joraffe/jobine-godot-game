@@ -23,7 +23,6 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.STATUS_EFFECT_REMOVED_BY_EFFECT, _on_status_effect_removed_by_effect)
 	BattleRadio.connect(BattleRadio.ENEMY_ATTACK_ANIMATION_QUEUED, _on_enemy_attack_animation_queued)
 	BattleRadio.connect(BattleRadio.ENEMY_DEFEATED_ANIMATION_QUEUED, _on_enemy_defeated_animation_queued)
-	BattleRadio.connect(BattleRadio.SKIP_TURN_ANIMATION_QUEUED, _on_skip_turn_animation_queued)
 
 
 #=======================
@@ -168,15 +167,6 @@ func _on_enemy_defeated_animation_queued(instance_id : int) -> void:
 
 func _on_new_status_effect_added() -> void:
 	$StatusEffects.set("entity_current_status_effects", self.enemy.current_status_effects)
-
-func _on_skip_turn_animation_queued(instance_id : int, skip_reason : String) -> void:
-	if not self.identifier.is_applicable(instance_id):
-		return
-
-	var skip_status_map = self.skip_reason_status_effect_map()
-	if skip_reason in skip_status_map.keys():
-		var status_effect_name : String = skip_status_map[skip_reason]
-		$DisplayStatusEffect.animate_status_effect_skip_turn(status_effect_name)
 
 
 #=======================

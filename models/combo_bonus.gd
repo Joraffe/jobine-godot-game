@@ -4,7 +4,8 @@ class_name ComboBonus
 
 var machine_name : String
 
-var targeting_name : String
+var targeting_name : String  # single, splash, all, etc
+var target_group_name : String  # party or enemies
 
 # extra damage
 var damage : int
@@ -33,12 +34,12 @@ var energy_amount : int
 
 # derived values
 var shield_element : Element
-var status_effect : StatusEffect
 
 
 func _init(
 	_machine_name : String,
 	_targeting_name : String,
+	_target_group_name : String,
 	_damage : int,
 	_heal_amount : int,
 	_shield_strength : int,
@@ -51,6 +52,7 @@ func _init(
 ) -> void:
 	machine_name = _machine_name
 	targeting_name = _targeting_name
+	target_group_name = _target_group_name
 	damage = _damage
 	heal_amount = _heal_amount
 	shield_strength = _shield_strength
@@ -65,9 +67,6 @@ func _init(
 func set_derived_data() -> void:
 	if self.shield_element_name != "":
 		shield_element = Element.by_machine_name(self.shield_element_name)
-
-	if self.status_name != "":
-		status_effect = StatusEffect.by_machine_name(self.status_name, self.status_duration)
 
 func is_extra_damage() -> bool:
 	return self.machine_name == ComboBonus.EXTRA_DAMAGE
@@ -90,11 +89,29 @@ func is_extra_cards() -> bool:
 func is_extra_status() -> bool:
 	return self.machine_name == ComboBonus.EXTRA_STATUS
 
-func is_self_targeting() -> bool:
+func is_only_party_bonus() -> bool:
 	return self.machine_name in [
 		ComboBonus.EXTRA_HEAL,
 		ComboBonus.EXTRA_SHIELD
 	]
+
+func is_self_extra_status() -> bool:
+	return (
+		self.machine_name == ComboBonus.EXTRA_STATUS
+		and self.target_group_name == BattleConstants.GROUP_PARTY
+	)
+
+func is_other_extra_status() -> bool:
+	return (
+		self.machine_name == ComboBonus.EXTRA_STATUS
+		and self.target_group_name == BattleConstants.GROUP_ENEMIES
+	)
+
+func is_self_targeting() -> bool:
+	return (
+		self.is_only_party_bonus()
+		or self.is_self_extra_status()
+	)
 
 func is_self_non_targeting() -> bool:
 	return self.machine_name in [
@@ -104,10 +121,10 @@ func is_self_non_targeting() -> bool:
 	]
 
 func is_other_targeting() -> bool:
-	return self.machine_name in [
-		ComboBonus.EXTRA_DAMAGE,
-		ComboBonus.EXTRA_STATUS
-	]
+	return (
+		self.machine_name in [ComboBonus.EXTRA_DAMAGE, ComboBonus.EXTRA_STATUS]
+		or self.is_other_extra_status()
+	)
 
 func get_group_name() -> String:
 	var group_name : String
@@ -125,6 +142,9 @@ func get_sequential_effects(target_instance_id : int) -> Array[Dictionary]:
 	if self.has_damage_effect():
 		effects.append(self.get_damage_effect(target_instance_id))
 
+	if self.has_status_effect():
+		effects.append(self.get_status_effect(target_instance_id))
+
 	return effects
 
 func has_damage_effect() -> bool:
@@ -136,6 +156,18 @@ func get_damage_effect(target_instance_id : int) -> Dictionary:
 		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
 		BattleConstants.EFFECT_TYPE : BattleConstants.DAMAGE_EFFECT,
 		BattleConstants.EFFECT_AMOUNT : self.damage,
+	}
+
+func has_status_effect() -> bool:
+	return self.status_name != ""
+
+func get_status_effect(target_instance_id : int) -> Dictionary:
+	return {
+		BattleConstants.EFFECTOR_INSTANCE_ID : self.get_instance_id(),
+		BattleConstants.TARGET_INSTANCE_ID : target_instance_id,
+		BattleConstants.EFFECT_TYPE : BattleConstants.STATUS_EFFECT,
+		BattleConstants.EFFECT_NAME : self.status_name,
+		BattleConstants.EFFECT_AMOUNT : self.status_duration
 	}
 
 func enemy_activation_text() -> String:
@@ -197,6 +229,7 @@ static func create(combo_bonus_data : Dictionary) -> ComboBonus:
 	return ComboBonus.new(
 		combo_bonus_data[ComboBonus.MACHINE_NAME],
 		combo_bonus_data[ComboBonus.TARGETING_NAME],
+		combo_bonus_data[ComboBonus.TARGET_GROUP_NAME],
 		combo_bonus_data[ComboBonus.DAMAGE],
 		combo_bonus_data[ComboBonus.HEAL_AMOUNT],
 		combo_bonus_data[ComboBonus.SHIELD_STRENGTH],
@@ -208,10 +241,15 @@ static func create(combo_bonus_data : Dictionary) -> ComboBonus:
 		combo_bonus_data[ComboBonus.ENERGY_AMOUNT]
 	)
 
-static func ExtraDamage(extra_damage : int) -> ComboBonus:
+static func ExtraDamage(
+	extra_damage : int,
+	target_group_name : String,
+	targeting_name : String
+) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_DAMAGE,
-		ComboBonus.TARGETING_NAME : Targeting.SINGLE,
+		ComboBonus.TARGETING_NAME : targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : target_group_name,
 		ComboBonus.DAMAGE : extra_damage,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -223,10 +261,15 @@ static func ExtraDamage(extra_damage : int) -> ComboBonus:
 		ComboBonus.ENERGY_AMOUNT : 0
 	})
 
-static func ExtraHeal(card_heal_amount : int) -> ComboBonus:
+static func ExtraHeal(
+	card_heal_amount : int,
+	target_group_name : String,
+	targeting_name : String
+) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_HEAL,
-		ComboBonus.TARGETING_NAME : Targeting.SINGLE,
+		ComboBonus.TARGETING_NAME : targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : target_group_name,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : card_heal_amount,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -240,11 +283,14 @@ static func ExtraHeal(card_heal_amount : int) -> ComboBonus:
 
 static func ExtraShield(
 	card_shield_strength : int,
-	card_shield_element_name : String
+	card_shield_element_name : String,
+	target_group_name : String,
+	targeting_name : String
 ) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_SHIELD,
-		ComboBonus.TARGETING_NAME : Targeting.SINGLE,
+		ComboBonus.TARGETING_NAME : targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : target_group_name,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : card_shield_strength,
@@ -260,6 +306,7 @@ static func ExtraSwap(extra_swaps : int) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_SWAP,
 		ComboBonus.TARGETING_NAME : "",
+		ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_PARTY,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -275,6 +322,7 @@ static func ExtraEnergy(extra_energy : int) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_ENERGY,
 		ComboBonus.TARGETING_NAME : "",
+		ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_PARTY,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -290,6 +338,7 @@ static func ExtraCards(extra_cards : int) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_CARDS,
 		ComboBonus.TARGETING_NAME : "",
+		ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_PARTY,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -303,11 +352,14 @@ static func ExtraCards(extra_cards : int) -> ComboBonus:
 
 static func ExtraStatus(
 	card_status_name : String,
-	card_duration : int
+	card_duration : int,
+	group_name : String,
+	targeting_name : String
 ) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_STATUS,
-		ComboBonus.TARGETING_NAME : Targeting.SINGLE,
+		ComboBonus.TARGETING_NAME : targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : group_name,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -324,16 +376,22 @@ static func by_machine_name(bonus_machine_name : String, bonus_data : Dictionary
 	match bonus_machine_name:
 		ComboBonus.EXTRA_DAMAGE:
 			return ExtraDamage(
-				bonus_data[ComboBonus.DAMAGE]
+				bonus_data[ComboBonus.DAMAGE],
+				bonus_data[ComboBonus.TARGET_GROUP_NAME],
+				bonus_data[ComboBonus.TARGETING_NAME]
 			)
 		ComboBonus.EXTRA_HEAL:
 			return ExtraHeal(
-				bonus_data[ComboBonus.HEAL_AMOUNT]
+				bonus_data[ComboBonus.HEAL_AMOUNT],
+				bonus_data[ComboBonus.TARGET_GROUP_NAME],
+				bonus_data[ComboBonus.TARGETING_NAME]
 			)
 		ComboBonus.EXTRA_SHIELD:
 			return ExtraShield(
 				bonus_data[ComboBonus.SHIELD_STRENGTH],
-				bonus_data[ComboBonus.SHIELD_ELEMENT_NAME]
+				bonus_data[ComboBonus.SHIELD_ELEMENT_NAME],
+				bonus_data[ComboBonus.TARGET_GROUP_NAME],
+				bonus_data[ComboBonus.TARGETING_NAME]
 			)
 		ComboBonus.EXTRA_SWAP:
 			return ExtraSwap(bonus_data[ComboBonus.SWAP_AMOUNT])
@@ -345,6 +403,8 @@ static func by_machine_name(bonus_machine_name : String, bonus_data : Dictionary
 			return ExtraStatus(
 				bonus_data[ComboBonus.STATUS_NAME],
 				bonus_data[ComboBonus.STATUS_DURATION],
+				bonus_data[ComboBonus.TARGET_GROUP_NAME],
+				bonus_data[ComboBonus.TARGETING_NAME]
 			)
 		_:
 			return
@@ -355,6 +415,7 @@ static func by_machine_name(bonus_machine_name : String, bonus_data : Dictionary
 #========================
 const MACHINE_NAME : String = "machine_name"
 const TARGETING_NAME : String = "targeting_name"
+const TARGET_GROUP_NAME : String = "target_group_name"
 const TYPE : String = "type"
 const DAMAGE : String = "damage"
 const HEAL_AMOUNT : String = "heal_amount"
@@ -374,6 +435,7 @@ const EXTRA_DAMAGE : String = "extra_damage"
 const EXTRA_SWAP : String = "extra_swap"
 const EXTRA_HEAL : String = "extra_heal"
 const EXTRA_SHIELD : String = "extra_shield"
+const EXTRA_BUFF : String = "extra_buff"
 const EXTRA_ENERGY : String = "extra_energy"
 const EXTRA_CARDS : String = "extra_cards"
 const EXTRA_STATUS : String = "extra_status"

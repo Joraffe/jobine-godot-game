@@ -137,7 +137,7 @@ static func Heat() -> StatusEffect:
 	return StatusEffect.create({
 		StatusEffect.HUMAN_NAME : "Heat",
 		StatusEffect.MACHINE_NAME : StatusEffect.HEAT,
-		StatusEffect.REDUCES_ON_TURN_END : true,
+		StatusEffect.REDUCES_ON_TURN_END : false,
 		StatusEffect.EFFECT_ON_REMOVE : false,
 		StatusEffect.REMOVE_EFFECT_DATA : {},
 		StatusEffect.STACKABLE : true,
@@ -165,10 +165,10 @@ const GAINED_STATUS_NAME : String = "gained_status_name"
 #=============================
 # Status machine_name list
 #=============================
-const SHOCK : String = "shock"  # caused by charge combo; volt dmg +1 modifier
+const SHOCK : String = "shock"  # take +1 dmg mod to volt combos (combo bonus)
 const FROZEN : String = "frozen"  # caused by freeze combo
 const FROZEN_IMMUNE : String = "frozen_immune"  # cannot be frozen for a duration
-const HEAT : String = "heat"
+const HEAT : String = "heat"  # deal +1 dmg mod to fire combos (combo bonus)
 
 
 #==========================================

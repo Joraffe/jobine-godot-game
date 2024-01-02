@@ -36,7 +36,7 @@ signal current_hand_size_updated(current_hand_size_updated : int)
 const CURRENT_SWAPS_UPDATED : String = "current_swaps_updated"
 signal current_swaps_updated(current_swaps : int)
 const CURRENT_LEAD_UPDATED : String = "current_lead_updated"
-signal current_lead_updated(current_lead_instance_id : int)
+signal current_lead_updated(current_lead : Character)
 
 
 # Enemy Related
@@ -62,15 +62,18 @@ signal card_freed(card : Card)
 
 
 # Turn Related
-const PLAYER_TURN_STARTED : String = "player_turn_started"
-signal player_turn_started
-const PLAYER_TURN_ENDED : String = "player_turn_ended"
-signal player_turn_ended
-const ENEMY_TURN_STARTED : String = "enemy_turn_started"
-signal enemy_turn_started
-const ENEMY_TURN_ENDED : String = "enemy_turn_ended"
-signal enemy_turn_ended
-
+const TURN_STARTED : String = "turn_started"
+signal turn_started(group_name : String)
+const TURN_ENDED : String = "turn_ended"
+signal turn_ended(group_name : String)
+const CHECK_PARTY_END_TURN_EFFECTS_DEFERRED : String = "check_party_end_turn_effects_deferred"
+signal check_party_end_turn_effects_deferred
+const CHECK_PARTY_END_TURN_EFFECTS_FINISHED : String = "check_party_end_turn_effects_finished"
+signal check_party_end_turn_effects_finished
+const END_TURN_ANIMATION_QUEUED : String = "end_turn_animation_queued"
+signal end_turn_animation_queued(instance_id : int, animation_name : String)
+const END_TURN_ANIMATION_FINISHED : String = "end_turn_animation_finished"
+signal end_turn_animation_finished(instance_id : int)
 
 # Energy Related
 const CURRENT_ENERGY_UPDATED : String = "current_energy_updated"
@@ -99,13 +102,15 @@ const ENTITY_DEFEATED_ANIMATION_QUEUED : String = "entity_defeated_animation_que
 signal entity_defeated_animation_queued(instance_id : int)
 const ENTITY_DEFEATED_ANIMATION_FINISHED : String = "entity_defeated_animation_finished"
 signal entity_defeated_animation_finished(instance_id : int)
+const ENTITY_STATUS_EFFECTS_REDUCED : String = "entity_status_effects_reduced"
+signal entity_status_effect_reduced(instance_id : int)
 
 
 # Enemy Attack Related
 const ENEMY_ATTACK_ANIMATION_QUEUED : String = "enemy_attack_animation_queued"
 signal enemy_attack_animation_queued(enemy_instance_id : int, attack : EnemyAttack)
 const ENEMY_ATTACK_ANIMATION_FINISHED : String = "enemy_attack_animation_finished"
-signal enemy_attack_animation_finished
+signal enemy_attack_animation_finished(instance_id : int)
 
 
 # Element Animations
@@ -168,6 +173,21 @@ signal add_elements_to_entity_by_effect(
 	element_name : String,
 	amount : int
 )
+const STATUS_EFFECT_ADDED_BY_EFFECT : String = "status_effect_added_by_effect"
+signal status_effect_added_by_effect(
+	effector_instance_id : int,
+	entity_instance_id : int,
+	status_name : String,
+	duration : int
+)
+const STATUS_EFFECT_REMOVED_BY_EFFECT : String = "status_effect_removed_by_effect"
+signal status_effect_removed_by_effect(
+	effector_instance_id : int,
+	entity_instance_id : int,
+	status_name : String,
+	duration_to_remove : int
+)
+
 const COMBO_EFFECTS_DEFERRED_TO_GROUP : String  = "combo_effects_deferred_to_group"
 signal combo_effects_deferred_to_group(
 	group_name : String, 
@@ -198,3 +218,30 @@ const COMBO_BONUS_SWAPS_GAINED : String = "combo_bonus_swaps_gained"
 signal combo_bonus_swaps_gained(swaps_gained : int)
 const COMBO_BONUS_CARDS_GAINED : String = "combo_bonus_cards_gained"
 signal combo_bonus_cards_gained(num_cards_gained : int)
+
+
+# StatusEffect related
+const ADD_STATUS_EFFECT_ANIMATION_QUEUED : String = "add_status_effect_animation_queued"
+signal add_status_effect_animation_queued(instance_id : int, status_effect : StatusEffect)
+const ADD_STATUS_EFFECT_ANIMATION_FINISHED : String = "add_status_effect_animation_finished"
+signal add_status_effect_animation_finished(instance_id : int)
+const REMOVE_STATUS_EFFECT_ANIMATION_QUEUED : String = "remove_status_effect_animation_queued"
+signal remove_status_effect_animation_queued(instance_id : int, status_effects : Array[StatusEffect])
+const REMOVE_STATUS_EFFECT_ANIMATION_FINISHED : String = "remove_status_effect_animation_finished"
+signal remove_status_effect_animation_finished(instance_id : int)
+const REPOSITION_STATUS_EFFECT_ANIMATION_QUEUED : String = "reposition_status_effect_animation_queued"
+signal reposition_status_effect_animation_queued(instance_id : int, status_effects : Array[StatusEffect])
+const REPOSITION_STATUS_EFFECT_ANIMATION_FINISHED : String = "reposition_status_effect_animation_finished"
+signal reposition_status_effect_animation_finished(instance_id : int)
+
+const STATUS_EFFECT_DURATION_UPDATED : String = "status_effect_duration_updated"
+signal status_effect_duration_updated(
+	status_effect_instance_id : int,
+	new_duration : int
+)
+const ADJUST_STATUS_EFFECTS_DEFERRED : String = "adjust_status_effects_deferred"
+signal adjust_status_effects_deferred(
+	entity_instance_id : int,
+	status_effects_to_remove : Array[StatusEffect],
+	status_effects_to_adjust : Array[StatusEffect]
+)

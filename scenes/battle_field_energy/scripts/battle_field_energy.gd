@@ -17,7 +17,7 @@ const NO_ENERGY : String = "no_energy"
 #=======================
 func _init() -> void:
 	BattleRadio.connect(BattleRadio.BATTLE_STARTED, _on_battle_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
 	BattleRadio.connect(BattleRadio.CARD_PLAYED, _on_card_played)
 	BattleRadio.connect(BattleRadio.COMBO_BONUS_ENERGY_GAINED, _on_combo_bonus_energy_gained)
 
@@ -66,7 +66,10 @@ func _on_battle_started(battle_data : BattleData) -> void:
 	self.set("max_energy", battle_data.max_energy)
 	self.set("current_energy", battle_data.current_energy)
 
-func _on_player_turn_started() -> void:
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	# This effectively replenishes energy at the start of turn
 	self.set("current_energy", self.max_energy)
 

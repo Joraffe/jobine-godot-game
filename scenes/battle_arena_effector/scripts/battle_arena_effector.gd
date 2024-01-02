@@ -101,6 +101,12 @@ func is_damage_effect(effect_type : String) -> bool:
 func is_element_effect(effect_type : String) -> bool:
 	return effect_type == BattleConstants.ELEMENT_EFFECT
 
+func is_status_effect(effect_type : String) -> bool:
+	return effect_type == BattleConstants.STATUS_EFFECT
+
+func is_remove_status_effect(effect_type : String) -> bool:
+	return effect_type == BattleConstants.REMOVE_STATUS_EFFECT
+
 func should_damage_effect_bail(result : String):
 	return self.is_result_fainted(result)
 
@@ -118,6 +124,14 @@ func emit_next_effect() -> void:
 	# before starting the next enemy attack (since element effects are last)
 	if self.is_element_effect(effect_type):
 		self.emit_element_applied_to_entity(effect_data)
+		return
+	
+	if self.is_status_effect(effect_type):
+		self.emit_status_effect_added_by_effect(effect_data)
+		return
+
+	if self.is_remove_status_effect(effect_type):
+		self.emit_status_effect_removed_by_effect(effect_data)
 		return
 
 func emit_entity_damaged(effect_data : Dictionary) -> void:
@@ -143,6 +157,34 @@ func emit_element_applied_to_entity(effect_data : Dictionary) -> void:
 		target_instance_id,
 		element_name,
 		num_elements
+	)
+
+func emit_status_effect_added_by_effect(effect_data : Dictionary) -> void:
+	var effector_instance_id : int = effect_data[BattleConstants.EFFECTOR_INSTANCE_ID]
+	var target_instance_id : int = effect_data[BattleConstants.TARGET_INSTANCE_ID]
+	var status_name : String = effect_data[BattleConstants.EFFECT_NAME]
+	var status_duration : int = effect_data[BattleConstants.EFFECT_AMOUNT]
+
+	BattleRadio.emit_signal(
+		BattleRadio.STATUS_EFFECT_ADDED_BY_EFFECT,
+		effector_instance_id,
+		target_instance_id,
+		status_name,
+		status_duration
+	)
+
+func emit_status_effect_removed_by_effect(effect_data : Dictionary) -> void:
+	var effector_instance_id : int = effect_data[BattleConstants.EFFECTOR_INSTANCE_ID]
+	var target_instance_id : int = effect_data[BattleConstants.TARGET_INSTANCE_ID]
+	var status_name : String = effect_data[BattleConstants.EFFECT_NAME]
+	var amount_to_remove : int = effect_data[BattleConstants.EFFECT_AMOUNT]
+
+	BattleRadio.emit_signal(
+		BattleRadio.STATUS_EFFECT_REMOVED_BY_EFFECT,
+		effector_instance_id,
+		target_instance_id,
+		status_name,
+		amount_to_remove
 	)
 
 func emit_effects_finished(effector_instance_id : int) -> void:

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b345cfe8mgslj"]
+
+[ext_resource type="Script" path="res://scenes/plan_party_member/scripts/plan_party_member.gd" id="1_yo3a6"]
+[ext_resource type="Texture2D" uid="uid://dye7psnpeirs3" path="res://scenes/plan_party_member/resources/images/container/plan_party_member_container.png" id="2_3vyuu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4oxx"]
+size = Vector2(512, 824)
+
+[node name="PlanPartyMember" type="Node2D"]
+script = ExtResource("1_yo3a6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3vyuu")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_x4oxx")

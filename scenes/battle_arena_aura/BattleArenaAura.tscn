@@ -17,14 +17,3 @@ shape = SubResource("RectangleShape2D_ikf3j")
 
 [node name="AI" type="Node" parent="."]
 script = ExtResource("2_wndkc")
-
-[node name="ComboTimer" type="Timer" parent="."]
-wait_time = 0.9
-one_shot = true
-
-[node name="ElementTimer" type="Timer" parent="."]
-wait_time = 0.9
-one_shot = true
-
-[node name="FinishTimer" type="Timer" parent="."]
-one_shot = true

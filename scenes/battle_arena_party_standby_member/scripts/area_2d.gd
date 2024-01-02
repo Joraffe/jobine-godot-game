@@ -19,8 +19,8 @@ var num_current_swaps : int
 func _init() -> void:
 	self.connect("mouse_entered", _on_mouse_entered)
 	self.connect("mouse_exited", _on_mouse_exited)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
 	BattleRadio.connect(BattleRadio.CURRENT_SWAPS_UPDATED, _on_current_swaps_updated)
 
 
@@ -42,10 +42,16 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	self.set("is_mouse_over_standby_member", false)
 
-func _on_player_turn_started() -> void:
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn", true)
 
-func _on_player_turn_ended() -> void:
+func _on_turn_ended(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
 	self.set("is_player_turn", false)
 
 func _on_current_swaps_updated(new_current_swaps : int) -> void:
@@ -117,5 +123,12 @@ func has_enough_swaps() -> bool:
 func has_not_fainted() -> bool:
 	return not self.standby_character.has_fainted()
 
+func standby_character_can_act() -> bool:
+	return self.standby_character.can_act()
+
 func can_swap() -> bool:
-	return self.has_enough_swaps() and self.has_not_fainted()
+	return (
+		self.has_enough_swaps()
+		and self.has_not_fainted()
+		and self.standby_character_can_act()
+	)

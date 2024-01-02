@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://y2wc6tugys4k"]
+
+[ext_resource type="Script" path="res://scenes/plan_deck/scripts/plan_deck.gd" id="1_kd0o2"]
+[ext_resource type="Texture2D" uid="uid://0sg4bekm1leo" path="res://scenes/plan_deck/resources/images/container/plan_deck_container.png" id="2_l6k4k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_16626"]
+size = Vector2(384, 864)
+
+[node name="PlanDeck" type="Node2D"]
+script = ExtResource("1_kd0o2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_l6k4k")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_16626")

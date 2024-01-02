@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://de5b0fwk7lm3t"]
+
+[ext_resource type="Script" path="res://scenes/battle_background/scripts/battle_background.gd" id="1_0ym4r"]
+
+[node name="BattleBackground" type="Node2D"]
+position = Vector2(960, 540)
+script = ExtResource("1_0ym4r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

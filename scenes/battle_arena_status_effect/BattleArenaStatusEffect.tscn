@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqwe81auqxiom"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_status_effect/scripts/battle_arena_status_effect.gd" id="1_ia0ca"]
+[ext_resource type="Texture2D" uid="uid://lmmwmqcle04m" path="res://scenes/battle_arena_status_effect/resources/images/shock/shock.png" id="2_7lvaa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nlgrl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilm1m"]
+size = Vector2(50, 50)
+
+[node name="BattleArenaStatusEffect" type="Node2D"]
+script = ExtResource("1_ia0ca")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("2_7lvaa")
+
+[node name="Panel" type="Panel" parent="Area2D/Sprite2D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nlgrl")
+
+[node name="MarginContainer" type="MarginContainer" parent="Area2D/Sprite2D/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+
+[node name="Label" type="Label" parent="Area2D/Sprite2D/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ilm1m")

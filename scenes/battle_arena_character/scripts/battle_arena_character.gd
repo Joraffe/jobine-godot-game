@@ -19,6 +19,8 @@ func _init() -> void:
 	BattleRadio.connect(BattleRadio.ENTITY_DAMAGED_BY_EFFECT, _on_entity_damaged_by_effect)
 	BattleRadio.connect(BattleRadio.ADD_ELEMENTS_TO_ENTITY_BY_EFFECT, _on_add_elements_to_entity_by_effect)
 	BattleRadio.connect(BattleRadio.ELEMENTS_REMOVED_FROM_ENTITY, _on_elements_removed_from_entity)
+	BattleRadio.connect(BattleRadio.STATUS_EFFECT_ADDED_BY_EFFECT, _on_status_effect_added_by_effect)
+	BattleRadio.connect(BattleRadio.STATUS_EFFECT_REMOVED_BY_EFFECT, _on_status_effect_removed_by_effect)
 
 
 #=======================
@@ -39,11 +41,14 @@ func set_character(new_character : Character) -> void:
 		)
 	)
 	$HealthBar.set("health_bar_type", self.character_type)
+	$DisplayStatusEffect.set("status_effect_type", self.character_type)
 	$HealthBar.set("entity", self.character)
 	$Aura.set("entity", self.character)
 	$Aura.set("element_names", self.character.current_element_names)
 	$Area2D.set("character", self.character)
 	$ComboDisplay.set("entity", self.character)
+	$StatusEffects.set("entity", self.character)
+	$DisplayStatusEffect.set("entity", self.character)
 
 func set_image_data(new_image_data : ImageData):
 	image_data = new_image_data
@@ -51,6 +56,8 @@ func set_image_data(new_image_data : ImageData):
 	$Area2D/Sprite2D.set_texture(self.image_data.get_img_texture())
 	$Aura.set("entity_image_height", self.image_data.get_img_height())
 	$Aura/Area2D.set("aura_width", self.image_data.get_img_width())
+	$StatusEffects.set("entity_image_height", self.image_data.get_img_height())
+	$StatusEffects.set("entity_image_width", self.image_data.get_img_width())
 	$HealthBar.set("entity_image_height", self.image_data.get_img_height())
 
 
@@ -105,6 +112,38 @@ func _on_elements_removed_from_entity(
 	self.character.remove_elements_at_indexes(removed_element_indexes)
 	$Aura.set("element_names", self.character.current_element_names)
 
+func _on_status_effect_added_by_effect(
+	_effector_instance_id : int,
+	instance_id : int,
+	status_effect_name : String,
+	status_effect_duration : int
+) -> void:
+	if not self.identifier.is_applicable(instance_id):
+		return
+
+	self.character.add_status_effect(status_effect_name, status_effect_duration)
+	self.emit_effect_resolved(
+		self.character.get_instance_id(),
+		BattleConstants.STATUS_EFFECT,
+		BattleConstants.ADDED_STATUS
+	)
+
+func _on_status_effect_removed_by_effect(
+	_effector_instance_id : int,
+	instance_id : int,
+	status_effect_name : String,
+	duration_to_remove : int
+) -> void:
+	if not self.identifier.is_applicable(instance_id):
+		return
+
+	self.character.remove_duration_from_status_effect(status_effect_name, duration_to_remove)
+	self.character.filter_zero_duration_status_effects()
+	self.emit_effect_resolved(
+		self.character.get_instance_id(),
+		BattleConstants.REMOVE_STATUS_EFFECT,
+		BattleConstants.REMOVED_STATUS
+	)
 
 #=======================
 # Helpers

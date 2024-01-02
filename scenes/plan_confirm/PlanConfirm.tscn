@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://d34bwdecfmu64"]
+
+[ext_resource type="Script" path="res://scenes/plan_confirm/scripts/plan_confirm.gd" id="1_ts1nw"]
+[ext_resource type="Texture2D" uid="uid://x0bj7m8vkvxy" path="res://scenes/plan_confirm/resources/images/container/plan_confirm_container.png" id="2_ertj7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x8nrr"]
+size = Vector2(384, 216)
+
+[node name="PlanConfirm" type="Node2D"]
+script = ExtResource("1_ts1nw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ertj7")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_x8nrr")

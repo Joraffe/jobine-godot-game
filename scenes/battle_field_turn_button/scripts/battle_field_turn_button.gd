@@ -10,8 +10,8 @@ var image_data : ImageData :
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_STARTED, _on_player_turn_started)
-	BattleRadio.connect(BattleRadio.PLAYER_TURN_ENDED, _on_player_turn_ended)
+	BattleRadio.connect(BattleRadio.TURN_STARTED, _on_turn_started)
+	BattleRadio.connect(BattleRadio.TURN_ENDED, _on_turn_ended)
 
 
 #=======================
@@ -53,11 +53,17 @@ func set_image_data(new_image_data : ImageData) -> void:
 #========================
 # Signal Handlers
 #========================
-func _on_player_turn_started() -> void:
-	is_player_turn = true
+func _on_turn_started(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
 
-func _on_player_turn_ended() -> void:
-	is_player_turn = false
+	self.set("is_player_turn", true)
+
+func _on_turn_ended(group_name : String) -> void:
+	if group_name != BattleConstants.GROUP_PARTY:
+		return
+
+	self.set("is_player_turn", false)
 
 
 #========================

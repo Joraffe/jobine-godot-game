@@ -43,6 +43,7 @@ func set_element_names(new_element_names : Array[String]) -> void:
 			self.get_added_element_names(new_element_names, old_element_names)
 		)
 
+
 #========================
 # Aura Functionality
 #========================

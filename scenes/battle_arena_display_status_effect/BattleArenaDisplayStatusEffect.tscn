@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b57e20t7yc3oa"]
+
+[ext_resource type="Script" path="res://scenes/battle_arena_display_status_effect/scripts/battle_arena_display_status_effect.gd" id="1_4c13i"]
+
+[node name="BattleArenaDisplayStatusEffect" type="Node2D"]
+script = ExtResource("1_4c13i")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)

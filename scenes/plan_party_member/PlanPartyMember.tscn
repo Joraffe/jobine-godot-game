@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://b345cfe8mgslj"]
+[gd_scene load_steps=8 format=3 uid="uid://b345cfe8mgslj"]
 
 [ext_resource type="Script" path="res://scenes/plan_party_member/scripts/plan_party_member.gd" id="1_yo3a6"]
-[ext_resource type="Texture2D" uid="uid://dye7psnpeirs3" path="res://scenes/plan_party_member/resources/images/container/plan_party_member_container.png" id="2_3vyuu"]
+[ext_resource type="Texture2D" uid="uid://dye7psnpeirs3" path="res://scenes/plan_party_member/resources/images/container/container.png" id="2_eeteq"]
+[ext_resource type="PackedScene" uid="uid://bm0s0fh0looai" path="res://scenes/plan_party_member_portrait/PlanPartyMemberPortrait.tscn" id="3_08x03"]
+[ext_resource type="PackedScene" uid="uid://ckxg3hk2q23yx" path="res://scenes/plan_party_member_element/PlanPartyMemberElement.tscn" id="4_x6byc"]
+[ext_resource type="PackedScene" uid="uid://cvoc48dlq504" path="res://scenes/plan_party_member_health/PlanPartyMemberHealth.tscn" id="5_mpxi8"]
+[ext_resource type="PackedScene" uid="uid://d3og5mhovmnhu" path="res://scenes/plan_party_member_combos/PlanPartyMemberCombos.tscn" id="6_4fby5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x4oxx"]
 size = Vector2(512, 824)
@@ -9,10 +13,18 @@ size = Vector2(512, 824)
 [node name="PlanPartyMember" type="Node2D"]
 script = ExtResource("1_yo3a6")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_3vyuu")
+[node name="ContainerSprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_eeteq")
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_x4oxx")
+
+[node name="Portrait" parent="." instance=ExtResource("3_08x03")]
+
+[node name="Element" parent="." instance=ExtResource("4_x6byc")]
+
+[node name="Health" parent="." instance=ExtResource("5_mpxi8")]
+
+[node name="Combos" parent="." instance=ExtResource("6_4fby5")]

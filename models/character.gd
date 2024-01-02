@@ -18,6 +18,7 @@ var current_hp : int
 var current_element_names : Array[String]
 var entity_type : String
 var current_status_effects : Array[StatusEffect]
+var combo_synergies : Array[String]
 
 
 func _init(
@@ -28,7 +29,8 @@ func _init(
 	_current_hp : int,
 	_current_element_names : Array[String],
 	_entity_type : String,
-	_current_status_effect : Array[StatusEffect]
+	_current_status_effect : Array[StatusEffect],
+	_combo_synergies : Array[String]
 ):
 	human_name = _human_name
 	machine_name = _machine_name
@@ -38,6 +40,7 @@ func _init(
 	current_element_names = _current_element_names
 	entity_type = _entity_type
 	current_status_effects = _current_status_effect
+	combo_synergies = _combo_synergies
 
 func take_damage(damage : int) -> void:
 	var old_current_hp : int = self.current_hp
@@ -239,7 +242,8 @@ static func create(character_data : Dictionary) -> Character:
 		character_data[Character.CURRENT_HP],
 		character_data[Character.CURRENT_ELEMENT_NAMES],
 		character_data[Character.ENTITY_TYPE],
-		character_data[Character.CURRENT_STATUS_EFFECTS]
+		character_data[Character.CURRENT_STATUS_EFFECTS],
+		character_data[Character.COMBO_SYNERGIES]
 	)
 
 
@@ -254,6 +258,7 @@ const CURRENT_HP : String = "current_hp"
 const CURRENT_ELEMENT_NAMES : String = "current_element_names"
 const ENTITY_TYPE : String = "entity_type"
 const CURRENT_STATUS_EFFECTS : String = "current_status_effects"
+const COMBO_SYNERGIES : String = "combo_synergies"
 
 
 #============================

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cq0d20yga4w7k"
-path="res://.godot/imported/plan_party_container_v2.png-7f37f31b37b930087dac811e3e47817e.ctex"
+uid="uid://c3up52jde72nb"
+path="res://.godot/imported/party_member_health.png-bc1a63a8cb587c703f5b70266e5e2542.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_party/resources/images/container/plan_party_container_v2.png"
-dest_files=["res://.godot/imported/plan_party_container_v2.png-7f37f31b37b930087dac811e3e47817e.ctex"]
+source_file="res://scenes/plan_party_member_health/resources/images/health/party_member_health.png"
+dest_files=["res://.godot/imported/party_member_health.png-bc1a63a8cb587c703f5b70266e5e2542.ctex"]
 
 [params]
 

@@ -36,7 +36,6 @@ func _ready() -> void:
 func set_roster(new_roster : Dictionary) -> void:
 	roster = new_roster
 
-	print('set_roster')
 	self.render_roster()
 
 func set_image_data(new_image_data : ImageData) -> void:

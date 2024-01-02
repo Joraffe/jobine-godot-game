@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm0s0fh0looai"]
+
+[ext_resource type="Script" path="res://scenes/plan_party_member_portrait/scripts/plan_party_member_portrait.gd" id="1_wh3ot"]
+
+[node name="PlanPartyMemberPortrait" type="Node2D"]
+script = ExtResource("1_wh3ot")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Label" type="Label" parent="Sprite2D"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -309.5
+offset_top = -256.0
+offset_right = -202.5
+offset_bottom = -184.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1

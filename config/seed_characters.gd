@@ -57,6 +57,7 @@ static func seed_character_data(config_file : ConfigFile) -> void:
 static func _get_juno_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
+	var combo_synergies : Array[String] = [Combo.GROW, Combo.BURN]
 	return {
 		Character.HUMAN_NAME : "Juno",
 		Character.MACHINE_NAME : Character.JUNO,
@@ -65,12 +66,14 @@ static func _get_juno_character_data() -> Dictionary:
 		Character.CURRENT_HP : 10,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
 		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
-		Character.CURRENT_STATUS_EFFECTS : current_status_effects
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects,
+		Character.COMBO_SYNERGIES : combo_synergies
 	}
 
 static func _get_pettol_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
+	var combo_synergies : Array[String] = [Combo.CHARGE, Combo.SURGE]
 	return {
 		Character.HUMAN_NAME : "Pettol",
 		Character.MACHINE_NAME : Character.PETTOL,
@@ -79,12 +82,14 @@ static func _get_pettol_character_data() -> Dictionary:
 		Character.CURRENT_HP : 16,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
 		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
-		Character.CURRENT_STATUS_EFFECTS : current_status_effects
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects,
+		Character.COMBO_SYNERGIES : combo_synergies
 	}
 
 static func _get_axo_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
+	var combo_synergies : Array[String] = [Combo.CHARGE, Combo.GROW]
 	return {
 		Character.HUMAN_NAME : "Axo",
 		Character.MACHINE_NAME : Character.AXO,
@@ -93,12 +98,14 @@ static func _get_axo_character_data() -> Dictionary:
 		Character.CURRENT_HP : 7,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
 		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
-		Character.CURRENT_STATUS_EFFECTS : current_status_effects
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects,
+		Character.COMBO_SYNERGIES : combo_synergies
 	}
 
 static func _get_mau_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
+	var combo_synergies : Array[String] = [Combo.EVAPORATE, Combo.MELT]
 	return {
 		Character.HUMAN_NAME : "Mau",
 		Character.MACHINE_NAME : Character.MAU,
@@ -107,12 +114,14 @@ static func _get_mau_character_data() -> Dictionary:
 		Character.CURRENT_HP : 12,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
 		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
-		Character.CURRENT_STATUS_EFFECTS : current_status_effects
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects,
+		Character.COMBO_SYNERGIES : combo_synergies
 	}
 
 static func _get_eb_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
+	var combo_synergies : Array[String] = []  # TBD
 	return {
 		Character.HUMAN_NAME : "Eb",
 		Character.MACHINE_NAME : Character.EB,
@@ -121,12 +130,14 @@ static func _get_eb_character_data() -> Dictionary:
 		Character.CURRENT_HP : 14,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
 		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
-		Character.CURRENT_STATUS_EFFECTS : current_status_effects
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects,
+		Character.COMBO_SYNERGIES : combo_synergies
 	}
 
 static func _get_gatz_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
+	var combo_synergies : Array[String] = []  # TBD
 	return {
 		Character.HUMAN_NAME : "Gatz",
 		Character.MACHINE_NAME : Character.GATZ,
@@ -135,5 +146,6 @@ static func _get_gatz_character_data() -> Dictionary:
 		Character.CURRENT_HP : 9,
 		Character.CURRENT_ELEMENT_NAMES : current_element_names,
 		Character.ENTITY_TYPE : BattleConstants.ENTITY_CHARACTER,
-		Character.CURRENT_STATUS_EFFECTS : current_status_effects
+		Character.CURRENT_STATUS_EFFECTS : current_status_effects,
+		Character.COMBO_SYNERGIES : combo_synergies
 	}

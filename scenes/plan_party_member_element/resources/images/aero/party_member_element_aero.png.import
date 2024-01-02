@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dye7psnpeirs3"
-path="res://.godot/imported/plan_party_member_container.png-a3e927195eddfa8e7ee8b943a352972c.ctex"
+uid="uid://2a31us1pxhv8"
+path="res://.godot/imported/party_member_element_aero.png-ec84460bc3d3cbe919207975f63b6188.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_party_member/resources/images/container/plan_party_member_container.png"
-dest_files=["res://.godot/imported/plan_party_member_container.png-a3e927195eddfa8e7ee8b943a352972c.ctex"]
+source_file="res://scenes/plan_party_member_element/resources/images/aero/party_member_element_aero.png"
+dest_files=["res://.godot/imported/party_member_element_aero.png-ec84460bc3d3cbe919207975f63b6188.ctex"]
 
 [params]
 

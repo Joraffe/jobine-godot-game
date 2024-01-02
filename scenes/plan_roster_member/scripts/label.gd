@@ -19,7 +19,7 @@ func _init() -> void:
 func set_role(new_role : String) -> void:
 	role = new_role
 
-	self.text = self.role
+	self.set_text(self.get_roster_member_role_name(self.role))
 	self.show()
 
 
@@ -37,3 +37,18 @@ func _on_roster_member_deselected(deselected_name : String, _deselected_role : S
 		return
 
 	self.hide()
+
+#=======================
+# Helpers
+#=======================
+func get_roster_member_role_name(role_name : String) -> String:
+	var portrait_role_name : String = ""
+	
+	if role_name == PlanConstants.LEAD:
+		portrait_role_name = PlanConstants.LEAD
+	elif role_name == PlanConstants.STANDBY_TOP:
+		portrait_role_name = PlanConstants.STANDBY
+	elif role_name == PlanConstants.STANDBY_BOTTOM:
+		portrait_role_name = PlanConstants.STANDBY
+
+	return portrait_role_name

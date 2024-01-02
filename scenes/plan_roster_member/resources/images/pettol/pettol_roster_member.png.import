@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du2ypy4ivvssk"
-path="res://.godot/imported/mau_party_standby.png-25577a14840f06568c1bb22e60546a47.ctex"
+uid="uid://logbr7o3c07v"
+path="res://.godot/imported/pettol_roster_member.png-a4928bcb52dabb15c7c2139cf9638b4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_character/resources/images/mau/mau_party_standby.png"
-dest_files=["res://.godot/imported/mau_party_standby.png-25577a14840f06568c1bb22e60546a47.ctex"]
+source_file="res://scenes/plan_roster_member/resources/images/pettol/pettol_roster_member.png"
+dest_files=["res://.godot/imported/pettol_roster_member.png-a4928bcb52dabb15c7c2139cf9638b4e.ctex"]
 
 [params]
 

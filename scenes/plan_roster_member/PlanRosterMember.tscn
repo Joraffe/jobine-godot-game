@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgbjp3vc1nwc4"]
+
+[ext_resource type="Script" path="res://scenes/plan_roster_member/scripts/plan_roster_member.gd" id="1_me0l8"]
+[ext_resource type="Texture2D" uid="uid://bd0j83216jqa5" path="res://scenes/plan_roster_member/resources/images/container/container.png" id="2_bdckv"]
+[ext_resource type="Script" path="res://scenes/plan_roster_member/scripts/area_2d.gd" id="3_o3y4a"]
+[ext_resource type="Texture2D" uid="uid://c58a6rx6axifp" path="res://scenes/plan_roster_member/resources/images/select_overlay/roster_member_select_overlay.png" id="4_fo4ut"]
+[ext_resource type="Script" path="res://scenes/plan_roster_member/scripts/label.gd" id="5_qio25"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yjtwp"]
+size = Vector2(256, 256)
+
+[node name="PlanRosterMember" type="Node2D"]
+script = ExtResource("1_me0l8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bdckv")
+
+[node name="Role" type="Label" parent="Sprite2D"]
+visible = false
+custom_minimum_size = Vector2(128, 64)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -192.0
+offset_right = -128.0
+offset_bottom = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("5_qio25")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("3_o3y4a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("RectangleShape2D_yjtwp")
+
+[node name="SelectOverlay" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_fo4ut")

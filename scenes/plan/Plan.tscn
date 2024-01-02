@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=3 uid="uid://bq1axtjdf62ad"]
+
+[ext_resource type="PackedScene" uid="uid://bdgpg2e13uchq" path="res://scenes/plan_background/PlanBackground.tscn" id="1_0tvkj"]
+[ext_resource type="Script" path="res://scenes/plan/scripts/plan.gd" id="1_2edkp"]
+[ext_resource type="PackedScene" uid="uid://d2djl4gtuu58r" path="res://scenes/plan_roster/PlanRoster.tscn" id="3_ubiuo"]
+[ext_resource type="PackedScene" uid="uid://dfkcdciclnqfi" path="res://scenes/plan_party/PlanParty.tscn" id="4_72n2n"]
+[ext_resource type="PackedScene" uid="uid://y2wc6tugys4k" path="res://scenes/plan_deck/PlanDeck.tscn" id="5_monwk"]
+[ext_resource type="PackedScene" uid="uid://d34bwdecfmu64" path="res://scenes/plan_confirm/PlanConfirm.tscn" id="6_ctv53"]
+
+[node name="Plan" type="Node2D"]
+script = ExtResource("1_2edkp")
+
+[node name="Background" parent="." instance=ExtResource("1_0tvkj")]
+
+[node name="Roster" parent="." instance=ExtResource("3_ubiuo")]
+position = Vector2(768, 128)
+
+[node name="Party" parent="." instance=ExtResource("4_72n2n")]
+position = Vector2(768, 668)
+
+[node name="Deck" parent="." instance=ExtResource("5_monwk")]
+position = Vector2(1728, 432)
+
+[node name="Confirm" parent="." instance=ExtResource("6_ctv53")]
+position = Vector2(1728, 972)

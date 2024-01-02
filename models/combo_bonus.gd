@@ -243,13 +243,13 @@ static func create(combo_bonus_data : Dictionary) -> ComboBonus:
 
 static func ExtraDamage(
 	extra_damage : int,
-	target_group_name : String,
-	targeting_name : String
+	damage_target_group_name : String,
+	damage_targeting_name : String
 ) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_DAMAGE,
-		ComboBonus.TARGETING_NAME : targeting_name,
-		ComboBonus.TARGET_GROUP_NAME : target_group_name,
+		ComboBonus.TARGETING_NAME : damage_targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : damage_target_group_name,
 		ComboBonus.DAMAGE : extra_damage,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -263,13 +263,13 @@ static func ExtraDamage(
 
 static func ExtraHeal(
 	card_heal_amount : int,
-	target_group_name : String,
-	targeting_name : String
+	heal_target_group_name : String,
+	heal_targeting_name : String
 ) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_HEAL,
-		ComboBonus.TARGETING_NAME : targeting_name,
-		ComboBonus.TARGET_GROUP_NAME : target_group_name,
+		ComboBonus.TARGETING_NAME : heal_targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : heal_target_group_name,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : card_heal_amount,
 		ComboBonus.SHIELD_STRENGTH : 0,
@@ -284,13 +284,13 @@ static func ExtraHeal(
 static func ExtraShield(
 	card_shield_strength : int,
 	card_shield_element_name : String,
-	target_group_name : String,
-	targeting_name : String
+	shield_target_group_name : String,
+	shield_targeting_name : String
 ) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_SHIELD,
-		ComboBonus.TARGETING_NAME : targeting_name,
-		ComboBonus.TARGET_GROUP_NAME : target_group_name,
+		ComboBonus.TARGETING_NAME : shield_targeting_name,
+		ComboBonus.TARGET_GROUP_NAME : shield_target_group_name,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,
 		ComboBonus.SHIELD_STRENGTH : card_shield_strength,
@@ -354,11 +354,11 @@ static func ExtraStatus(
 	card_status_name : String,
 	card_duration : int,
 	group_name : String,
-	targeting_name : String
+	status_targeting_name : String
 ) -> ComboBonus:
 	return ComboBonus.create({
 		ComboBonus.MACHINE_NAME : ComboBonus.EXTRA_STATUS,
-		ComboBonus.TARGETING_NAME : targeting_name,
+		ComboBonus.TARGETING_NAME : status_targeting_name,
 		ComboBonus.TARGET_GROUP_NAME : group_name,
 		ComboBonus.DAMAGE : 0,
 		ComboBonus.HEAL_AMOUNT : 0,

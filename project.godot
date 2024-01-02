@@ -11,12 +11,13 @@ config_version=5
 [application]
 
 config/name="Jobine-godot-game"
-run/main_scene="res://scenes/battle/Battle.tscn"
+run/main_scene="res://scenes/plan/Plan.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 
 [autoload]
 
 BattleRadio="*res://modules/battle/radio.gd"
+PlanRadio="*res://modules/plan/radio.gd"
 
 [display]
 

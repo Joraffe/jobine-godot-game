@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du2ypy4ivvssk"
-path="res://.godot/imported/mau_party_standby.png-25577a14840f06568c1bb22e60546a47.ctex"
+uid="uid://x0bj7m8vkvxy"
+path="res://.godot/imported/plan_confirm_container.png-e7af9c669e14ced374e7ed24f9e401b9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_arena_character/resources/images/mau/mau_party_standby.png"
-dest_files=["res://.godot/imported/mau_party_standby.png-25577a14840f06568c1bb22e60546a47.ctex"]
+source_file="res://scenes/plan_confirm/resources/images/container/plan_confirm_container.png"
+dest_files=["res://.godot/imported/plan_confirm_container.png-e7af9c669e14ced374e7ed24f9e401b9.ctex"]
 
 [params]
 

@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d34bwdecfmu64"]
+[gd_scene load_steps=6 format=3 uid="uid://d34bwdecfmu64"]
 
 [ext_resource type="Script" path="res://scenes/plan_confirm/scripts/plan_confirm.gd" id="1_ts1nw"]
-[ext_resource type="Texture2D" uid="uid://x0bj7m8vkvxy" path="res://scenes/plan_confirm/resources/images/container/plan_confirm_container.png" id="2_ertj7"]
+[ext_resource type="Texture2D" uid="uid://x0bj7m8vkvxy" path="res://scenes/plan_confirm/resources/images/container/container.png" id="2_rjqst"]
+[ext_resource type="Script" path="res://scenes/plan_confirm/scripts/button_area_2d.gd" id="3_llber"]
+[ext_resource type="Texture2D" uid="uid://c1318ynt7chrv" path="res://scenes/plan_confirm/resources/images/button_disabled/button_disabled.png" id="4_5lesp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x8nrr"]
 size = Vector2(384, 216)
@@ -9,10 +11,34 @@ size = Vector2(384, 216)
 [node name="PlanConfirm" type="Node2D"]
 script = ExtResource("1_ts1nw")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_ertj7")
+[node name="ContainerSprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rjqst")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="ButtonArea2D" type="Area2D" parent="."]
+script = ExtResource("3_llber")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="ButtonSprite2D" type="Sprite2D" parent="ButtonArea2D"]
+texture = ExtResource("4_5lesp")
+
+[node name="Label" type="Label" parent="ButtonArea2D/ButtonSprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -322.0
+offset_top = -153.0
+offset_right = -28.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 75
+text = "Confirm"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ButtonArea2D"]
 shape = SubResource("RectangleShape2D_x8nrr")

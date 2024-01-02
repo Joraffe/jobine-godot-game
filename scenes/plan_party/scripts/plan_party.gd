@@ -35,11 +35,18 @@ func _ready() -> void:
 func set_party_lead(new_party_lead : Character) -> void:
 	party_lead = new_party_lead
 
+	self.emit_party_updated()
+
+
 func set_party_standby_top(new_party_standby_top : Character) -> void:
 	party_standby_top = new_party_standby_top
 
+	self.emit_party_updated()
+
 func set_party_standby_bottom(new_party_standby_bottom : Character) -> void:
 	party_standby_bottom = new_party_standby_bottom
+
+	self.emit_party_updated()
 
 
 #=======================
@@ -53,6 +60,8 @@ func _on_plan_started(plan_seed_data : Dictionary) -> void:
 func _on_roster_member_selected(character_name : String, role_name : String) -> void:
 	var character_seed_data : Dictionary = self.seed_data[SeedData.CHARACTERS]
 	var character : Character = Character.create(character_seed_data[character_name])
+	self.update_party_member(character, role_name)
+
 	var instance : Node2D = self.instantiate_party_member(character, role_name)
 	self.position_party_member(instance, role_name)
 	var current_rendered_member : Node2D = self.rendered_party_members[role_name]
@@ -61,6 +70,7 @@ func _on_roster_member_selected(character_name : String, role_name : String) -> 
 
 func _on_roster_member_deselected(_character_name : String, role_name : String) -> void:
 	var current_rendered_member : Node2D = self.rendered_party_members[role_name]
+	self.remove_party_member(role_name)
 	current_rendered_member.queue_free()
 	self.render_unselected_party_member(role_name)
 
@@ -111,3 +121,36 @@ func position_party_member(instance : Node2D, role_name : String) -> void:
 		index = 2
 
 	instance.position.x = starting_x + offset_x + container_image_width * index
+
+func update_party_member(character : Character, role_name : String) -> void:
+	if role_name == PlanConstants.LEAD:
+		self.set("party_lead", character)
+
+	if role_name == PlanConstants.STANDBY_TOP:
+		self.set("party_standby_top", character)
+
+	if role_name == PlanConstants.STANDBY_BOTTOM:
+		self.set("party_standby_bottom", character)
+
+func remove_party_member(role_name : String) -> void:
+	if role_name == PlanConstants.LEAD:
+		self.set("party_lead", null)
+
+	if role_name == PlanConstants.STANDBY_TOP:
+		self.set("party_standby_top", null)
+
+	if role_name == PlanConstants.STANDBY_BOTTOM:
+		self.set("party_standby_bottom", null)
+
+func get_party_data() -> Dictionary:
+	return {
+		PlanConstants.LEAD : self.party_lead,
+		PlanConstants.STANDBY_TOP : self.party_standby_top,
+		PlanConstants.STANDBY_BOTTOM : self.party_standby_bottom
+	}
+
+func emit_party_updated() -> void:
+	PlanRadio.emit_signal(
+		PlanRadio.PARTY_UPDATED,
+		self.get_party_data()
+	)

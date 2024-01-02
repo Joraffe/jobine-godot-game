@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://x0bj7m8vkvxy"
-path="res://.godot/imported/plan_confirm_container.png-e7af9c669e14ced374e7ed24f9e401b9.ctex"
+path="res://.godot/imported/container.png-71c3a2f646a6070b6b5991a78d8d971a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_confirm/resources/images/container/plan_confirm_container.png"
-dest_files=["res://.godot/imported/plan_confirm_container.png-e7af9c669e14ced374e7ed24f9e401b9.ctex"]
+source_file="res://scenes/plan_confirm/resources/images/container/container.png"
+dest_files=["res://.godot/imported/container.png-71c3a2f646a6070b6b5991a78d8d971a.ctex"]
 
 [params]
 

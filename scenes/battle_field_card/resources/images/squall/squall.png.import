@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tdnyx04mrotx"
-path="res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"
+uid="uid://dpoy27m8com5s"
+path="res://.godot/imported/squall.png-2db1342e3dc90452beddd971ac74549b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_deck_card/resources/images/container/aero.png"
-dest_files=["res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/squall/squall.png"
+dest_files=["res://.godot/imported/squall.png-2db1342e3dc90452beddd971ac74549b.ctex"]
 
 [params]
 

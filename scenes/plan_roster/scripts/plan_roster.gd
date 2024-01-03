@@ -110,7 +110,8 @@ func current_implemented_characters() -> Array:
 		Character.AXO,
 		Character.PETTOL,
 		Character.MAU,
-		Character.EB
+		Character.EB,
+		Character.GATZ
 	]
 
 func get_next_role() -> String:

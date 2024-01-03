@@ -203,4 +203,4 @@ const BOARFROST : String = "boarfrost"
 # Gatz Cards
 #=======================
 const LOOSE : String = "loose"
-const ZEPHYR : String = "zephyr"
+const SQUALL : String = "squall"

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tdnyx04mrotx"
-path="res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"
+uid="uid://dphx42oyulfrn"
+path="res://.godot/imported/loose.png-c9f17f3f7973d753bcdce596494b456e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_deck_card/resources/images/container/aero.png"
-dest_files=["res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/loose/loose.png"
+dest_files=["res://.godot/imported/loose.png-c9f17f3f7973d753bcdce596494b456e.ctex"]
 
 [params]
 

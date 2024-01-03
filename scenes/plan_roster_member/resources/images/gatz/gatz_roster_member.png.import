@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tdnyx04mrotx"
-path="res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"
+uid="uid://bk304o06e8y0o"
+path="res://.godot/imported/gatz_roster_member.png-fb81a0a02db3651a5ddf646125c28e30.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_deck_card/resources/images/container/aero.png"
-dest_files=["res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"]
+source_file="res://scenes/plan_roster_member/resources/images/gatz/gatz_roster_member.png"
+dest_files=["res://.godot/imported/gatz_roster_member.png-fb81a0a02db3651a5ddf646125c28e30.ctex"]
 
 [params]
 

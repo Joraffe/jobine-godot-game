@@ -41,6 +41,13 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 		SeedCards._get_eb_card_data()
 	)
 
+	# Gatz Card Data
+	config_file.set_value(
+		SeedData.CARDS,
+		Character.GATZ,
+		SeedCards._get_gatz_card_data()
+	)
+
 	config_file.save(SeedData.SEED_DATA_CFG_PATH)
 
 
@@ -80,6 +87,13 @@ static func _get_eb_card_data() -> Array[Dictionary]:
 	cards.append(SeedCards.porcine_pierce_card_data())
 	cards.append(SeedCards.porcine_pierce_card_data())
 	cards.append(SeedCards.boarfrost_card_data())
+	return cards
+
+static func _get_gatz_card_data() -> Array[Dictionary]:
+	var cards : Array[Dictionary] = []
+	cards.append(SeedCards.loose_card_data())
+	cards.append(SeedCards.loose_card_data())
+	cards.append(SeedCards.squall_card_data())
 	return cards
 
 
@@ -249,5 +263,40 @@ static func boarfrost_card_data() -> Dictionary:
 			ComboBonus.DAMAGE : 2,
 			ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_ENEMIES,
 			ComboBonus.TARGETING_NAME : Targeting.ALL
+		}
+	}
+
+
+# Gatz Cards
+static func loose_card_data() -> Dictionary:
+	return {
+		Card.HUMAN_NAME : "Loose",
+		Card.MACHINE_NAME : Card.LOOSE,
+		Card.COST : 1,
+		Card.ELEMENT_NAME : Element.AERO,
+		Card.TARGETING_NAME : Targeting.SINGLE,
+		Card.BASE_DAMAGE : 2,
+		Card.ELEMENT_AMOUNT : 1,
+		Card.COMBO_ELEMENT_NAME : "",
+		Card.COMBO_BONUS_NAME : "",
+		Card.COMBO_BONUS_DATA : {}
+	}
+
+
+static func squall_card_data() -> Dictionary:
+	return {
+		Card.HUMAN_NAME : "Squall",
+		Card.MACHINE_NAME : Card.SQUALL,
+		Card.COST : 1,
+		Card.ELEMENT_NAME : Element.AERO,
+		Card.TARGETING_NAME : Targeting.SPLASH,
+		Card.BASE_DAMAGE : 2,
+		Card.ELEMENT_AMOUNT : 1,
+		Card.COMBO_ELEMENT_NAME : Element.ICE,
+		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_DAMAGE,
+		Card.COMBO_BONUS_DATA : {
+			ComboBonus.DAMAGE : 2,
+			ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_ENEMIES,
+			ComboBonus.TARGETING_NAME : Targeting.SPLASH
 		}
 	}

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tdnyx04mrotx"
-path="res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"
+uid="uid://cd4pxncmdys7"
+path="res://.godot/imported/gatz_party_standby.png-ae6a379ec2f942f5811dc50e6ff502b3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_deck_card/resources/images/container/aero.png"
-dest_files=["res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"]
+source_file="res://scenes/battle_arena_character/resources/images/gatz/gatz_party_standby.png"
+dest_files=["res://.godot/imported/gatz_party_standby.png-ae6a379ec2f942f5811dc50e6ff502b3.ctex"]
 
 [params]
 

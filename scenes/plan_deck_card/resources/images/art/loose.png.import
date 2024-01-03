@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tdnyx04mrotx"
-path="res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"
+uid="uid://dv5p17mva4u3n"
+path="res://.godot/imported/loose.png-922c4c9d7c99ae58c1f44c02620f7db2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_deck_card/resources/images/container/aero.png"
-dest_files=["res://.godot/imported/aero.png-da3b26dbd73c789530b03639c4fd442a.ctex"]
+source_file="res://scenes/plan_deck_card/resources/images/art/loose.png"
+dest_files=["res://.godot/imported/loose.png-922c4c9d7c99ae58c1f44c02620f7db2.ctex"]
 
 [params]
 

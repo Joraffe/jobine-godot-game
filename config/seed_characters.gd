@@ -137,7 +137,7 @@ static func _get_eb_character_data() -> Dictionary:
 static func _get_gatz_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
-	var combo_synergies : Array[String] = []  # TBD
+	var combo_synergies : Array[String] = [Combo.CHILL, Combo.BLAZE]
 	return {
 		Character.HUMAN_NAME : "Gatz",
 		Character.MACHINE_NAME : Character.GATZ,

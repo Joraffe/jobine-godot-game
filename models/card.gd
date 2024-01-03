@@ -195,8 +195,8 @@ const INFURNO : String = "infurno"
 #=======================
 # Eb Cards
 #=======================
-const BOARFROST : String = "boarfrost"
 const PORCINE_PIERCE : String = "porcine_pierce"
+const BOARFROST : String = "boarfrost"
 
 
 #=======================

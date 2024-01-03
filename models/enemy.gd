@@ -160,6 +160,11 @@ func add_status_effect(added_status_effect_name : String, added_duration : int) 
 		BattleConstants.NEW_STATUS_EFFECT_ADDED,
 		new_status_effect
 	)
+	if new_status_effect.displays_on_entity:
+		self.emit_signal(
+			BattleConstants.NEW_STATUS_EFFECT_DISPLAYED,
+			new_status_effect
+		)
 
 func remove_duration_from_status_effect(removed_status_effect_name : String, duration_to_remove : int) -> void:
 	for status_effect in self.current_status_effects:

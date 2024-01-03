@@ -67,6 +67,7 @@ func _on_end_turn_animation_queued(instance_id : int, animation_name : String) -
 
 
 func _on_new_status_effect_displayed(new_status_effect : StatusEffect) -> void:
+	print('_on_new_status_effect_displayed ', new_status_effect)
 	self.set("status_effect_name", new_status_effect.machine_name)
 	self.tween_fade_in()
 

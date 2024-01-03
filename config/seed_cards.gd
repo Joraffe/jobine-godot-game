@@ -26,11 +26,19 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 		Character.AXO,
 		SeedCards._get_axo_card_data()
 	)
-	
+
+	# Mau Card Data
 	config_file.set_value(
 		SeedData.CARDS,
 		Character.MAU,
 		SeedCards._get_mau_card_data()
+	)
+
+	# Eb Card Data
+	config_file.set_value(
+		SeedData.CARDS,
+		Character.EB,
+		SeedCards._get_eb_card_data()
 	)
 
 	config_file.save(SeedData.SEED_DATA_CFG_PATH)
@@ -65,6 +73,13 @@ static func _get_mau_card_data() -> Array[Dictionary]:
 	cards.append(SeedCards.swipe_card_data())
 	cards.append(SeedCards.swipe_card_data())
 	cards.append(SeedCards.infurno_card_data())
+	return cards
+
+static func _get_eb_card_data() -> Array[Dictionary]:
+	var cards : Array[Dictionary] = []
+	cards.append(SeedCards.porcine_pierce_card_data())
+	cards.append(SeedCards.porcine_pierce_card_data())
+	cards.append(SeedCards.boarfrost_card_data())
 	return cards
 
 
@@ -200,5 +215,39 @@ static func infurno_card_data() -> Dictionary:
 			ComboBonus.STATUS_DURATION : 1,
 			ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_PARTY,
 			ComboBonus.TARGETING_NAME : Targeting.SINGLE
+		}
+	}
+
+
+# Eb Cards
+static func porcine_pierce_card_data() -> Dictionary:
+	return {
+		Card.HUMAN_NAME : "Porcine Pierce",
+		Card.MACHINE_NAME : Card.PORCINE_PIERCE,
+		Card.COST : 1,
+		Card.ELEMENT_NAME : Element.ICE,
+		Card.TARGETING_NAME : Targeting.SINGLE,
+		Card.BASE_DAMAGE : 2,
+		Card.ELEMENT_AMOUNT : 1,
+		Card.COMBO_ELEMENT_NAME : "",
+		Card.COMBO_BONUS_NAME : "",
+		Card.COMBO_BONUS_DATA : {}
+	}
+
+static func boarfrost_card_data() -> Dictionary:
+	return {
+		Card.HUMAN_NAME : "Boarfrost",
+		Card.MACHINE_NAME : Card.BOARFROST,
+		Card.COST : 2,
+		Card.ELEMENT_NAME : Element.ICE,
+		Card.TARGETING_NAME : Targeting.ALL,
+		Card.BASE_DAMAGE : 1,
+		Card.ELEMENT_AMOUNT : 1,
+		Card.COMBO_ELEMENT_NAME : Element.WATER,
+		Card.COMBO_BONUS_NAME : ComboBonus.EXTRA_DAMAGE,
+		Card.COMBO_BONUS_DATA : {
+			ComboBonus.DAMAGE : 2,
+			ComboBonus.TARGET_GROUP_NAME : BattleConstants.GROUP_ENEMIES,
+			ComboBonus.TARGETING_NAME : Targeting.ALL
 		}
 	}

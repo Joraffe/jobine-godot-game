@@ -121,7 +121,7 @@ static func _get_mau_character_data() -> Dictionary:
 static func _get_eb_character_data() -> Dictionary:
 	var current_element_names : Array[String] = []
 	var current_status_effects : Array[StatusEffect] = []
-	var combo_synergies : Array[String] = []  # TBD
+	var combo_synergies : Array[String] = [Combo.FREEZE, Combo.CHILL]
 	return {
 		Character.HUMAN_NAME : "Eb",
 		Character.MACHINE_NAME : Character.EB,

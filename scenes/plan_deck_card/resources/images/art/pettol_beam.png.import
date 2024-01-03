@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0sg4bekm1leo"
-path="res://.godot/imported/plan_deck_container.png-2ef37528d4f1dc205129373ad31194cf.ctex"
+uid="uid://b85khe0c1lkcy"
+path="res://.godot/imported/pettol_beam.png-ff42130d324e737b4d7629312ae111b2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/plan_deck/resources/images/container/plan_deck_container.png"
-dest_files=["res://.godot/imported/plan_deck_container.png-2ef37528d4f1dc205129373ad31194cf.ctex"]
+source_file="res://scenes/plan_deck_card/resources/images/art/pettol_beam.png"
+dest_files=["res://.godot/imported/pettol_beam.png-ff42130d324e737b4d7629312ae111b2.ctex"]
 
 [params]
 

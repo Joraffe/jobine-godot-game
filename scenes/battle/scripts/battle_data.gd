@@ -15,23 +15,26 @@ var current_energy : int
 var background_name : String
 
 
-func _init(seed_data : Dictionary) -> void:
-	lead_character = BattleData.get_battle_lead_character(seed_data)
-	top_swap_character = BattleData.get_battle_top_swap_character(seed_data)
-	bottom_swap_character = BattleData.get_battle_bottom_swap_character(seed_data)
-	enemies = BattleData.get_battle_enemies(seed_data)
-	var character_instance_id_map : Dictionary = {
-		lead_character.machine_name : lead_character.get_instance_id(),
-		top_swap_character.machine_name : top_swap_character.get_instance_id(),
-		bottom_swap_character.machine_name : bottom_swap_character.get_instance_id()
-	}
-	cards = BattleData.get_battle_cards(seed_data, character_instance_id_map)
-	discard_pile = BattleData.get_battle_discard_pile(seed_data)
-	hand = BattleData.get_battle_hand(seed_data)
-	max_hand_size = 5  # sticking this here in case want this to change
-	max_energy = 3
-	current_energy = 3
-	background_name = "basic"
+func _init(seed_data : Dictionary, scene_data : Dictionary) -> void:
+	var plan_party : Dictionary = scene_data[PlanConstants.PARTY]
+	self.lead_character = plan_party[PlanConstants.LEAD]
+	self.top_swap_character = plan_party[PlanConstants.STANDBY_TOP]
+	self.bottom_swap_character = plan_party[PlanConstants.STANDBY_BOTTOM]
+	self.enemies = BattleData.get_battle_enemies(seed_data)
+
+	var plan_deck : Dictionary = scene_data[PlanConstants.DECK]
+	var plan_cards : Array[Card] = []
+	for character_name in plan_deck.keys():
+		var character_cards : Array[Card] = plan_deck[character_name][PlanConstants.CARDS]
+		plan_cards += character_cards
+	self.cards = plan_cards
+
+	self.discard_pile = BattleData.get_battle_discard_pile(seed_data)
+	self.hand = BattleData.get_battle_hand(seed_data)
+	self.max_hand_size = 5  # sticking this here in case want this to change
+	self.max_energy = 3
+	self.current_energy = 3
+	self.background_name = "basic"
 
 
 #=======================

@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.1", "Forward Plus")
 
 BattleRadio="*res://modules/battle/radio.gd"
 PlanRadio="*res://modules/plan/radio.gd"
+SceneSwitcher="*res://modules/system/scene_switcher.gd"
 
 [display]
 

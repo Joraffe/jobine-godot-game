@@ -12,3 +12,8 @@ const PARTY_ROLES : Array = [
 	PlanConstants.STANDBY_BOTTOM
 ]
 const UNSELECTED : String = "unselected"
+
+const PARTY : String = "party"
+const DECK : String = "deck"
+const CHARACTER : String = "character"
+const CARDS : String = "cards"

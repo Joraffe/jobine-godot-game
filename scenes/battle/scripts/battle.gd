@@ -1,15 +1,24 @@
 extends Node2D
 
 
-var data : BattleData
+var data : Dictionary  # from SceneSwitcher
+
+var battle_data : BattleData
 
 
 #=======================
 # Godot Lifecycle Hooks
 #=======================
-func _init() -> void:
-	var seed_data = SeedData.get_seed_data()
-	data = BattleData.new(seed_data)
-
 func _ready() -> void:
-	BattleRadio.emit_signal(BattleRadio.BATTLE_STARTED, data)
+	self.set(
+		"battle_data",
+		BattleData.new(
+			SeedData.get_seed_data(),
+			self.data
+		)
+	) 
+
+	BattleRadio.emit_signal(
+		BattleRadio.BATTLE_STARTED,
+		battle_data,
+	)

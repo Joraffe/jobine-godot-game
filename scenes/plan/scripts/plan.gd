@@ -30,7 +30,10 @@ func _on_deck_updated(deck_data : Dictionary) -> void:
 	self.set("plan_deck", deck_data)
 
 func _on_plan_confirmed() -> void:
-	print('_on_plan_confirmed called')
-	print('plan_party ', self.plan_party)
-	print('plan_deck ', self.plan_deck)
-	# implement scene switcher call here
+	SceneSwitcher.goto_scene(
+		"res://scenes/battle/Battle.tscn",
+		{
+			PlanConstants.PARTY : self.plan_party,
+			PlanConstants.DECK : self.plan_deck
+		}
+	)

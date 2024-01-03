@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dp710rbh8tf2p"
-path="res://.godot/imported/swipe_card.png-45b82194d3ff8ae6365b811f33bfc08f.ctex"
+uid="uid://bub0plidocfdu"
+path="res://.godot/imported/bloom.png-9360ac6084cdf3ff431698ee7a31b4ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_card/resources/images/swipe/swipe_card.png"
-dest_files=["res://.godot/imported/swipe_card.png-45b82194d3ff8ae6365b811f33bfc08f.ctex"]
+source_file="res://scenes/plan_deck_card/resources/images/art/bloom.png"
+dest_files=["res://.godot/imported/bloom.png-9360ac6084cdf3ff431698ee7a31b4ea.ctex"]
 
 [params]
 

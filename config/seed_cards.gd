@@ -26,6 +26,12 @@ static func seed_card_data(config_file : ConfigFile) -> void:
 		Character.AXO,
 		SeedCards._get_axo_card_data()
 	)
+	
+	config_file.set_value(
+		SeedData.CARDS,
+		Character.MAU,
+		SeedCards._get_mau_card_data()
+	)
 
 	config_file.save(SeedData.SEED_DATA_CFG_PATH)
 
@@ -56,9 +62,9 @@ static func _get_axo_card_data() -> Array[Dictionary]:
 
 static func _get_mau_card_data() -> Array[Dictionary]:
 	var cards : Array[Dictionary] = []
-	cards.append(Card.AQUA_SHOT)
-	cards.append(Card.AQUA_SHOT)
-	cards.append(Card.SWIFT_SWIM)
+	cards.append(SeedCards.swipe_card_data())
+	cards.append(SeedCards.swipe_card_data())
+	cards.append(SeedCards.infurno_card_data())
 	return cards
 
 

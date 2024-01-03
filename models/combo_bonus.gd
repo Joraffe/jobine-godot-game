@@ -34,6 +34,7 @@ var energy_amount : int
 
 # derived values
 var shield_element : Element
+var status : StatusEffect
 
 
 func _init(
@@ -62,11 +63,14 @@ func _init(
 	swap_amount = _swap_amount
 	card_draw_amount = _card_draw_amount
 	energy_amount = _energy_amount
-	set_derived_data()
+	self.set_derived_data()
 
 func set_derived_data() -> void:
 	if self.shield_element_name != "":
 		shield_element = Element.by_machine_name(self.shield_element_name)
+
+	if self.status_name != "":
+		self.status = StatusEffect.by_machine_name(self.status_name, self.status_duration)
 
 func is_extra_damage() -> bool:
 	return self.machine_name == ComboBonus.EXTRA_DAMAGE

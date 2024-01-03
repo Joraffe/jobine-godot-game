@@ -92,6 +92,8 @@ static func by_machine_name(status_machine_name : String, status_duration : int)
 			return Frozen()
 		StatusEffect.FROZEN_IMMUNE:
 			return FrozenImmune()
+		StatusEffect.HEAT:
+			return Heat()
 		_:
 			return
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfxd6oy5rc811"
-path="res://.godot/imported/infurno_card.png-9cfb6d032e88224951723a56a9eb912f.ctex"
+uid="uid://dp710rbh8tf2p"
+path="res://.godot/imported/swipe.png-b76fc3ce3d9ab9006a7d8cee8974a870.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_field_card/resources/images/infurno/infurno_card.png"
-dest_files=["res://.godot/imported/infurno_card.png-9cfb6d032e88224951723a56a9eb912f.ctex"]
+source_file="res://scenes/battle_field_card/resources/images/swipe/swipe.png"
+dest_files=["res://.godot/imported/swipe.png-b76fc3ce3d9ab9006a7d8cee8974a870.ctex"]
 
 [params]
 

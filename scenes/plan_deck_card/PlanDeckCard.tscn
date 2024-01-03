@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvfo0xm0v2s4e"]
+
+[ext_resource type="Script" path="res://scenes/plan_deck_card/scripts/plan_deck_card.gd" id="1_mh7v8"]
+[ext_resource type="Script" path="res://scenes/plan_deck_card/scripts/area_2d.gd" id="2_drhnh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dlyjg"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ih0p8"]
+
+[node name="PlanDeckCard" type="Node2D"]
+script = ExtResource("1_mh7v8")
+
+[node name="ContainerSprite2D" type="Sprite2D" parent="."]
+
+[node name="ArtSprite2D" type="Sprite2D" parent="ContainerSprite2D"]
+
+[node name="CostLabel" type="Label" parent="ContainerSprite2D"]
+offset_left = -192.0
+offset_top = -36.0
+offset_right = -137.0
+offset_bottom = 36.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="ContainerSprite2D"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -329.0
+offset_top = -89.0
+offset_right = -192.0
+offset_bottom = -48.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dlyjg")
+
+[node name="NameLabel" type="Label" parent="ContainerSprite2D/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_drhnh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ih0p8")

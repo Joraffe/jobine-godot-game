@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxmb278lo8h7e"]
+
+[ext_resource type="Script" path="res://scenes/hub_explore/scripts/hub_explore.gd" id="1_emv5v"]
+
+[node name="HubExplore" type="Node2D"]
+script = ExtResource("1_emv5v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

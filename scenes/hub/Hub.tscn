@@ -1,0 +1,24 @@
+[gd_scene load_steps=8 format=3 uid="uid://drqvdfq3qf5dd"]
+
+[ext_resource type="Script" path="res://scenes/hub/scripts/hub.gd" id="1_civhi"]
+[ext_resource type="PackedScene" uid="uid://c60rb6tl8akvf" path="res://scenes/hub_background/HubBackground.tscn" id="2_tams3"]
+[ext_resource type="PackedScene" uid="uid://dxnakacxynbai" path="res://scenes/hub_datetime/HubDatetime.tscn" id="3_wr5ha"]
+[ext_resource type="PackedScene" uid="uid://dk5mnq1la078a" path="res://scenes/hub_research/HubResearch.tscn" id="4_bbss3"]
+[ext_resource type="PackedScene" uid="uid://bb4vtk4t16842" path="res://scenes/hub_battle/HubBattle.tscn" id="4_uxxtd"]
+[ext_resource type="PackedScene" uid="uid://c44wj2w0b887l" path="res://scenes/hub_commune/HubCommune.tscn" id="6_dco1r"]
+[ext_resource type="PackedScene" uid="uid://dxmb278lo8h7e" path="res://scenes/hub_explore/HubExplore.tscn" id="7_fi4tl"]
+
+[node name="Hub" type="Node2D"]
+script = ExtResource("1_civhi")
+
+[node name="Background" parent="." instance=ExtResource("2_tams3")]
+
+[node name="Research" parent="." instance=ExtResource("4_bbss3")]
+
+[node name="Commune" parent="." instance=ExtResource("6_dco1r")]
+
+[node name="Battle" parent="." instance=ExtResource("4_uxxtd")]
+
+[node name="Explore" parent="." instance=ExtResource("7_fi4tl")]
+
+[node name="Datetime" parent="." instance=ExtResource("3_wr5ha")]

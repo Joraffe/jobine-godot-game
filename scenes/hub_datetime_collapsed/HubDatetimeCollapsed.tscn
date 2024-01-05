@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0pe25jk8ajhp"]
+
+[ext_resource type="Script" path="res://scenes/hub_datetime_collapsed/scripts/hub_datetime_collapsed.gd" id="1_a3124"]
+[ext_resource type="Texture2D" uid="uid://6ve8dux882qi" path="res://scenes/hub_datetime_collapsed/resources/images/container/container.png" id="2_3fq5d"]
+[ext_resource type="Script" path="res://scenes/hub_datetime_collapsed/scripts/area_2d.gd" id="3_hcrqj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6aaw"]
+size = Vector2(480, 54)
+
+[node name="HubDatetimeCollapsed" type="Node2D"]
+script = ExtResource("1_a3124")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3fq5d")
+
+[node name="Label" type="Label" parent="Sprite2D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -27.0
+offset_right = -240.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("3_hcrqj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_i6aaw")

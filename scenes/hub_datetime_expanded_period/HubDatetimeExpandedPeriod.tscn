@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy4vcjkbvyci7"]
+
+[ext_resource type="Script" path="res://scenes/hub_datetime_expanded_period/scripts/hub_datetime_expanded_period.gd" id="1_46rbj"]
+
+[node name="HubDatetimeExpandedPeriod" type="Node2D"]
+script = ExtResource("1_46rbj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Label" type="Label" parent="Sprite2D"]
+anchors_preset = -1
+anchor_left = 0.329167
+anchor_top = 0.825926
+anchor_right = 0.670833
+anchor_bottom = 0.940741
+offset_left = -120.0
+offset_top = -135.0
+offset_right = -120.0
+offset_bottom = -135.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c44wj2w0b887l"]
+
+[ext_resource type="Script" path="res://scenes/hub_commune/scripts/hub_commune.gd" id="1_p10hs"]
+
+[node name="HubCommune" type="Node2D"]
+script = ExtResource("1_p10hs")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

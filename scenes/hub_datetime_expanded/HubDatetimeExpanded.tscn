@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://webhbog0ndc8"]
+
+[ext_resource type="Script" path="res://scenes/hub_datetime_expanded/scripts/hub_datetime_expanded.gd" id="1_pyo7p"]
+[ext_resource type="Texture2D" uid="uid://bf774sl0wbdsl" path="res://scenes/hub_datetime_expanded/resources/images/container/container.png" id="2_5y252"]
+[ext_resource type="PackedScene" uid="uid://cpyw8mtnadfh4" path="res://scenes/hub_datetime_expanded_calendar/HubDatetimeExpandedCalendar.tscn" id="2_dxqbe"]
+[ext_resource type="PackedScene" uid="uid://dy4vcjkbvyci7" path="res://scenes/hub_datetime_expanded_period/HubDatetimeExpandedPeriod.tscn" id="3_7rlqk"]
+[ext_resource type="Script" path="res://scenes/hub_datetime_expanded/scripts/area_2d.gd" id="5_6r011"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w4pfi"]
+size = Vector2(480, 270)
+
+[node name="HubDatetimeExpanded" type="Node2D"]
+script = ExtResource("1_pyo7p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_5y252")
+
+[node name="Calendar" parent="." instance=ExtResource("2_dxqbe")]
+
+[node name="Period" parent="." instance=ExtResource("3_7rlqk")]
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("5_6r011")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_w4pfi")

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dxnakacxynbai"]
+
+[ext_resource type="Script" path="res://scenes/hub_datetime/scripts/hub_datetime.gd" id="1_arrlu"]
+[ext_resource type="PackedScene" uid="uid://webhbog0ndc8" path="res://scenes/hub_datetime_expanded/HubDatetimeExpanded.tscn" id="2_om3q4"]
+[ext_resource type="PackedScene" uid="uid://d0pe25jk8ajhp" path="res://scenes/hub_datetime_collapsed/HubDatetimeCollapsed.tscn" id="3_bsdr2"]
+
+[node name="HubDatetime" type="Node2D"]
+script = ExtResource("1_arrlu")
+
+[node name="Expanded" parent="." instance=ExtResource("2_om3q4")]
+visible = false
+
+[node name="Collapsed" parent="." instance=ExtResource("3_bsdr2")]
+visible = false
+
+[node name="ExpandedTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true

@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdgpg2e13uchq"]
-
-[ext_resource type="Script" path="res://scenes/plan_background/scripts/plan_background.gd" id="1_nukww"]
-
-[node name="PlanBackground" type="Node2D"]
-position = Vector2(960, 540)
-script = ExtResource("1_nukww")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]

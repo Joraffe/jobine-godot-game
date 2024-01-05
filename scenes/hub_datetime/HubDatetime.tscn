@@ -14,5 +14,4 @@ visible = false
 visible = false
 
 [node name="ExpandedTimer" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true

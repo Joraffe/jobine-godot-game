@@ -18,10 +18,10 @@ func _init() -> void:
 # Signal Handlers
 #========================
 func _on_mouse_entered() -> void:
-	is_mouse_over = true
+	self.set("is_mouse_over", true)
 
 func _on_mouse_exited() -> void:
-	is_mouse_over = false
+	self.set("is_mouse_over", false)
 
 func _on_check_party_end_turn_effects_finished() -> void:
 	self.emit_turn_ended()
@@ -40,7 +40,6 @@ func _input(event) -> void:
 		return
 
 	self.emit_check_party_end_turn_effects_deferred()
-
 
 #========================
 # Helpers

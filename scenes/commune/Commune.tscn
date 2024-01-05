@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cg7dxlropdcvh"]
+
+[ext_resource type="Script" path="res://scenes/commune/scripts/commune.gd" id="1_qktyl"]
+[ext_resource type="PackedScene" uid="uid://gks4f1vthil1" path="res://scenes/background/Background.tscn" id="2_806uf"]
+
+[node name="Commune" type="Node2D"]
+script = ExtResource("1_qktyl")
+
+[node name="Background" parent="." instance=ExtResource("2_806uf")]

@@ -13,3 +13,5 @@ signal mouse_exited_expanded_datetime
 
 const BATTLE_SELECTED : String = "battle_selected"
 signal battle_selected
+const COMMUNE_SELECTED : String = "commune_selected"
+signal commune_selected

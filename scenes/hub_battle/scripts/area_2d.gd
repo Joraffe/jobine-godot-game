@@ -1,7 +1,7 @@
 extends Area2D
 
 
-var is_mouse_over_battle_art : bool
+var is_mouse_over_art : bool
 
 var image_data : ImageData :
 	set = set_image_data
@@ -31,13 +31,15 @@ func set_image_data(new_image_data : ImageData) -> void:
 # Signal Handers
 #=======================
 func _on_mouse_entered() -> void:
-	self.set("is_mouse_over_battle_art", true)
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+	self.set("is_mouse_over_art", true)
 
 func _on_mouse_exited() -> void:
-	self.set("is_mouse_over_battle_art", false)
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+	self.set("is_mouse_over_art", false)
 
 func _input(event) -> void:
-	if not self.is_mouse_over_battle_art:
+	if not self.is_mouse_over_art:
 		return
 
 	if not self.is_left_mouse_click(event):
@@ -45,7 +47,9 @@ func _input(event) -> void:
 
 	if self.is_left_mouse_click(event):
 		self.emit_battle_selected()
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		return
+
 
 #=======================
 # Helpers

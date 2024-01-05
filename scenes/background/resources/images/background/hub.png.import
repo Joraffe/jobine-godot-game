@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1h8ai6e7q68t"
-path="res://.godot/imported/basic.png-bf00807ca7f14bd26b54047e323e0f36.ctex"
+uid="uid://b6g3imu56v1qj"
+path="res://.godot/imported/hub.png-c814d54e8848d91ebdd6dd0f50190a1a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/battle_background/resources/images/basic/basic.png"
-dest_files=["res://.godot/imported/basic.png-bf00807ca7f14bd26b54047e323e0f36.ctex"]
+source_file="res://scenes/background/resources/images/background/hub.png"
+dest_files=["res://.godot/imported/hub.png-c814d54e8848d91ebdd6dd0f50190a1a.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://ceykjjqnftx3c"]
 
 [ext_resource type="Script" path="res://scenes/battle/scripts/battle.gd" id="1_bvh5n"]
-[ext_resource type="PackedScene" uid="uid://de5b0fwk7lm3t" path="res://scenes/battle_background/BattleBackground.tscn" id="2_bfre5"]
+[ext_resource type="PackedScene" uid="uid://gks4f1vthil1" path="res://scenes/background/Background.tscn" id="2_jhhac"]
 [ext_resource type="PackedScene" uid="uid://dbf1gmlx3fgyp" path="res://scenes/battle_field/BattleField.tscn" id="3_e6xtr"]
 [ext_resource type="PackedScene" uid="uid://o6rqirjq0lkq" path="res://scenes/battle_mouse/BattleMouse.tscn" id="4_0eqnh"]
 [ext_resource type="PackedScene" uid="uid://bjvc8wuqgpqjq" path="res://scenes/battle_arena/BattleArena.tscn" id="4_vpccr"]
@@ -10,7 +10,7 @@
 [node name="Battle" type="Node2D"]
 script = ExtResource("1_bvh5n")
 
-[node name="Background" parent="." instance=ExtResource("2_bfre5")]
+[node name="Background" parent="." instance=ExtResource("2_jhhac")]
 
 [node name="Field" parent="." instance=ExtResource("3_e6xtr")]
 position = Vector2(960, 870)

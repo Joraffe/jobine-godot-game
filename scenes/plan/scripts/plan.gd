@@ -17,6 +17,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	self.set("seed_data", SeedData.get_seed_data())
+	self.setup_background()
 	PlanRadio.emit_signal(PlanRadio.PLAN_STARTED, self.seed_data)
 
 
@@ -37,3 +38,10 @@ func _on_plan_confirmed() -> void:
 			PlanConstants.DECK : self.plan_deck
 		}
 	)
+
+
+#=======================
+# Helpers
+#=======================
+func setup_background() -> void:
+	$Background.set("background_name", "plan")

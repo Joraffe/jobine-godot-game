@@ -9,12 +9,14 @@ var data : Dictionary  # passed in from SceneSwitcher
 #=======================
 func _init() -> void:
 	HubRadio.connect(HubRadio.BATTLE_SELECTED, _on_battle_selected)
+	HubRadio.connect(HubRadio.COMMUNE_SELECTED, _on_commune_selected)
 
 func _ready() -> void:
 	self.data["seed"] = SeedData.get_seed_data()
 	self.data["current_day"] = 1
 	self.data["current_time_period"] = "morning"
 	HubRadio.emit_signal(HubRadio.HUB_STARTED, self.data)
+	self.setup_background()
 	self.position_components()
 
 
@@ -27,22 +29,25 @@ func _on_battle_selected() -> void:
 		self.data
 	)
 
+func _on_commune_selected() -> void:
+	SceneSwitcher.goto_scene(
+		"res://scenes/commune/Commune.tscn",
+		self.data
+	)
+
 
 #=======================
 # Helpers
 #=======================
+func setup_background() -> void:
+	$Background.set("background_name", "hub")
+
 func position_components() -> void:
-	self.position_background()
 	self.position_datetime()
 	self.position_research()
 	self.position_commune()
 	self.position_battle()
 	self.position_explore()
-
-func position_background() -> void:
-	var offset_x : float = ViewportConstants.SCREEN_WIDTH / 2.0
-	var offset_y : float = ViewportConstants.SCREEN_HEIGHT / 2.0
-	$Background.set_position(Vector2(offset_x, offset_y))
 
 func position_datetime() -> void:
 	var datetime_visual_state : String = $Datetime.visual_state

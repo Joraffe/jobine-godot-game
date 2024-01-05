@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://drqvdfq3qf5dd"]
 
 [ext_resource type="Script" path="res://scenes/hub/scripts/hub.gd" id="1_civhi"]
-[ext_resource type="PackedScene" uid="uid://c60rb6tl8akvf" path="res://scenes/hub_background/HubBackground.tscn" id="2_tams3"]
+[ext_resource type="PackedScene" uid="uid://gks4f1vthil1" path="res://scenes/background/Background.tscn" id="2_so672"]
 [ext_resource type="PackedScene" uid="uid://dxnakacxynbai" path="res://scenes/hub_datetime/HubDatetime.tscn" id="3_wr5ha"]
 [ext_resource type="PackedScene" uid="uid://dk5mnq1la078a" path="res://scenes/hub_research/HubResearch.tscn" id="4_bbss3"]
 [ext_resource type="PackedScene" uid="uid://bb4vtk4t16842" path="res://scenes/hub_battle/HubBattle.tscn" id="4_uxxtd"]
@@ -11,7 +11,7 @@
 [node name="Hub" type="Node2D"]
 script = ExtResource("1_civhi")
 
-[node name="Background" parent="." instance=ExtResource("2_tams3")]
+[node name="Background" parent="." instance=ExtResource("2_so672")]
 
 [node name="Research" parent="." instance=ExtResource("4_bbss3")]
 

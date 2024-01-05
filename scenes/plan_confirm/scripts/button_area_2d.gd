@@ -50,9 +50,11 @@ func _on_party_unfilled() -> void:
 	self.set("is_button_enabled", false)
 
 func _on_mouse_entered() -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	self.set("is_mouse_over_button", true)
 
 func _on_mouse_exited() -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	self.set("is_mouse_over_button", false)
 
 func _input(event) -> void:
@@ -64,6 +66,8 @@ func _input(event) -> void:
 
 	if self.is_left_mouse_click(event):
 		self.emit_plan_confirmed()
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		return
 
 
 #=======================

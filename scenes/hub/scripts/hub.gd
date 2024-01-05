@@ -8,7 +8,7 @@ var data : Dictionary  # passed in from SceneSwitcher
 # Godot Lifecycle Hooks
 #=======================
 func _init() -> void:
-	pass
+	HubRadio.connect(HubRadio.BATTLE_SELECTED, _on_battle_selected)
 
 func _ready() -> void:
 	self.data["seed"] = SeedData.get_seed_data()
@@ -16,6 +16,16 @@ func _ready() -> void:
 	self.data["current_time_period"] = "morning"
 	HubRadio.emit_signal(HubRadio.HUB_STARTED, self.data)
 	self.position_components()
+
+
+#=======================
+# Signal Handlers
+#=======================
+func _on_battle_selected() -> void:
+	SceneSwitcher.goto_scene(
+		"res://scenes/battle/Battle.tscn",
+		self.data
+	)
 
 
 #=======================

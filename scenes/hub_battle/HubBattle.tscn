@@ -1,8 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://bb4vtk4t16842"]
+[gd_scene load_steps=5 format=3 uid="uid://bb4vtk4t16842"]
 
 [ext_resource type="Script" path="res://scenes/hub_battle/scripts/hub_battle.gd" id="1_14j47"]
+[ext_resource type="Script" path="res://scenes/hub_battle/scripts/area_2d.gd" id="2_e8spw"]
+[ext_resource type="Texture2D" uid="uid://ckd2hd857c2uu" path="res://scenes/hub_battle/resources/images/art/art.png" id="2_tmhjd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80522"]
+size = Vector2(640, 360)
 
 [node name="HubBattle" type="Node2D"]
 script = ExtResource("1_14j47")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_e8spw")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("2_tmhjd")
+
+[node name="Label" type="Label" parent="Area2D/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.5
+offset_top = -248.5
+offset_right = -319.5
+offset_bottom = -111.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_80522")

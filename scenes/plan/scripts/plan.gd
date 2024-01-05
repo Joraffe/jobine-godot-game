@@ -31,7 +31,7 @@ func _on_deck_updated(deck_data : Dictionary) -> void:
 
 func _on_plan_confirmed() -> void:
 	SceneSwitcher.goto_scene(
-		"res://scenes/battle/Battle.tscn",
+		"res://scenes/hub/Hub.tscn",
 		{
 			PlanConstants.PARTY : self.plan_party,
 			PlanConstants.DECK : self.plan_deck

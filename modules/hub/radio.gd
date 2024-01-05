@@ -10,3 +10,6 @@ const MOUSE_ENTERED_EXPANDED_DATETIME : String = "mouse_entered_expanded_datetim
 signal mouse_entered_expanded_datetime
 const MOUSE_EXITED_EXPANDED_DATETIME : String = "mouse_exited_expanded_datetime"
 signal mouse_exited_expanded_datetime
+
+const BATTLE_SELECTED : String = "battle_selected"
+signal battle_selected
